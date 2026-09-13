@@ -752,6 +752,7 @@ class MPCController:
         self._area_id = room_config.get("area_id", "unknown")
         self._target_resolver = target_resolver
         self.last_plan: MPCPlan | None = None
+        self._peak_temps_unoccupied: list[float] | None = None
         self.q_solar = q_solar
         self._latitude = latitude
         self._longitude = longitude
@@ -948,6 +949,23 @@ class MPCController:
             occupancy_series=occupancy_series,
         )
         self.last_plan = plan
+        # Shading can attenuate solar gain, never the body heat of whoever just
+        # walked in, so the cover logic reads a peak computed without it (#418).
+        # Replaying the plan keeps the control decision itself untouched.
+        _unoccupied = (
+            optimizer.simulate_plan(
+                plan,
+                current_temp,
+                outdoor_series,
+                PLAN_DT_MINUTES,
+                solar_series=solar_series,
+                residual_series=residual_series,
+                occupancy_series=None,
+            )
+            if self.q_occupancy > 0
+            else None
+        )
+        self._peak_temps_unoccupied = _unoccupied if _unoccupied and len(_unoccupied) > 1 else None
 
         action = plan.get_current_action()
         power_fraction = plan.get_current_power_fraction()
@@ -1187,13 +1205,17 @@ class MPCController:
     def predicted_peak_temp(self) -> float | None:
         """Return the maximum predicted temperature over the MPC lookahead horizon.
 
+        Excludes occupancy heat: this value drives shading decisions, and covers
+        cannot counteract metabolic gain (#418).
+
         Available after async_evaluate() has been called.
         Returns None if no MPC plan was computed (bang-bang mode or insufficient data).
         """
         plan = self.last_plan
         if plan is None or not plan.temperatures or len(plan.temperatures) < 2:
             return None
-        return max(plan.temperatures[1:])  # Skip index 0 (current T)
+        temperatures = self._peak_temps_unoccupied or plan.temperatures
+        return max(temperatures[1:])  # Skip index 0 (current T)
 
     def _build_residual_series(self, n_blocks: int) -> list[float] | None:
         """Build decaying residual heat series for MPC horizon."""
