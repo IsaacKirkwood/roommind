@@ -1334,24 +1334,37 @@ class MPCController:
                     continue
                 ac_state = self.hass.states.get(eid)
                 ac_modes = _effective_ac_modes(ac_state)
+                # A command must never carry the opposite side's target. Single
+                # setpoint heat_cool regulates from both sides onto the one value
+                # it gets, so a band with only a heating target would make the
+                # device cool down to it; the directed branches below have the
+                # same problem and now require their own target. Only a range
+                # device can express a one-sided band, by parking the unused side
+                # on its own limit.
                 ac_target = ha_cool_target if ha_cool_target is not None else ha_heat_target
                 ac_heat_target = ha_heat_target if ha_heat_target is not None else ha_cool_target
+                _both_targets = ha_heat_target is not None and ha_cool_target is not None
+                _known_range = bool(ac_state and ac_state.attributes.get("target_temp_low") is not None)
                 if ac_target is None:
                     await self._call("set_hvac_mode", {"entity_id": eid, "hvac_mode": "off"})
-                elif "heat_cool" in ac_modes:
+                elif "heat_cool" in ac_modes and (_both_targets or _known_range):
                     await self._call("set_hvac_mode", {"entity_id": eid, "hvac_mode": "heat_cool"})
                     # Dual-setpoint: send both targets when device uses range mode
                     ac_state_now = self.hass.states.get(eid)
                     is_range = ac_state_now and ac_state_now.attributes.get("target_temp_low") is not None
-                    if is_range and ha_heat_target is not None and ha_cool_target is not None:
-                        low = min(ha_heat_target, ha_cool_target)
-                        high = max(ha_heat_target, ha_cool_target)
+                    if is_range:
+                        _attrs = ac_state_now.attributes if ac_state_now else {}
+                        low = ha_heat_target if ha_heat_target is not None else _attrs.get("min_temp")
+                        high = ha_cool_target if ha_cool_target is not None else _attrs.get("max_temp")
+                    else:
+                        low = high = None
+                    if low is not None and high is not None:
                         await self._call(
                             "set_temperature",
                             {
                                 "entity_id": eid,
-                                "target_temp_low": low,
-                                "target_temp_high": high,
+                                "target_temp_low": min(low, high),
+                                "target_temp_high": max(low, high),
                                 "hvac_mode": "heat_cool",
                             },
                         )
@@ -1372,25 +1385,24 @@ class MPCController:
                             temp_intent="cool",
                         )
                     else:
-                        ac_heat_t = ha_heat_target if ha_heat_target is not None else ha_cool_target
                         await self._call("set_hvac_mode", {"entity_id": eid, "hvac_mode": "heat"})
                         await self._call(
                             "set_temperature",
-                            {"entity_id": eid, "temperature": ac_heat_t, "hvac_mode": "heat"},
+                            {"entity_id": eid, "temperature": ac_heat_target, "hvac_mode": "heat"},
                             temp_intent="heat",
                         )
-                elif can_cool and "cool" in ac_modes:
+                elif can_cool and ha_cool_target is not None and "cool" in ac_modes:
                     await self._call("set_hvac_mode", {"entity_id": eid, "hvac_mode": "cool"})
                     await self._call(
                         "set_temperature",
-                        {"entity_id": eid, "temperature": ac_target, "hvac_mode": "cool"},
+                        {"entity_id": eid, "temperature": ha_cool_target, "hvac_mode": "cool"},
                         temp_intent="cool",
                     )
-                elif can_heat and "heat" in ac_modes:
+                elif can_heat and ha_heat_target is not None and "heat" in ac_modes:
                     await self._call("set_hvac_mode", {"entity_id": eid, "hvac_mode": "heat"})
                     await self._call(
                         "set_temperature",
-                        {"entity_id": eid, "temperature": ac_heat_target, "hvac_mode": "heat"},
+                        {"entity_id": eid, "temperature": ha_heat_target, "hvac_mode": "heat"},
                         temp_intent="heat",
                     )
                 elif "auto" in ac_modes:
