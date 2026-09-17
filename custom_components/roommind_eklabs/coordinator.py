@@ -440,7 +440,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 for entity_id in config.occupancy_entities
             ) or any(
                 self.hass.states.get(entity_id) is not None
-                and self.hass.states[entity_id].state not in {"off", "standby", "unavailable", "unknown"}
+                and self.hass.states[entity_id].state in {"playing", "buffering"}
                 for entity_id in config.media_player_entities
             )
             plan = self._shared_heat_manager.evaluate(source_id, demands, occupied_now=occupied_now)
