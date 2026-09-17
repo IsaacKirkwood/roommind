@@ -444,12 +444,12 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 sum(source_temperatures) / len(source_temperatures) if source_temperatures else None
             )
             occupied_now = any(
-                self.hass.states.get(entity_id) is not None
-                and self.hass.states[entity_id].state == "on"
+                (state := self.hass.states.get(entity_id)) is not None
+                and state.state == "on"
                 for entity_id in config.occupancy_entities
             ) or any(
-                self.hass.states.get(entity_id) is not None
-                and self.hass.states[entity_id].state in {"playing", "buffering"}
+                (state := self.hass.states.get(entity_id)) is not None
+                and state.state in {"playing", "buffering"}
                 for entity_id in config.media_player_entities
             )
             plan = self._shared_heat_manager.evaluate(
