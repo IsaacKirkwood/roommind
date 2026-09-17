@@ -206,6 +206,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         self._climate_control_switch_areas: set[str] = set()
         self._binary_sensor_entity_areas: set[str] = set()
         self._climate_entity_areas: set[str] = set()
+        self._shared_climate_source_ids: set[str] = set()
         # Per-entity cache of schedule blocks; fallback when schedule.get_schedule fails (#308)
         self._schedule_blocks_cache: dict[str, dict] = {}
         # Entity platform callbacks, set by platform async_setup_entry

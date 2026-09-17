@@ -904,6 +904,23 @@ async def websocket_save_settings(
                 return
 
     settings = await store.async_save_settings(changes)
+    if shared_sources is not None:
+        coordinator = _get_coordinator(hass)
+        if coordinator and coordinator.async_add_climate_entities:
+            from .climate import _create_shared_heat_climates
+
+            new_sources = [
+                source
+                for source in shared_sources
+                if str(source["id"]) not in coordinator._shared_climate_source_ids
+            ]
+            if new_sources:
+                coordinator.async_add_climate_entities(
+                    _create_shared_heat_climates(coordinator, new_sources)
+                )
+                coordinator._shared_climate_source_ids.update(
+                    str(source["id"]) for source in new_sources
+                )
     connection.send_result(msg["id"], {"settings": settings})
 
 

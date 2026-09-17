@@ -60,7 +60,9 @@ async def async_setup_entry(
     for area_id in rooms:
         entities.extend(_create_room_climates(coordinator, area_id))
         coordinator._climate_entity_areas.add(area_id)
-    entities.extend(_create_shared_heat_climates(coordinator, store.get_settings().get("shared_heat_sources", [])))
+    shared_sources = store.get_settings().get("shared_heat_sources", [])
+    entities.extend(_create_shared_heat_climates(coordinator, shared_sources))
+    coordinator._shared_climate_source_ids.update(str(source["id"]) for source in shared_sources)
     if entities:
         async_add_entities(entities)
 
