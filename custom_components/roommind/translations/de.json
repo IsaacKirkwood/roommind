@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "RoomMind",
+        "title": "RoomMind - EKLabs Fork",
         "description": "RoomMind für die Raumklimasteuerung einrichten. Räume werden nach dem Setup im RoomMind-Panel konfiguriert."
       }
     },

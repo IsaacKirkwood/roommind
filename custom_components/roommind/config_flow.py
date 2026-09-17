@@ -18,6 +18,6 @@ class RoomMindConfigFlow(ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
             # Prevent multiple instances
             await self.async_set_unique_id(DOMAIN)
             self._abort_if_unique_id_configured()
-            return self.async_create_entry(title="RoomMind", data={})
+            return self.async_create_entry(title="RoomMind - EKLabs Fork", data={})
 
         return self.async_show_form(step_id="user")

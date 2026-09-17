@@ -177,7 +177,7 @@ async def _async_register_panel(hass: HomeAssistant) -> None:
         async_register_built_in_panel(
             hass,
             component_name="custom",
-            sidebar_title="RoomMind",
+            sidebar_title="RoomMind - EKLabs Fork",
             sidebar_icon="mdi:home-thermometer",
             frontend_url_path="roommind",
             config={

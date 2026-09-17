@@ -1,11 +1,11 @@
-# RoomMind
+# RoomMind - EKLabs Fork
 
 [![HACS Default](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.2%2B-blue.svg)](https://www.home-assistant.io/)
-[![License](https://img.shields.io/github/license/snazzybean/roommind)](https://github.com/snazzybean/roommind/blob/main/LICENSE)
-[![Tests](https://github.com/snazzybean/roommind/actions/workflows/ci.yml/badge.svg)](https://github.com/snazzybean/roommind/actions/workflows/ci.yml)
-![Coverage](https://raw.githubusercontent.com/snazzybean/roommind/python-coverage-comment-action-data/badge.svg)
-[![GitHub Release](https://img.shields.io/github/v/release/snazzybean/roommind)](https://github.com/snazzybean/roommind/releases/latest)
+[![License](https://img.shields.io/github/license/IsaacKirkwood/roommind)](https://github.com/IsaacKirkwood/roommind/blob/main/LICENSE)
+[![Tests](https://github.com/IsaacKirkwood/roommind/actions/workflows/ci.yml/badge.svg)](https://github.com/IsaacKirkwood/roommind/actions/workflows/ci.yml)
+![Coverage](https://raw.githubusercontent.com/IsaacKirkwood/roommind/python-coverage-comment-action-data/badge.svg)
+[![GitHub Release](https://img.shields.io/github/v/release/IsaacKirkwood/roommind)](https://github.com/IsaacKirkwood/roommind/releases/latest)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y31VP2VK)
 
@@ -40,7 +40,7 @@
 
 ## Installation
 
-[![Open your Home Assistant instance and open RoomMind inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=snazzybean&repository=roommind&category=integration)
+[![Open your Home Assistant instance and open RoomMind inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=IsaacKirkwood&repository=roommind&category=integration)
 
 ### HACS (Recommended)
 
@@ -136,7 +136,7 @@ No cloud services required - everything runs locally.
 
 ## Feedback & Contributing
 
-- 🐛 **Bug reports** - [Open an issue](https://github.com/snazzybean/roommind/issues/new?template=bug_report.yml)
-- 💡 **Feature requests & ideas** - [Post in Discussions](https://github.com/snazzybean/roommind/discussions/categories/feature-requests) so the community can vote and discuss
-- 🙋 **Questions & usage help** - [Ask in Q&A](https://github.com/snazzybean/roommind/discussions/categories/q-a)
-- 📣 **Announcements** - [Follow Announcements](https://github.com/snazzybean/roommind/discussions/categories/announcements)
+- 🐛 **Bug reports** - [Open an issue](https://github.com/IsaacKirkwood/roommind/issues)
+- 💡 **Feature requests & ideas** - [Start a discussion](https://github.com/IsaacKirkwood/roommind/discussions)
+- 🙋 **Questions & usage help** - [Ask in Discussions](https://github.com/IsaacKirkwood/roommind/discussions)
+- 📣 **Announcements** - [View releases](https://github.com/IsaacKirkwood/roommind/releases)
