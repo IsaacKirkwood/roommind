@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from custom_components.roommind.managers.ac_coil_dry_manager import AcCoilDryManager
-from custom_components.roommind.utils.device_utils import COIL_DRY_FAN_MODE_KEEP, COIL_DRY_STALE_SECONDS
+from custom_components.roommind_eklabs.managers.ac_coil_dry_manager import AcCoilDryManager
+from custom_components.roommind_eklabs.utils.device_utils import COIL_DRY_FAN_MODE_KEEP, COIL_DRY_STALE_SECONDS
 
 AC_EID = "climate.living_ac"
 
@@ -84,7 +84,7 @@ async def process(
 @pytest.mark.asyncio
 async def test_accumulates_cooling_time(monkeypatch):
     """Cooling for 5 min then stopping accumulates 300 wet seconds."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [1000.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -111,7 +111,7 @@ async def test_still_cooling_does_not_reset_start_time(monkeypatch):
     only on the first one, the whole run would still end up here — but this
     test then folds a 90s run into 30s of ``wet_seconds`` instead of 90.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -131,7 +131,7 @@ async def test_still_cooling_does_not_reset_start_time(monkeypatch):
 @pytest.mark.asyncio
 async def test_accumulates_across_bangbang_bursts(monkeypatch):
     """Three short cooling bursts sum up — that is the point in bang-bang mode."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -149,7 +149,7 @@ async def test_accumulates_across_bangbang_bursts(monkeypatch):
 @pytest.mark.asyncio
 async def test_wetness_expires_after_stale_seconds(monkeypatch):
     """Idle for longer than the stale window clears the accumulator."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -170,7 +170,7 @@ async def test_wetness_expires_after_stale_seconds(monkeypatch):
 @pytest.mark.asyncio
 async def test_heating_clears_wetness(monkeypatch):
     """In heating mode the indoor coil is a warm condenser -> dry."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -186,7 +186,7 @@ async def test_heating_clears_wetness(monkeypatch):
 @pytest.mark.asyncio
 async def test_no_accumulation_when_not_commandable(monkeypatch):
     """Climate control disabled -> RoomMind is not cooling anything."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 500.0)
     mgr = AcCoilDryManager(build_hass())
@@ -197,7 +197,7 @@ async def test_no_accumulation_when_not_commandable(monkeypatch):
 @pytest.mark.asyncio
 async def test_no_accumulation_when_compressor_forced_off(monkeypatch):
     """A device blocked by min-off never cooled, so nothing got wet."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 500.0)
     mgr = AcCoilDryManager(build_hass())
@@ -208,7 +208,7 @@ async def test_no_accumulation_when_compressor_forced_off(monkeypatch):
 @pytest.mark.asyncio
 async def test_trv_devices_are_ignored(monkeypatch):
     """Only ACs have an evaporator coil."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 500.0)
     mgr = AcCoilDryManager(build_hass())
@@ -224,7 +224,7 @@ async def test_trv_devices_are_ignored(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_result_is_empty_without_active_run(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 500.0)
     mgr = AcCoilDryManager(build_hass())
@@ -244,7 +244,7 @@ async def _wet(mgr, monkeypatch_time, seconds=900.0, settings=None):
 @pytest.mark.asyncio
 async def test_run_starts_after_enough_cooling(monkeypatch):
     """15 min cooling clears the 10 min threshold -> blow phase starts."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -272,7 +272,7 @@ async def test_run_starts_after_enough_cooling(monkeypatch):
 @pytest.mark.asyncio
 async def test_no_run_below_threshold(monkeypatch):
     """5 min cooling is below the 10 min default threshold."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -285,7 +285,7 @@ async def test_no_run_below_threshold(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_no_run_when_disabled(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -297,7 +297,7 @@ async def test_no_run_when_disabled(monkeypatch):
 @pytest.mark.asyncio
 async def test_no_run_when_compressor_min_run_active(monkeypatch):
     """forced_on means the device must keep running — nothing to dry yet."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -312,7 +312,7 @@ async def test_no_run_when_compressor_min_run_active(monkeypatch):
 @pytest.mark.asyncio
 async def test_no_run_when_idle_action_is_fan_only(monkeypatch):
     """The device is parked in fan_only anyway — a bounded run is a no-op."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -328,7 +328,7 @@ async def test_no_run_when_idle_action_is_fan_only(monkeypatch):
 @pytest.mark.asyncio
 async def test_run_starts_with_fan_only_idle_action_under_force_off(monkeypatch):
     """force_off normalises idle_action to off (#368), so the run IS needed."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -344,7 +344,7 @@ async def test_run_starts_with_fan_only_idle_action_under_force_off(monkeypatch)
 @pytest.mark.asyncio
 async def test_no_run_when_device_lacks_target_mode(monkeypatch):
     """Device without fan_only support -> warn once, no run."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -357,7 +357,7 @@ async def test_no_run_when_device_lacks_target_mode(monkeypatch):
 @pytest.mark.asyncio
 async def test_dry_mode_requires_compressor_can_activate(monkeypatch):
     """dry runs the compressor, so min-off must allow it."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -373,7 +373,7 @@ async def test_dry_mode_requires_compressor_can_activate(monkeypatch):
 @pytest.mark.asyncio
 async def test_dry_mode_marks_compressor_active_and_skips_ekf(monkeypatch):
     """dry keeps the compressor running: report it and stop EKF training."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -388,7 +388,7 @@ async def test_dry_mode_marks_compressor_active_and_skips_ekf(monkeypatch):
 @pytest.mark.asyncio
 async def test_fan_only_mode_does_not_skip_ekf(monkeypatch):
     """A fan moving room air is thermally negligible — train as idle."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -402,7 +402,7 @@ async def test_fan_only_mode_does_not_skip_ekf(monkeypatch):
 @pytest.mark.asyncio
 async def test_run_completes_and_resets_wetness(monkeypatch):
     """After the blow phase expires the device is released and dry."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -422,7 +422,7 @@ async def test_run_completes_and_resets_wetness(monkeypatch):
 @pytest.mark.asyncio
 async def test_drain_phase_precedes_blow(monkeypatch):
     """With drain_minutes > 0 the device stays off first, then blows."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -445,7 +445,7 @@ async def test_setback_without_force_off_skips_drain(monkeypatch):
     device off, so a DRAIN phase would test a false premise — a starting run
     skips straight to BLOW instead.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -466,7 +466,7 @@ async def test_setback_with_force_off_still_drains(monkeypatch):
     """force_off normalises idle_action to off (#368), so DRAIN is meaningful
     again even though the device's own configured idle_action is "setback".
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -485,7 +485,7 @@ async def test_setback_with_force_off_still_drains(monkeypatch):
 @pytest.mark.asyncio
 async def test_unsupported_fan_mode_is_skipped(monkeypatch):
     """Brand-specific fan names: skip set_fan_mode, keep the device's speed."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -508,7 +508,7 @@ async def test_drain_phase_reasserts_idle_each_cycle(monkeypatch):
     device would only be forced off once at the start and could drift back
     on for the rest of the drain window.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -544,7 +544,7 @@ async def test_fan_mode_keep_sends_no_fan_command(monkeypatch, caplog):
     """
     import logging
 
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -572,7 +572,7 @@ async def test_no_run_while_still_cooling_even_with_wet_seconds_over_threshold(m
     start a drying run while ``mode == COOLING``: that would fight the very
     cooling demand that just resumed.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -599,7 +599,7 @@ async def test_no_run_during_heating_even_with_zero_threshold(monkeypatch):
     mode guard is what actually keeps a run from starting while the AC heats
     — the indoor coil is a warm condenser, not something to dry.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -617,7 +617,7 @@ async def test_no_run_when_not_commandable_even_with_wet_seconds_over_threshold(
     block a start outright — contract #36 forbids RoomMind from sending any
     command at all, and a fresh drying run would send set_hvac_mode/set_fan_mode.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -642,7 +642,7 @@ async def test_dry_mode_flags_only_active_during_blow_not_drain(monkeypatch):
     draining (the device is genuinely off, no compressor running) and only
     come on once blow actually starts the compressor.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -664,7 +664,7 @@ async def test_dry_mode_flags_only_active_during_blow_not_drain(monkeypatch):
 @pytest.mark.asyncio
 async def test_cooling_demand_aborts_and_restores_fan(monkeypatch):
     """Room warms up again: release the device and give the fan speed back."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -694,7 +694,7 @@ async def test_cooling_demand_aborts_and_restores_fan(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_completed_run_restores_fan(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -716,7 +716,7 @@ async def test_completed_run_restores_fan(monkeypatch):
 @pytest.mark.asyncio
 async def test_manual_fan_change_wins_over_restore(monkeypatch):
     """Someone turned the fan up during the run: do not overwrite them."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -736,7 +736,7 @@ async def test_manual_fan_change_wins_over_restore(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_heating_demand_aborts_and_clears_wetness(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -757,7 +757,7 @@ async def test_heating_demand_aborts_and_clears_wetness(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_config_disabled_mid_run_aborts(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -772,7 +772,7 @@ async def test_config_disabled_mid_run_aborts(monkeypatch):
 @pytest.mark.asyncio
 async def test_not_commandable_ends_phase_without_commands(monkeypatch):
     """Contract from #36: send nothing. The restore stays pending."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -794,7 +794,7 @@ async def test_not_commandable_ends_phase_without_commands(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_pending_restore_runs_when_commandable_returns(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -823,7 +823,7 @@ async def test_pending_restore_runs_when_commandable_returns(monkeypatch):
 @pytest.mark.asyncio
 async def test_keep_fan_mode_means_no_restore_machinery(monkeypatch):
     """fan_mode="" -> no set_fan_mode at all, so nothing to remember."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -839,7 +839,7 @@ async def test_keep_fan_mode_means_no_restore_machinery(monkeypatch):
 @pytest.mark.asyncio
 async def test_device_without_fan_mode_attribute(monkeypatch):
     """Device reports no fan_mode -> nothing to restore, no crash."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -860,7 +860,7 @@ async def test_no_restore_after_already_restored(monkeypatch):
     would spuriously match again. Only the prev_fan_mode guard prevents a
     second set_fan_mode(fan_mode=None) call.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -888,7 +888,7 @@ async def test_pending_restore_blocks_new_run_when_wet_and_enabled(monkeypatch):
     (still drying) fan mode in the very same call, losing the user's real
     original setting for good.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -931,7 +931,7 @@ async def test_assert_drain_exception_does_not_propagate(monkeypatch, caplog):
     """
     import logging
 
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -956,7 +956,7 @@ async def test_call_exception_does_not_propagate(monkeypatch, caplog):
     """
     import logging
 
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -975,7 +975,7 @@ async def test_call_exception_does_not_propagate(monkeypatch, caplog):
 @pytest.mark.asyncio
 async def test_state_roundtrip_and_resume(monkeypatch):
     """A run interrupted by a restart continues with its remaining time."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [1000.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -1005,7 +1005,7 @@ async def test_state_roundtrip_and_resume(monkeypatch):
 @pytest.mark.asyncio
 async def test_expired_phase_is_dropped_on_load(monkeypatch):
     """Restart after the phase would have ended: drop it, keep prev_fan_mode."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 9999.0)
     mgr = AcCoilDryManager(build_hass())
@@ -1031,7 +1031,7 @@ async def test_expired_phase_is_dropped_on_load(monkeypatch):
 @pytest.mark.asyncio
 async def test_get_state_folds_in_ongoing_cooling(monkeypatch):
     """Cooling time so far must not be lost across a restart."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -1046,7 +1046,7 @@ async def test_get_state_folds_in_ongoing_cooling(monkeypatch):
 @pytest.mark.asyncio
 async def test_get_state_omits_empty_entries(monkeypatch):
     """Nothing worth remembering -> nothing written."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 100.0)
     mgr = AcCoilDryManager(build_hass())
@@ -1057,7 +1057,7 @@ async def test_get_state_omits_empty_entries(monkeypatch):
 @pytest.mark.asyncio
 async def test_load_state_tolerates_garbage(monkeypatch):
     """Corrupt persisted data must never break startup."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 100.0)
     mgr = AcCoilDryManager(build_hass())
@@ -1088,7 +1088,7 @@ async def test_load_state_tolerates_garbage(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_dirty_flag(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [0.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -1102,7 +1102,7 @@ async def test_dirty_flag(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_prune_drops_unknown_entities(monkeypatch):
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 100.0)
     mgr = AcCoilDryManager(build_hass())
@@ -1116,7 +1116,7 @@ async def test_prune_drops_unknown_entities(monkeypatch):
 @pytest.mark.asyncio
 async def test_remove_room_drops_that_areas_entities(monkeypatch):
     """State is keyed by entity_id, so remove_room resolves via the area map."""
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     monkeypatch.setattr(mod.time, "time", lambda: 100.0)
     mgr = AcCoilDryManager(build_hass())

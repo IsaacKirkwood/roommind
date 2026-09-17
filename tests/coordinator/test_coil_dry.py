@@ -77,7 +77,7 @@ def _ac_entity_state(state="cool", current_temperature=26.0, extra_attrs=None):
 
 def _setup(hass, rooms, settings):
     store = _make_store_mock(rooms=rooms, settings=settings)
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
     hass.services.async_call = AsyncMock()
     return store
 
@@ -122,7 +122,7 @@ def frozen_time(monkeypatch):
     manager and the coordinator's min-run tracking must see the same clock.
     ``time.monotonic`` is untouched, see :func:`_age_compressor_min_run`.
     """
-    import custom_components.roommind.managers.ac_coil_dry_manager as mod
+    import custom_components.roommind_eklabs.managers.ac_coil_dry_manager as mod
 
     now = [1000.0]
     monkeypatch.setattr(mod.time, "time", lambda: now[0])
@@ -389,7 +389,7 @@ async def test_coil_dry_device_excluded_from_async_apply(hass, mock_config_entry
     frozen_time[0] += COOLING_RUN_SECONDS
 
     captured: list[set[str]] = []
-    from custom_components.roommind.control.mpc_controller import MPCController
+    from custom_components.roommind_eklabs.control.mpc_controller import MPCController
 
     original = MPCController.async_apply
 

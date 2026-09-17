@@ -8,7 +8,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from custom_components.roommind.const import MAX_SENSOR_STALENESS, MODE_IDLE
+from custom_components.roommind_eklabs.const import MAX_SENSOR_STALENESS, MODE_IDLE
 
 from .conftest import (
     MANAGED_ROOM,
@@ -49,7 +49,7 @@ def _climate_calls(hass, entity_id=None):
 async def test_startup_no_temp_sends_no_climate_commands(hass, mock_config_entry):
     """First cycle after restart with unavailable sensor must not touch devices."""
     store = _make_store_mock({"living_room_abc12345": AC_ROOM})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     hass.states.get = MagicMock(
         side_effect=make_mock_states_get(
@@ -69,7 +69,7 @@ async def test_startup_no_temp_sends_no_climate_commands(hass, mock_config_entry
 async def test_startup_commands_resume_after_first_reading(hass, mock_config_entry):
     """Control resumes normally once the sensor delivers its first value."""
     store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     hass.states.get = MagicMock(side_effect=make_mock_states_get(temp=None))
     hass.services.async_call = AsyncMock()
@@ -87,7 +87,7 @@ async def test_startup_commands_resume_after_first_reading(hass, mock_config_ent
 async def test_dropout_after_valid_reading_still_turns_off(hass, mock_config_entry):
     """Prolonged sensor dropout mid-operation keeps the safety shutdown."""
     store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     hass.states.get = MagicMock(side_effect=make_mock_states_get(temp="18.0"))
     hass.services.async_call = AsyncMock()
@@ -116,7 +116,7 @@ async def test_managed_mode_not_gated(hass, mock_config_entry):
     """Managed Mode rooms need no external sensor and are controlled immediately."""
     managed_room = {**MANAGED_ROOM, "area_id": "living_room_abc12345"}
     store = _make_store_mock({"living_room_abc12345": managed_room})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     climate_attrs = {
         "hvac_modes": ["off", "heat"],
@@ -154,7 +154,7 @@ async def test_master_not_commanded_while_member_waiting(hass, mock_config_entry
             }
         ],
     }
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     master_attrs = {"hvac_modes": ["off", "cool", "heat"]}
     hass.states.get = MagicMock(
@@ -187,7 +187,7 @@ def test_any_member_room_waiting_skips_outdoor_and_disabled(hass, mock_config_en
 async def test_startup_guard_expires_after_staleness_window(hass, mock_config_entry):
     """A sensor that never reports after restart must not hold the guard forever."""
     store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     hass.states.get = MagicMock(side_effect=make_mock_states_get(temp=None))
     hass.services.async_call = AsyncMock()
@@ -211,7 +211,7 @@ async def test_startup_guard_expires_after_staleness_window(hass, mock_config_en
 async def test_startup_guard_expiry_warns_once(hass, mock_config_entry, caplog):
     """Guard expiry logs a single warning per room, not one per cycle."""
     store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
-    hass.data = {"roommind": {"store": store}}
+    hass.data = {"roommind_eklabs": {"store": store}}
 
     hass.states.get = MagicMock(side_effect=make_mock_states_get(temp=None))
     hass.services.async_call = AsyncMock()

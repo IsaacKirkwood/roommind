@@ -1,7 +1,7 @@
 """Tests for whole-house heat-source planning."""
 
-from custom_components.roommind.const import MODE_HEATING, MODE_IDLE
-from custom_components.roommind.managers.shared_heat_source_manager import (
+from custom_components.roommind_eklabs.const import MODE_HEATING, MODE_IDLE
+from custom_components.roommind_eklabs.managers.shared_heat_source_manager import (
     RoomHeatDemand,
     SharedHeatSourceManager,
 )

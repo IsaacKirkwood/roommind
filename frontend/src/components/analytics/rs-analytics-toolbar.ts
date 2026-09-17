@@ -268,7 +268,7 @@ export class RsAnalyticsToolbar extends LitElement {
     this._openDropdown = null;
     try {
       const result = await this.hass.callWS<Record<string, unknown>>({
-        type: "roommind/diagnostics/get",
+        type: "roommind_eklabs/diagnostics/get",
       });
       const json = JSON.stringify(result, null, 2);
       downloadString(json, "roommind_diagnostics.json", "application/json");
@@ -294,7 +294,7 @@ export class RsAnalyticsToolbar extends LitElement {
     this._openDropdown = null;
     try {
       const result = await this.hass.callWS<Record<string, unknown>>({
-        type: "roommind/diagnostics/get",
+        type: "roommind_eklabs/diagnostics/get",
       });
       const json = JSON.stringify(result, null, 2);
       copyToClipboard(json);

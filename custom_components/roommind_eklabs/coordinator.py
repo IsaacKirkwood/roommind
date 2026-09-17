@@ -261,7 +261,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
 
         # Initialize history store (once)
         if self._history_store is None:
-            self._history_store = HistoryStore(self.hass.config.path(".storage/roommind_history"))
+            self._history_store = HistoryStore(self.hass.config.path(".storage/roommind_eklabs_history"))
 
         room_states: dict[str, dict] = {}
 

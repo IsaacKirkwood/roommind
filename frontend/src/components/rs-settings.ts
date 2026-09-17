@@ -93,7 +93,7 @@ export class RsSettings extends LitElement {
   private async _loadSettings() {
     try {
       const result = await this.hass.callWS<{ settings: GlobalSettings }>({
-        type: "roommind/settings/get",
+        type: "roommind_eklabs/settings/get",
       });
       const s = result.settings;
       this._groupByFloor = s.group_by_floor ?? false;
@@ -391,7 +391,7 @@ export class RsSettings extends LitElement {
 
     try {
       await this.hass.callWS({
-        type: "roommind/settings/save",
+        type: "roommind_eklabs/settings/save",
         group_by_floor: this._groupByFloor,
         climate_control_active: this._climateControlActive,
         learning_disabled_rooms: this._learningDisabledRooms,

@@ -16,7 +16,7 @@ class TestCoverageGaps:
 
     def test_cleanup_orphaned_entities_removes_orphaned(self, hass, mock_config_entry):
         """cleanup_orphaned_entities removes entities for deleted rooms."""
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -27,24 +27,24 @@ class TestCoverageGaps:
         # Simulate entity registry entries
         entry_valid_temp = MagicMock()
         entry_valid_temp.unique_id = f"{DOMAIN}_living_room_target_temp"
-        entry_valid_temp.entity_id = "sensor.roommind_living_room_target_temp"
+        entry_valid_temp.entity_id = "sensor.roommind_eklabs_living_room_target_temp"
 
         entry_valid_mode = MagicMock()
         entry_valid_mode.unique_id = f"{DOMAIN}_living_room_mode"
-        entry_valid_mode.entity_id = "sensor.roommind_living_room_mode"
+        entry_valid_mode.entity_id = "sensor.roommind_eklabs_living_room_mode"
 
         entry_valid_cover_auto = MagicMock()
         entry_valid_cover_auto.unique_id = f"{DOMAIN}_living_room_cover_auto"
-        entry_valid_cover_auto.entity_id = "switch.roommind_living_room_cover_auto"
+        entry_valid_cover_auto.entity_id = "switch.roommind_eklabs_living_room_cover_auto"
 
         entry_valid_cover_paused = MagicMock()
         entry_valid_cover_paused.unique_id = f"{DOMAIN}_living_room_cover_paused"
-        entry_valid_cover_paused.entity_id = "binary_sensor.roommind_living_room_cover_paused"
+        entry_valid_cover_paused.entity_id = "binary_sensor.roommind_eklabs_living_room_cover_paused"
 
         # Orphaned: room no longer exists
         entry_orphaned_room = MagicMock()
         entry_orphaned_room.unique_id = f"{DOMAIN}_deleted_room_target_temp"
-        entry_orphaned_room.entity_id = "sensor.roommind_deleted_room_target_temp"
+        entry_orphaned_room.entity_id = "sensor.roommind_eklabs_deleted_room_target_temp"
 
         # Non-roommind entity -- should be ignored
         entry_other = MagicMock()
@@ -55,7 +55,7 @@ class TestCoverageGaps:
         # Global entity (not per-room) -- should be kept
         entry_vacation = MagicMock()
         entry_vacation.unique_id = f"{DOMAIN}_vacation"
-        entry_vacation.entity_id = "switch.roommind_vacation"
+        entry_vacation.entity_id = "switch.roommind_eklabs_vacation"
 
         mock_registry.entities.values.return_value = [
             entry_valid_temp,
@@ -74,11 +74,11 @@ class TestCoverageGaps:
             coordinator.cleanup_orphaned_entities()
 
         # Only the orphaned entity should be removed (vacation is global, not orphaned)
-        mock_registry.async_remove.assert_called_once_with("sensor.roommind_deleted_room_target_temp")
+        mock_registry.async_remove.assert_called_once_with("sensor.roommind_eklabs_deleted_room_target_temp")
 
     def test_cleanup_orphaned_entities_removes_cover_entities_without_covers(self, hass, mock_config_entry):
         """cleanup_orphaned_entities removes cover entities when room has no covers configured."""
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -89,15 +89,15 @@ class TestCoverageGaps:
 
         entry_cover_auto = MagicMock()
         entry_cover_auto.unique_id = f"{DOMAIN}_living_room_cover_auto"
-        entry_cover_auto.entity_id = "switch.roommind_living_room_cover_auto"
+        entry_cover_auto.entity_id = "switch.roommind_eklabs_living_room_cover_auto"
 
         entry_cover_paused = MagicMock()
         entry_cover_paused.unique_id = f"{DOMAIN}_living_room_cover_paused"
-        entry_cover_paused.entity_id = "binary_sensor.roommind_living_room_cover_paused"
+        entry_cover_paused.entity_id = "binary_sensor.roommind_eklabs_living_room_cover_paused"
 
         entry_valid = MagicMock()
         entry_valid.unique_id = f"{DOMAIN}_living_room_target_temp"
-        entry_valid.entity_id = "sensor.roommind_living_room_target_temp"
+        entry_valid.entity_id = "sensor.roommind_eklabs_living_room_target_temp"
 
         mock_registry = MagicMock()
         mock_registry.entities.values.return_value = [
@@ -114,13 +114,13 @@ class TestCoverageGaps:
 
         # Cover entities removed (room has no covers), target_temp kept
         removed_ids = [c.args[0] for c in mock_registry.async_remove.call_args_list]
-        assert "switch.roommind_living_room_cover_auto" in removed_ids
-        assert "binary_sensor.roommind_living_room_cover_paused" in removed_ids
-        assert "sensor.roommind_living_room_target_temp" not in removed_ids
+        assert "switch.roommind_eklabs_living_room_cover_auto" in removed_ids
+        assert "binary_sensor.roommind_eklabs_living_room_cover_paused" in removed_ids
+        assert "sensor.roommind_eklabs_living_room_target_temp" not in removed_ids
 
     def test_cleanup_orphaned_entities_no_orphans(self, hass, mock_config_entry):
         """cleanup_orphaned_entities does nothing when all entities are valid."""
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -130,7 +130,7 @@ class TestCoverageGaps:
 
         entry_valid = MagicMock()
         entry_valid.unique_id = f"{DOMAIN}_living_room_target_temp"
-        entry_valid.entity_id = "sensor.roommind_living_room_target_temp"
+        entry_valid.entity_id = "sensor.roommind_eklabs_living_room_target_temp"
 
         mock_registry = MagicMock()
         mock_registry.entities.values.return_value = [entry_valid]
@@ -145,7 +145,7 @@ class TestCoverageGaps:
 
     def test_cleanup_orphaned_entities_skips_non_string_unique_id(self, hass, mock_config_entry):
         """cleanup_orphaned_entities skips entities with non-string unique_id (e.g. int)."""
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -197,10 +197,10 @@ class TestCoverageGaps:
         """A shorter area_id must not claim a longer room's entities (#340).
 
         Rooms ``bedroom`` and ``bedroom_2_l`` coexist. The entity
-        ``roommind_bedroom_2_l_override`` must survive cleanup — previously the
+        ``roommind_eklabs_bedroom_2_l_override`` must survive cleanup — previously the
         prefix match against ``bedroom`` deleted it.
         """
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -236,7 +236,7 @@ class TestCoverageGaps:
     @pytest.mark.asyncio
     async def test_room_removed_does_not_remove_prefix_sibling_entities(self, hass, mock_config_entry):
         """Removing ``bedroom`` must not delete ``bedroom_2_l`` entities (#340)."""
-        from custom_components.roommind.const import DOMAIN
+        from custom_components.roommind_eklabs.const import DOMAIN
 
         coordinator = _create_coordinator(hass, mock_config_entry)
         coordinator.async_request_refresh = AsyncMock()
@@ -244,11 +244,11 @@ class TestCoverageGaps:
 
         entry_bedroom = MagicMock()
         entry_bedroom.unique_id = f"{DOMAIN}_bedroom_override"
-        entry_bedroom.entity_id = "climate.roommind_bedroom_override"
+        entry_bedroom.entity_id = "climate.roommind_eklabs_bedroom_override"
 
         entry_sibling = MagicMock()
         entry_sibling.unique_id = f"{DOMAIN}_bedroom_2_l_override"
-        entry_sibling.entity_id = "climate.roommind_bedroom_2_l_override"
+        entry_sibling.entity_id = "climate.roommind_eklabs_bedroom_2_l_override"
 
         mock_registry = MagicMock()
         mock_registry.entities.values.return_value = [entry_bedroom, entry_sibling]
@@ -260,5 +260,5 @@ class TestCoverageGaps:
             await coordinator.async_room_removed("bedroom")
 
         removed_ids = [c.args[0] for c in mock_registry.async_remove.call_args_list]
-        assert "climate.roommind_bedroom_override" in removed_ids
-        assert "climate.roommind_bedroom_2_l_override" not in removed_ids
+        assert "climate.roommind_eklabs_bedroom_override" in removed_ids
+        assert "climate.roommind_eklabs_bedroom_2_l_override" not in removed_ids

@@ -9,7 +9,7 @@ export default defineConfig({
       formats: ["iife"],
       fileName: () => "roommind-panel.js",
     },
-    outDir: "../custom_components/roommind/frontend",
+    outDir: "../custom_components/roommind_eklabs/frontend",
     emptyOutDir: false,
     rollupOptions: {
       // No external dependencies – everything is bundled

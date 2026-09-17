@@ -97,7 +97,7 @@ export class RsSettingsReset extends RsSettingsBase {
     if (!confirm(localize("settings.reset_room_confirm", l))) return;
     try {
       fireSaveStatus(this, "saving");
-      await this.hass.callWS({ type: "roommind/thermal/reset", area_id: areaId });
+      await this.hass.callWS({ type: "roommind_eklabs/thermal/reset", area_id: areaId });
       fireSaveStatus(this, "saved");
     } catch {
       fireSaveStatus(this, "error");
@@ -109,7 +109,7 @@ export class RsSettingsReset extends RsSettingsBase {
     if (!confirm(localize("settings.reset_all_confirm", l))) return;
     try {
       fireSaveStatus(this, "saving");
-      await this.hass.callWS({ type: "roommind/thermal/reset_all" });
+      await this.hass.callWS({ type: "roommind_eklabs/thermal/reset_all" });
       fireSaveStatus(this, "saved");
     } catch {
       fireSaveStatus(this, "error");

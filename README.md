@@ -51,7 +51,7 @@
 
 ### Manual
 
-1. Copy `custom_components/roommind/` to your `config/custom_components/` directory
+1. Copy `custom_components/roommind_eklabs/` to your `config/custom_components/` directory
 2. Restart Home Assistant
 3. Go to **Settings > Devices & Services > Add Integration > RoomMind**
 

@@ -27,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: Create release zip
-        run: cd custom_components/roommind && zip -r ../../roommind.zip . -x "__pycache__/*"
+        run: cd custom_components/roommind_eklabs && zip -r ../../roommind.zip . -x "__pycache__/*"
 
       - name: Upload release asset
         env:

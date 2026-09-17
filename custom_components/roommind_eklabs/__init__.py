@@ -39,7 +39,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Ensure the store is created and loaded (once across all entries)
     store = hass.data[DOMAIN].get("store")
     if not store:
-        await _async_migrate_storage(hass)
         store = RoomMindStore(hass)
         await store.async_load()
         hass.data[DOMAIN]["store"] = store
@@ -168,7 +167,7 @@ async def _async_register_panel(hass: HomeAssistant) -> None:
 
     try:
         await hass.http.async_register_static_paths(
-            [StaticPathConfig("/roommind/roommind-panel.js", str(panel_js), False)]
+            [StaticPathConfig("/roommind_eklabs/roommind-panel.js", str(panel_js), False)]
         )
     except RuntimeError:
         _LOGGER.debug("RoomMind static path already registered")
@@ -179,13 +178,13 @@ async def _async_register_panel(hass: HomeAssistant) -> None:
             component_name="custom",
             sidebar_title="RoomMind - EKLabs Fork",
             sidebar_icon="mdi:home-thermometer",
-            frontend_url_path="roommind",
+            frontend_url_path="roommind-eklabs",
             config={
                 "_panel_custom": {
-                    "name": "roommind-panel",
+                    "name": "roommind-eklabs-panel",
                     "embed_iframe": False,
                     "trust_external": False,
-                    "js_url": "/roommind/roommind-panel.js",
+                    "js_url": "/roommind_eklabs/roommind-panel.js",
                 }
             },
         )

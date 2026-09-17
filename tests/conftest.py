@@ -9,8 +9,8 @@ from zoneinfo import ZoneInfo
 import pytest
 from homeassistant.util import dt as dt_util
 
-from custom_components.roommind.control.mpc_controller import clear_command_cache
-from custom_components.roommind.store import RoomMindStore
+from custom_components.roommind_eklabs.control.mpc_controller import clear_command_cache
+from custom_components.roommind_eklabs.store import RoomMindStore
 
 
 @pytest.fixture(autouse=True)

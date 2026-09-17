@@ -1,10 +1,10 @@
-"""Tests for custom_components.roommind.utils.device_utils."""
+"""Tests for custom_components.roommind_eklabs.utils.device_utils."""
 
 from __future__ import annotations
 
 from unittest.mock import MagicMock
 
-from custom_components.roommind.utils.device_utils import (
+from custom_components.roommind_eklabs.utils.device_utils import (
     COIL_DRY_FAN_MODE_KEEP,
     DEFAULT_COIL_DRY_FAN_MODE,
     DEFAULT_COIL_DRY_MINUTES,
@@ -41,7 +41,7 @@ def test_valid_device_types():
 
 
 def test_device_role_auto_constant():
-    from custom_components.roommind.utils.device_utils import DEVICE_ROLE_AUTO
+    from custom_components.roommind_eklabs.utils.device_utils import DEVICE_ROLE_AUTO
 
     assert DEVICE_ROLE_AUTO == "auto"
 
@@ -752,7 +752,7 @@ def test_coil_dry_config_unknown_entity_falls_back_to_global():
 
 
 def test_legacy_to_devices_sets_coil_dry_defaults():
-    from custom_components.roommind.utils.device_utils import legacy_to_devices
+    from custom_components.roommind_eklabs.utils.device_utils import legacy_to_devices
 
     devices = legacy_to_devices([], ["climate.ac"])
     assert devices[0]["coil_dry"] == "inherit"

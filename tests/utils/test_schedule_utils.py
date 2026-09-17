@@ -12,8 +12,8 @@ from zoneinfo import ZoneInfo
 import pytest
 from homeassistant.util import dt as dt_util
 
-from custom_components.roommind.const import TargetTemps
-from custom_components.roommind.utils.schedule_utils import (
+from custom_components.roommind_eklabs.const import TargetTemps
+from custom_components.roommind_eklabs.utils.schedule_utils import (
     find_active_block,
     get_active_schedule_entity,
     make_target_resolver,
@@ -779,7 +779,7 @@ class TestResolveTargetsAtTime:
 
     def test_comfort_fields_when_schedule_on(self):
         """Inside a schedule block without custom temp returns comfort_heat/comfort_cool."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -805,7 +805,7 @@ class TestResolveTargetsAtTime:
 
     def test_eco_fields_when_schedule_off(self):
         """Outside schedule blocks returns eco_heat/eco_cool."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 6, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 06:00 - before blocks
         ts = dt.timestamp()
@@ -831,7 +831,7 @@ class TestResolveTargetsAtTime:
 
     def test_presence_away_action_off_returns_none_none(self):
         """presence_away_action='off' returns TargetTemps(None, None)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         now = time.time()
         result = resolve_targets_at_time(
@@ -853,7 +853,7 @@ class TestResolveTargetsAtTime:
 
     def test_presence_away_eco_returns_eco_temps(self):
         """presence_away_action='eco' returns eco heat/cool."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         now = time.time()
         result = resolve_targets_at_time(
@@ -875,7 +875,7 @@ class TestResolveTargetsAtTime:
 
     def test_override_creates_single_point(self):
         """Active override creates TargetTemps(heat=override, cool=override)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         now = time.time()
         result = resolve_targets_at_time(
@@ -895,7 +895,7 @@ class TestResolveTargetsAtTime:
 
     def test_presence_clears_override_suppresses_override(self):
         """presence_clears_override=True + presence_away skips override branch (#306)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         now = time.time()
         result = resolve_targets_at_time(
@@ -917,7 +917,7 @@ class TestResolveTargetsAtTime:
 
     def test_presence_clears_override_disabled_keeps_override(self):
         """presence_clears_override=False keeps override active even when away."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         now = time.time()
         result = resolve_targets_at_time(
@@ -939,7 +939,7 @@ class TestResolveTargetsAtTime:
 
     def test_schedule_block_with_temperature_creates_single_point(self):
         """Schedule block with custom temperature creates TargetTemps(heat=t, cool=t)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -965,7 +965,7 @@ class TestResolveTargetsAtTime:
 
     def test_override_returns_split_dead_band(self):
         """Active override with both targets returns split heat/cool dead-band."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=1000.0,
@@ -985,7 +985,7 @@ class TestResolveTargetsAtTime:
 
     def test_override_heat_only_leaves_cool_none(self):
         """Heat-only override keeps cool at None (direction off)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=1000.0,
@@ -1005,7 +1005,7 @@ class TestResolveTargetsAtTime:
 
     def test_override_expired_falls_through_to_comfort(self):
         """Expired override falls through to comfort targets."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=1000.0,
@@ -1070,7 +1070,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_resolve_targets_with_split_block_temps(self):
         """Block with heat_temperature and cool_temperature returns split TargetTemps."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -1100,7 +1100,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_resolve_targets_with_only_heat_block_temp(self):
         """Block with only heat_temperature falls back to comfort_cool."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -1130,7 +1130,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_resolve_targets_with_only_cool_block_temp(self):
         """Block with only cool_temperature falls back to comfort_heat."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -1160,7 +1160,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_resolve_targets_single_temp_still_works(self):
         """Block with only temperature creates single-point (backward compat)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         dt = datetime(2025, 1, 6, 10, 0, 0, tzinfo=dt_util.DEFAULT_TIME_ZONE)  # Monday 10:00
         ts = dt.timestamp()
@@ -1190,7 +1190,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_vacation_cool_target_uses_eco_cool(self):
         """Vacation should keep cool at eco_cool, not collapse to vacation_temp."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         ts = time.time()
         result = resolve_targets_at_time(
@@ -1211,7 +1211,7 @@ class TestResolveTargetsAtTimeSplitBlockTemps:
 
     def test_vacation_cool_target_at_least_vacation_temp(self):
         """If vacation_temp > eco_cool, cool should be vacation_temp (max)."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         ts = time.time()
         result = resolve_targets_at_time(
@@ -1368,7 +1368,7 @@ class TestReadScheduleBlocksLogging:
     async def test_warning_when_cache_empty(self, caplog):
         hass = _make_async_hass(service_raises=RuntimeError("boom"))
         cache: dict = {}
-        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind.utils.schedule_utils"):
+        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind_eklabs.utils.schedule_utils"):
             await read_schedule_blocks(hass, "schedule.heating", cache=cache)
         warning_records = [r for r in caplog.records if r.levelno == logging.WARNING]
         assert any("schedule.heating" in r.getMessage() for r in warning_records)
@@ -1377,7 +1377,7 @@ class TestReadScheduleBlocksLogging:
     async def test_debug_only_when_cache_covers_failure(self, caplog):
         cache: dict = {"schedule.heating": _SAMPLE_BLOCKS}
         hass = _make_async_hass(service_raises=RuntimeError("boom"))
-        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind.utils.schedule_utils"):
+        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind_eklabs.utils.schedule_utils"):
             await read_schedule_blocks(hass, "schedule.heating", cache=cache)
         warning_records = [r for r in caplog.records if r.levelno == logging.WARNING]
         debug_records = [r for r in caplog.records if r.levelno == logging.DEBUG]
@@ -1388,9 +1388,9 @@ class TestReadScheduleBlocksLogging:
     async def test_success_logs_nothing(self, caplog):
         hass = _make_async_hass(service_result={"schedule.heating": _SAMPLE_BLOCKS})
         cache: dict = {}
-        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind.utils.schedule_utils"):
+        with caplog.at_level(logging.DEBUG, logger="custom_components.roommind_eklabs.utils.schedule_utils"):
             await read_schedule_blocks(hass, "schedule.heating", cache=cache)
-        relevant = [r for r in caplog.records if r.name == "custom_components.roommind.utils.schedule_utils"]
+        relevant = [r for r in caplog.records if r.name == "custom_components.roommind_eklabs.utils.schedule_utils"]
         assert relevant == []
 
 
@@ -1450,7 +1450,7 @@ class TestTimezoneAwareBlockResolution:
 
     def test_overnight_resolves_to_eco_in_ha_timezone(self):
         """Sydney overnight (outside the daytime block) must resolve to eco, not comfort."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         blocks = {
             day: [{"from": "07:00:00", "to": "21:30:00", "data": {}}]
@@ -1476,7 +1476,7 @@ class TestTimezoneAwareBlockResolution:
 
     def test_daytime_resolves_to_comfort_in_ha_timezone(self):
         """Sydney daytime (inside the block) must resolve to comfort even when UTC is 'off'."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         blocks = {
             day: [{"from": "07:00:00", "to": "21:30:00", "data": {}}]
@@ -1527,59 +1527,59 @@ class TestSanitizeBlockTemp:
 
     def test_valid_value_passes_through(self):
         """A plausible value is returned unchanged."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(21.0) == 21.0
 
     @pytest.mark.parametrize("bound", [5.0, 35.0])
     def test_bounds_are_inclusive(self, bound):
         """Both range limits are accepted."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(bound) == bound
 
     @pytest.mark.parametrize("raw", [110, 35.1, 4.9, -5, 0])
     def test_out_of_range_returns_none(self, raw):
         """Implausible values are rejected."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(raw) is None
 
     @pytest.mark.parametrize("raw", ["not_a_number", None, [21.0], {}])
     def test_non_numeric_returns_none(self, raw):
         """Unparseable values are rejected (previous ValueError/TypeError path)."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(raw) is None
 
     def test_nan_returns_none(self):
         """NaN is rejected — it would pass a naive `MIN <= v <= MAX` check."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(float("nan")) is None
 
     def test_infinity_returns_none(self):
         """Infinity is rejected."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp(float("inf")) is None
 
     def test_numeric_string_is_accepted(self):
         """Numeric strings still resolve (YAML may deliver them quoted)."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         assert sanitize_block_temp("21.5") == 21.5
 
     def test_range_check_runs_after_converter(self):
         """71.6°F converts to 22°C and is accepted, not rejected as out of range."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         converter = lambda v: (v - 32) * 5 / 9  # noqa: E731
         assert sanitize_block_temp(71.6, converter) == pytest.approx(22.0, abs=0.1)
 
     def test_converted_value_out_of_range_rejected(self):
         """220°F = 104°C is rejected after conversion."""
-        from custom_components.roommind.utils.schedule_utils import sanitize_block_temp
+        from custom_components.roommind_eklabs.utils.schedule_utils import sanitize_block_temp
 
         converter = lambda v: (v - 32) * 5 / 9  # noqa: E731
         assert sanitize_block_temp(220.0, converter) is None
@@ -1618,7 +1618,7 @@ class TestOutOfRangeBlockTemps:
 
     def test_resolve_targets_single_temp_falls_back(self):
         """Out-of-range single `temperature` falls back to both comfort targets."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=_monday_ts(),
@@ -1637,7 +1637,7 @@ class TestOutOfRangeBlockTemps:
 
     def test_resolve_targets_bad_heat_keeps_good_cool(self):
         """Only the out-of-range field falls back; the valid one is kept."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=_monday_ts(),
@@ -1656,7 +1656,7 @@ class TestOutOfRangeBlockTemps:
 
     def test_resolve_targets_bad_cool_keeps_good_heat(self):
         """Mirror case: out-of-range cool_temperature falls back to comfort_cool."""
-        from custom_components.roommind.utils.schedule_utils import resolve_targets_at_time
+        from custom_components.roommind_eklabs.utils.schedule_utils import resolve_targets_at_time
 
         result = resolve_targets_at_time(
             ts=_monday_ts(),
@@ -1688,21 +1688,21 @@ class TestFindRejectedBlockTemps:
 
     def test_none_and_empty_return_empty(self):
         """No schedule blocks → nothing to report."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         assert find_rejected_block_temps(None) == []
         assert find_rejected_block_temps({}) == []
 
     def test_all_valid_returns_empty(self):
         """A clean schedule produces no warnings."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         blocks = _monday_blocks({"temperature": 21.0})
         assert find_rejected_block_temps(blocks) == []
 
     def test_finds_typo_in_inactive_block(self):
         """The #395 scenario: a bad value in the 00:00-06:00 block is found at any time."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         blocks = {"monday": [{"from": "00:00:00", "to": "06:00:00", "data": {"temperature": 110}}]}
         assert find_rejected_block_temps(blocks) == [
@@ -1711,7 +1711,7 @@ class TestFindRejectedBlockTemps:
 
     def test_reports_split_fields(self):
         """heat_temperature and cool_temperature are scanned too."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         blocks = _monday_blocks({"heat_temperature": 200, "cool_temperature": 24.0})
         result = find_rejected_block_temps(blocks)
@@ -1720,14 +1720,14 @@ class TestFindRejectedBlockTemps:
 
     def test_reports_non_numeric_values(self):
         """Unparseable values are reported as-is, not swallowed."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         blocks = _monday_blocks({"temperature": "twenty"})
         assert find_rejected_block_temps(blocks)[0]["value"] == "twenty"
 
     def test_results_are_in_weekday_order(self):
         """Entries are ordered Monday-first regardless of dict insertion order."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         blocks = {
             "wednesday": [{"from": "01:00:00", "to": "02:00:00", "data": {"temperature": 111}}],
@@ -1737,7 +1737,7 @@ class TestFindRejectedBlockTemps:
 
     def test_converter_applied_before_check(self):
         """71.6°F is valid after conversion and must not be reported."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         converter = lambda v: (v - 32) * 5 / 9  # noqa: E731
         assert find_rejected_block_temps(_monday_blocks({"temperature": 71.6}), converter) == []
@@ -1745,12 +1745,12 @@ class TestFindRejectedBlockTemps:
 
     def test_missing_data_key_is_not_reported(self):
         """A block without temperature fields is fine — it falls back to comfort."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         assert find_rejected_block_temps({"monday": [{"from": "01:00:00", "to": "02:00:00"}]}) == []
 
     def test_day_with_none_block_list(self):
         """A day key holding None is tolerated."""
-        from custom_components.roommind.utils.schedule_utils import find_rejected_block_temps
+        from custom_components.roommind_eklabs.utils.schedule_utils import find_rejected_block_temps
 
         assert find_rejected_block_temps({"monday": None}) == []

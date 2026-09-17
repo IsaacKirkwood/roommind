@@ -7,8 +7,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from custom_components.roommind.const import DOMAIN, VACATION_SENTINEL_UNTIL
-from custom_components.roommind.switch import (
+from custom_components.roommind_eklabs.const import DOMAIN, VACATION_SENTINEL_UNTIL
+from custom_components.roommind_eklabs.switch import (
     RoomMindClimateControlSwitch,
     RoomMindCoverAutoSwitch,
     RoomMindVacationSwitch,
@@ -24,7 +24,7 @@ def mock_coordinator():
     coordinator.hass = MagicMock()
     coordinator.async_request_refresh = AsyncMock()
     store = MagicMock()
-    coordinator.hass.data = {"roommind": {"store": store}}
+    coordinator.hass.data = {"roommind_eklabs": {"store": store}}
     return coordinator, store
 
 
@@ -73,8 +73,8 @@ def test_switch_unique_id_and_entity_id(mock_coordinator):
     """Switch has correct unique_id and entity_id."""
     coordinator, _ = mock_coordinator
     switch = RoomMindCoverAutoSwitch(coordinator, "living_room")
-    assert switch.unique_id == "roommind_living_room_cover_auto"
-    assert switch.entity_id == "switch.roommind_living_room_cover_auto"
+    assert switch.unique_id == "roommind_eklabs_living_room_cover_auto"
+    assert switch.entity_id == "switch.roommind_eklabs_living_room_cover_auto"
 
 
 def test_create_room_switches(mock_coordinator):
@@ -176,8 +176,8 @@ def test_vacation_switch_unique_id_and_entity_id(mock_vacation_coordinator):
     """Vacation switch has correct unique_id and entity_id."""
     coordinator, _ = mock_vacation_coordinator
     switch = RoomMindVacationSwitch(coordinator)
-    assert switch.unique_id == "roommind_vacation"
-    assert switch.entity_id == "switch.roommind_vacation"
+    assert switch.unique_id == "roommind_eklabs_vacation"
+    assert switch.entity_id == "switch.roommind_eklabs_vacation"
     assert switch.icon == "mdi:beach"
     assert switch.name == "Vacation Mode"
 
@@ -319,5 +319,5 @@ async def test_climate_control_switch_turn_off(mock_cc_coordinator):
 def test_climate_control_switch_unique_id_and_entity_id(mock_cc_coordinator):
     coordinator, _ = mock_cc_coordinator
     switch = RoomMindClimateControlSwitch(coordinator, "living_room")
-    assert switch.unique_id == "roommind_living_room_climate_control"
-    assert switch.entity_id == "switch.roommind_living_room_climate_control"
+    assert switch.unique_id == "roommind_eklabs_living_room_climate_control"
+    assert switch.entity_id == "switch.roommind_eklabs_living_room_climate_control"

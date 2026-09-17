@@ -6,12 +6,12 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from custom_components.roommind.binary_sensor import (
+from custom_components.roommind_eklabs.binary_sensor import (
     RoomMindCoverPausedSensor,
     _create_room_binary_sensors,
     async_setup_entry,
 )
-from custom_components.roommind.const import DOMAIN
+from custom_components.roommind_eklabs.const import DOMAIN
 
 
 @pytest.fixture
@@ -52,8 +52,8 @@ def test_cover_paused_missing_key(mock_coordinator):
 def test_binary_sensor_unique_id_and_entity_id(mock_coordinator):
     """Binary sensor has correct unique_id and entity_id."""
     sensor = RoomMindCoverPausedSensor(mock_coordinator, "living_room")
-    assert sensor.unique_id == "roommind_living_room_cover_paused"
-    assert sensor.entity_id == "binary_sensor.roommind_living_room_cover_paused"
+    assert sensor.unique_id == "roommind_eklabs_living_room_cover_paused"
+    assert sensor.entity_id == "binary_sensor.roommind_eklabs_living_room_cover_paused"
 
 
 def test_create_room_binary_sensors(mock_coordinator):

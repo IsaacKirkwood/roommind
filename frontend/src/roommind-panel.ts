@@ -28,7 +28,7 @@ interface AreaInfo {
   tempSensorCount: number;
 }
 
-@customElement("roommind-panel")
+@customElement("roommind-eklabs-panel")
 export class RoomMindPanel extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ type: Boolean, reflect: true }) public narrow = false;
@@ -798,7 +798,7 @@ export class RoomMindPanel extends LitElement {
         coil_dry_mode: string;
         coil_dry_fan_mode: string;
       }>({
-        type: "roommind/rooms/list",
+        type: "roommind_eklabs/rooms/list",
       });
       this._rooms = result.rooms;
       this._vacationActive = result.vacation_active ?? false;
@@ -842,7 +842,7 @@ export class RoomMindPanel extends LitElement {
 
     try {
       await this.hass.callWS({
-        type: "roommind/rooms/delete",
+        type: "roommind_eklabs/rooms/delete",
         area_id: this._selectedAreaId,
       });
       this._selectedAreaId = null;
@@ -873,7 +873,7 @@ export class RoomMindPanel extends LitElement {
     const newHidden = [...new Set([...this._hiddenRooms, e.detail.areaId])];
     this._hiddenRooms = newHidden;
     try {
-      await this.hass.callWS({ type: "roommind/settings/save", hidden_rooms: newHidden });
+      await this.hass.callWS({ type: "roommind_eklabs/settings/save", hidden_rooms: newHidden });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.debug("[RoomMind] hideRoom:", err);
@@ -885,7 +885,7 @@ export class RoomMindPanel extends LitElement {
     this._hiddenRooms = newHidden;
     if (newHidden.length === 0) this._showHiddenRooms = false;
     try {
-      await this.hass.callWS({ type: "roommind/settings/save", hidden_rooms: newHidden });
+      await this.hass.callWS({ type: "roommind_eklabs/settings/save", hidden_rooms: newHidden });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.debug("[RoomMind] unhideRoom:", err);
@@ -956,7 +956,7 @@ export class RoomMindPanel extends LitElement {
     this._roomOrder = order;
     this._areaInfosCache = this._computeAreaInfos();
     try {
-      await this.hass.callWS({ type: "roommind/settings/save", room_order: order });
+      await this.hass.callWS({ type: "roommind_eklabs/settings/save", room_order: order });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.debug("[RoomMind] saveRoomOrder:", err);
@@ -1028,7 +1028,7 @@ export class RoomMindPanel extends LitElement {
   }
 
   private _navigate(path: string) {
-    history.replaceState(null, "", `/roommind${path}`);
+    history.replaceState(null, "", `/roommind-eklabs${path}`);
     window.dispatchEvent(new Event("location-changed"));
   }
 
@@ -1057,6 +1057,6 @@ export class RoomMindPanel extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "roommind-panel": RoomMindPanel;
+    "roommind-eklabs-panel": RoomMindPanel;
   }
 }

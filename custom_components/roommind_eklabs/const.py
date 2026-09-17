@@ -6,8 +6,8 @@ from typing import NamedTuple
 from homeassistant.const import Platform
 from homeassistant.core import Context
 
-DOMAIN = "roommind"
-VERSION = "0.1.0"
+DOMAIN = "roommind_eklabs"
+VERSION = "0.1.1"
 
 # Platforms
 PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.BINARY_SENSOR, Platform.CLIMATE]
@@ -45,7 +45,7 @@ DEFAULT_ECO_COOL = 27.0
 
 # Context identifier for RoomMind-initiated service calls.
 # Automations can check: trigger.context.parent_id == "roommind"
-ROOMMIND_CONTEXT_ID = "roommind"
+ROOMMIND_CONTEXT_ID = "roommind_eklabs"
 
 
 def make_roommind_context() -> Context:
@@ -101,7 +101,7 @@ EKF_UPDATE_MIN_DT = 3.0  # minutes — matches HISTORY_WRITE_CYCLES
 # Outdoor sensor watchdog: notify when no valid outdoor temperature for this
 # many coordinator cycles (60 × 30 s = 30 min).
 OUTDOOR_UNAVAILABLE_NOTIFY_CYCLES = 60
-OUTDOOR_UNAVAILABLE_NOTIFICATION_ID = "roommind_outdoor_unavailable"
+OUTDOOR_UNAVAILABLE_NOTIFICATION_ID = "roommind_eklabs_outdoor_unavailable"
 
 # Prediction clamping: max °C change in one prediction step (prevents unrealistic jumps)
 MAX_PREDICTION_DELTA = 3.0

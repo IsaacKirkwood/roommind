@@ -79,7 +79,7 @@ class TestCoverageGaps:
             "outdoor_temp_sensor": "sensor.outdoor_temp",
             "climate_control_active": True,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
                 temp="18.0",
@@ -91,7 +91,7 @@ class TestCoverageGaps:
         coordinator = _create_coordinator(hass, mock_config_entry)
 
         with patch(
-            "custom_components.roommind.coordinator.is_mpc_active",
+            "custom_components.roommind_eklabs.coordinator.is_mpc_active",
             side_effect=RuntimeError("mpc check failed"),
         ):
             result = await coordinator._async_update_data()
@@ -116,7 +116,7 @@ class TestCoverageGaps:
             "outdoor_temp_sensor": "sensor.outdoor_temp",
             "climate_control_active": True,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
                 temp="18.0",
@@ -152,7 +152,7 @@ class TestCoverageGaps:
             "outdoor_temp_sensor": "sensor.outdoor_temp",
             "climate_control_active": True,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
                 temp="18.0",
@@ -165,7 +165,7 @@ class TestCoverageGaps:
 
         # Mock solar_elevation to return negative (nighttime)
         with patch(
-            "custom_components.roommind.managers.cover_orchestrator.solar_elevation",
+            "custom_components.roommind_eklabs.managers.cover_orchestrator.solar_elevation",
             return_value=-5.0,
         ):
             result = await coordinator._async_update_data()
@@ -183,7 +183,7 @@ class TestCoverageGaps:
 
     def test_estimate_solar_peak_temp_learned_beta_s(self, hass, mock_config_entry):
         """Uses RC trajectory when idle model is confident (Tier 1)."""
-        from custom_components.roommind.const import COVER_MIN_IDLE_FOR_LEARNED
+        from custom_components.roommind_eklabs.const import COVER_MIN_IDLE_FOR_LEARNED
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -196,7 +196,7 @@ class TestCoverageGaps:
         with (
             patch.object(coordinator._cover_orchestrator, "_idle_solar_model_confident", return_value=True),
             patch(
-                "custom_components.roommind.managers.cover_orchestrator.build_solar_series",
+                "custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series",
                 return_value=[0.3, 0.4, 0.5, 0.6, 0.7],
             ),
         ):
@@ -206,10 +206,10 @@ class TestCoverageGaps:
 
         assert result == pytest.approx(24.0)
 
-    @patch("custom_components.roommind.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
+    @patch("custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
     def test_estimate_solar_peak_temp_not_enough_idle(self, _mock_solar, hass, mock_config_entry):
         """Falls back to linear when not enough idle observations (Tier 2)."""
-        from custom_components.roommind.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
+        from custom_components.roommind_eklabs.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -221,10 +221,10 @@ class TestCoverageGaps:
         expected = 20.0 + COVER_DEFAULT_BETA_S * 0.5 * COVER_LINEAR_LOOKAHEAD_H
         assert result == pytest.approx(expected)
 
-    @patch("custom_components.roommind.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
+    @patch("custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
     def test_estimate_solar_peak_temp_exception_fallback(self, _mock_solar, hass, mock_config_entry):
         """Falls back to linear when model manager raises."""
-        from custom_components.roommind.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
+        from custom_components.roommind_eklabs.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -234,10 +234,10 @@ class TestCoverageGaps:
         expected = 20.0 + COVER_DEFAULT_BETA_S * 0.5 * COVER_LINEAR_LOOKAHEAD_H
         assert result == pytest.approx(expected)
 
-    @patch("custom_components.roommind.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
+    @patch("custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series", return_value=[0.5])
     def test_estimate_solar_peak_temp_no_current_temp(self, _mock_solar, hass, mock_config_entry):
         """Uses target_temp as base when current_temp is None."""
-        from custom_components.roommind.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
+        from custom_components.roommind_eklabs.const import COVER_DEFAULT_BETA_S, COVER_LINEAR_LOOKAHEAD_H
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -249,7 +249,7 @@ class TestCoverageGaps:
 
     def test_estimate_solar_peak_model_not_confident_uses_linear(self, hass, mock_config_entry):
         """When prediction_std >= 0.5 (model not confident), fall back to linear."""
-        from custom_components.roommind.const import (
+        from custom_components.roommind_eklabs.const import (
             COVER_DEFAULT_BETA_S,
             COVER_LINEAR_LOOKAHEAD_H,
             COVER_MIN_IDLE_FOR_LEARNED,
@@ -263,7 +263,7 @@ class TestCoverageGaps:
         with (
             patch.object(coordinator._cover_orchestrator, "_idle_solar_model_confident", return_value=False),
             patch(
-                "custom_components.roommind.managers.cover_orchestrator.build_solar_series",
+                "custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series",
                 return_value=[0.5],
             ),
         ):
@@ -276,7 +276,7 @@ class TestCoverageGaps:
 
     def test_estimate_solar_peak_outdoor_none_uses_linear(self, hass, mock_config_entry):
         """When outdoor_temp is None, fall back to linear."""
-        from custom_components.roommind.const import (
+        from custom_components.roommind_eklabs.const import (
             COVER_DEFAULT_BETA_S,
             COVER_LINEAR_LOOKAHEAD_H,
             COVER_MIN_IDLE_FOR_LEARNED,
@@ -287,7 +287,7 @@ class TestCoverageGaps:
         coordinator._model_manager.get_mode_counts = MagicMock(return_value=(COVER_MIN_IDLE_FOR_LEARNED, 10, 5))
 
         with patch(
-            "custom_components.roommind.managers.cover_orchestrator.build_solar_series",
+            "custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series",
             return_value=[0.5],
         ):
             result = coordinator._cover_orchestrator._estimate_solar_peak_temp(
@@ -299,7 +299,10 @@ class TestCoverageGaps:
 
     def test_idle_solar_model_confident_true(self, hass, mock_config_entry):
         """Low prediction_std returns True."""
-        from custom_components.roommind.const import COVER_CONFIDENCE_REFERENCE_SOLAR, COVER_PREDICTION_DT_MINUTES
+        from custom_components.roommind_eklabs.const import (
+            COVER_CONFIDENCE_REFERENCE_SOLAR,
+            COVER_PREDICTION_DT_MINUTES,
+        )
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -339,7 +342,7 @@ class TestCoverageGaps:
 
     def test_set_cloud_series_used_in_estimate(self, hass, mock_config_entry):
         """Cloud series propagated to build_solar_series in RC trajectory."""
-        from custom_components.roommind.const import COVER_MIN_IDLE_FOR_LEARNED
+        from custom_components.roommind_eklabs.const import COVER_MIN_IDLE_FOR_LEARNED
 
         coordinator = _create_coordinator(hass, mock_config_entry)
 
@@ -354,7 +357,7 @@ class TestCoverageGaps:
         with (
             patch.object(coordinator._cover_orchestrator, "_idle_solar_model_confident", return_value=True),
             patch(
-                "custom_components.roommind.managers.cover_orchestrator.build_solar_series",
+                "custom_components.roommind_eklabs.managers.cover_orchestrator.build_solar_series",
                 return_value=[0.3, 0.4, 0.5],
             ) as mock_build,
         ):

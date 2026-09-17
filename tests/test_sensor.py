@@ -6,8 +6,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from custom_components.roommind.const import DOMAIN
-from custom_components.roommind.sensor import (
+from custom_components.roommind_eklabs.const import DOMAIN
+from custom_components.roommind_eklabs.sensor import (
     RoomMindModeSensor,
     RoomMindTargetTemperatureSensor,
     _create_room_entities,

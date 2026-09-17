@@ -1055,7 +1055,7 @@ export class RsRoomDetail extends LitElement {
     this._optimisticCoverResume = true;
     try {
       await this.hass.callWS({
-        type: "roommind/covers/clear_override",
+        type: "roommind_eklabs/covers/clear_override",
         area_id: this.area.area_id,
       });
     } catch {
@@ -1107,7 +1107,7 @@ export class RsRoomDetail extends LitElement {
 
     try {
       await this.hass.callWS({
-        type: "roommind/rooms/save",
+        type: "roommind_eklabs/rooms/save",
         area_id: this.area.area_id,
         devices: this._devices,
         temperature_sensor: this._selectedTempSensor,

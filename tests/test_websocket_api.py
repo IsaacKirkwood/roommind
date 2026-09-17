@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from custom_components.roommind.const import DOMAIN
-from custom_components.roommind.websocket_api import (
+from custom_components.roommind_eklabs.const import DOMAIN
+from custom_components.roommind_eklabs.websocket_api import (
     _csv_to_points,
     _safe_float,
     websocket_covers_clear_override,
@@ -63,7 +63,7 @@ async def test_list_rooms_empty(ws_hass, store, connection):
     """Listing rooms on a fresh store returns an empty dict."""
     await store.async_load()
 
-    msg = {"id": 1, "type": "roommind/rooms/list"}
+    msg = {"id": 1, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, msg)
 
     connection.send_result.assert_called_once_with(
@@ -106,7 +106,7 @@ async def test_save_room_creates_new(ws_hass, store, connection):
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "thermostats": ["climate.living_room_trv"],
         "temperature_sensor": "sensor.living_room_temp",
@@ -137,7 +137,7 @@ async def test_save_room_updates_existing(ws_hass, store, connection):
     # First create a room
     create_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "office",
         "thermostats": ["climate.office_trv"],
         "temperature_sensor": "sensor.office_temp",
@@ -149,7 +149,7 @@ async def test_save_room_updates_existing(ws_hass, store, connection):
     # Now update it - only change thermostats
     update_msg = {
         "id": 3,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "office",
         "thermostats": ["climate.office_trv", "climate.office_trv_2"],
     }
@@ -173,7 +173,7 @@ async def test_list_rooms_after_save(ws_hass, store, connection):
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         "temperature_sensor": "sensor.kitchen_temp",
@@ -187,7 +187,7 @@ async def test_list_rooms_after_save(ws_hass, store, connection):
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -209,7 +209,7 @@ async def test_list_rooms_learning_paused_when_outdoor_unavailable(ws_hass, stor
     await store.async_load()
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         "temperature_sensor": "sensor.kitchen_temp",
@@ -225,7 +225,7 @@ async def test_list_rooms_learning_paused_when_outdoor_unavailable(ws_hass, stor
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind_eklabs/rooms/list"})
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
     assert rooms["kitchen"]["live"]["learning_paused_reason"] == "outdoor_unavailable"
@@ -238,7 +238,7 @@ async def test_list_rooms_learning_paused_none_when_outdoor_available(ws_hass, s
     await store.async_load()
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         "temperature_sensor": "sensor.kitchen_temp",
@@ -254,7 +254,7 @@ async def test_list_rooms_learning_paused_none_when_outdoor_available(ws_hass, s
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind_eklabs/rooms/list"})
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
     assert rooms["kitchen"]["live"]["learning_paused_reason"] is None
@@ -268,7 +268,7 @@ async def test_list_rooms_learning_paused_respects_learning_disabled(ws_hass, st
     await store.async_save_settings({"learning_disabled_rooms": ["kitchen"]})
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         "temperature_sensor": "sensor.kitchen_temp",
@@ -284,7 +284,7 @@ async def test_list_rooms_learning_paused_respects_learning_disabled(ws_hass, st
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind_eklabs/rooms/list"})
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
     assert rooms["kitchen"]["live"]["learning_paused_reason"] is None
@@ -297,7 +297,7 @@ async def test_list_rooms_learning_paused_none_for_managed_mode(ws_hass, store, 
     await store.async_load()
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         # no temperature_sensor → Managed Mode
@@ -313,7 +313,7 @@ async def test_list_rooms_learning_paused_none_for_managed_mode(ws_hass, store, 
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind_eklabs/rooms/list"})
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
     assert rooms["kitchen"]["live"]["learning_paused_reason"] is None
@@ -326,7 +326,7 @@ async def test_list_rooms_learning_paused_none_for_outdoor_area(ws_hass, store, 
     await store.async_load()
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "balcony",
         "thermostats": ["climate.balcony_trv"],
         "temperature_sensor": "sensor.balcony_temp",
@@ -343,7 +343,7 @@ async def test_list_rooms_learning_paused_none_for_outdoor_area(ws_hass, store, 
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 3, "type": "roommind_eklabs/rooms/list"})
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
     assert rooms["balcony"]["live"]["learning_paused_reason"] is None
@@ -362,7 +362,7 @@ async def test_list_rooms_outdoor_temp_uses_effective(ws_hass, store, connection
     mock_coordinator.outdoor_humidity = None
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    await _list_rooms(ws_hass, connection, {"id": 1, "type": "roommind/rooms/list"})
+    await _list_rooms(ws_hass, connection, {"id": 1, "type": "roommind_eklabs/rooms/list"})
 
     payload = connection.send_result.call_args[0][1]
     assert payload["outdoor_temp"] == 8.5
@@ -375,7 +375,7 @@ async def test_save_room_display_name_roundtrip(ws_hass, store, connection):
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bedroom",
         "thermostats": ["climate.bedroom_trv"],
         "display_name": "Schlafzimmer OG",
@@ -393,7 +393,7 @@ async def test_save_room_display_name_roundtrip(ws_hass, store, connection):
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     rooms = connection.send_result.call_args[0][1]["rooms"]
@@ -407,7 +407,7 @@ async def test_save_room_display_name_defaults_empty(ws_hass, store, connection)
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
     }
@@ -424,7 +424,7 @@ async def test_save_room_with_schedules(ws_hass, store, connection):
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bedroom",
         "thermostats": ["climate.bedroom_trv"],
         "temperature_sensor": "sensor.bedroom_temp",
@@ -451,7 +451,7 @@ async def test_delete_room(ws_hass, store, connection):
     # First create a room
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "garage",
         "thermostats": ["climate.garage_trv"],
         "temperature_sensor": "sensor.garage_temp",
@@ -462,7 +462,7 @@ async def test_delete_room(ws_hass, store, connection):
     # Now delete it
     delete_msg = {
         "id": 3,
-        "type": "roommind/rooms/delete",
+        "type": "roommind_eklabs/rooms/delete",
         "area_id": "garage",
     }
     await _delete_room(ws_hass, connection, delete_msg)
@@ -480,7 +480,7 @@ async def test_delete_nonexistent_room_sends_error(ws_hass, store, connection):
 
     delete_msg = {
         "id": 4,
-        "type": "roommind/rooms/delete",
+        "type": "roommind_eklabs/rooms/delete",
         "area_id": "nonexistent_area",
     }
     await _delete_room(ws_hass, connection, delete_msg)
@@ -498,7 +498,7 @@ async def test_save_room_minimal_only_area_id(ws_hass, store, connection):
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "hallway",
     }
     await _save_room(ws_hass, connection, msg)
@@ -529,7 +529,7 @@ async def test_save_room_notifies_coordinator(ws_hass, store, connection):
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "balcony",
         "thermostats": ["climate.balcony_trv"],
     }
@@ -548,7 +548,7 @@ async def test_delete_room_notifies_coordinator(ws_hass, store, connection):
     # First create the room
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "cellar",
     }
     await _save_room(ws_hass, connection, save_msg)
@@ -559,7 +559,7 @@ async def test_delete_room_notifies_coordinator(ws_hass, store, connection):
 
     delete_msg = {
         "id": 3,
-        "type": "roommind/rooms/delete",
+        "type": "roommind_eklabs/rooms/delete",
         "area_id": "cellar",
     }
     await _delete_room(ws_hass, connection, delete_msg)
@@ -575,7 +575,7 @@ async def test_override_set_boost(ws_hass, store, connection):
     # Create room first
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living",
         "thermostats": ["climate.living"],
         "temperature_sensor": "sensor.living_temp",
@@ -587,7 +587,7 @@ async def test_override_set_boost(ws_hass, store, connection):
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "living",
         "override_type": "boost",
         "duration": 2.0,
@@ -610,7 +610,7 @@ async def test_override_set_eco(ws_hass, store, connection):
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bed",
         "comfort_temp": 22.0,
         "eco_temp": 16.0,
@@ -620,7 +620,7 @@ async def test_override_set_eco(ws_hass, store, connection):
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "bed",
         "override_type": "eco",
         "duration": 4.0,
@@ -639,13 +639,13 @@ async def test_override_set_custom(ws_hass, store, connection):
     """Setting a custom override uses the provided temperature."""
     await store.async_load()
 
-    save_msg = {"id": 2, "type": "roommind/rooms/save", "area_id": "office"}
+    save_msg = {"id": 2, "type": "roommind_eklabs/rooms/save", "area_id": "office"}
     await _save_room(ws_hass, connection, save_msg)
     connection.send_result.reset_mock()
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "office",
         "override_type": "custom",
         "heat": 21.0,
@@ -666,14 +666,14 @@ async def test_override_set_custom_without_temp_errors(ws_hass, store, connectio
     """Custom override without temperature sends an error."""
     await store.async_load()
 
-    save_msg = {"id": 2, "type": "roommind/rooms/save", "area_id": "hall"}
+    save_msg = {"id": 2, "type": "roommind_eklabs/rooms/save", "area_id": "hall"}
     await _save_room(ws_hass, connection, save_msg)
     connection.send_result.reset_mock()
     connection.send_error.reset_mock()
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "hall",
         "override_type": "custom",
         "duration": 1.0,
@@ -689,13 +689,13 @@ async def test_override_clear(ws_hass, store, connection):
     """Clearing an override removes override fields."""
     await store.async_load()
 
-    save_msg = {"id": 2, "type": "roommind/rooms/save", "area_id": "bath"}
+    save_msg = {"id": 2, "type": "roommind_eklabs/rooms/save", "area_id": "bath"}
     await _save_room(ws_hass, connection, save_msg)
 
     # Set override
     set_msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "bath",
         "override_type": "boost",
         "duration": 2.0,
@@ -706,7 +706,7 @@ async def test_override_clear(ws_hass, store, connection):
     # Clear it
     clear_msg = {
         "id": 4,
-        "type": "roommind/override/clear",
+        "type": "roommind_eklabs/override/clear",
         "area_id": "bath",
     }
     await _override_clear(ws_hass, connection, clear_msg)
@@ -726,7 +726,7 @@ async def test_override_set_without_duration_permanent(ws_hass, store, connectio
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "perm",
         "comfort_temp": 22.0,
         "eco_temp": 17.0,
@@ -736,7 +736,7 @@ async def test_override_set_without_duration_permanent(ws_hass, store, connectio
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "perm",
         "override_type": "custom",
         "heat": 24.0,
@@ -758,7 +758,7 @@ async def test_override_set_nonexistent_room_errors(ws_hass, store, connection):
 
     msg = {
         "id": 2,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "nope",
         "override_type": "boost",
         "duration": 1.0,
@@ -774,14 +774,14 @@ async def test_override_set_rejects_cool_below_heat(ws_hass, store, connection):
     """Custom override with cool < heat sends an error."""
     await store.async_load()
 
-    save_msg = {"id": 2, "type": "roommind/rooms/save", "area_id": "study"}
+    save_msg = {"id": 2, "type": "roommind_eklabs/rooms/save", "area_id": "study"}
     await _save_room(ws_hass, connection, save_msg)
     connection.send_result.reset_mock()
     connection.send_error.reset_mock()
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "study",
         "override_type": "custom",
         "heat": 24.0,
@@ -803,7 +803,7 @@ async def test_override_set_boost_heat_only_no_cool(ws_hass, store, connection):
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "cellar",
         "climate_mode": "heat_only",
         "comfort_temp": 22.0,
@@ -813,7 +813,7 @@ async def test_override_set_boost_heat_only_no_cool(ws_hass, store, connection):
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "cellar",
         "override_type": "boost",
     }
@@ -832,7 +832,7 @@ async def test_override_set_custom_cool_only_forces_heat_none(ws_hass, store, co
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "server",
         "climate_mode": "cool_only",
     }
@@ -841,7 +841,7 @@ async def test_override_set_custom_cool_only_forces_heat_none(ws_hass, store, co
 
     msg = {
         "id": 3,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "server",
         "override_type": "custom",
         "heat": 20.0,
@@ -862,7 +862,7 @@ async def test_save_room_with_multiple_schedules_and_selector(ws_hass, store, co
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "wohnzimmer",
         "thermostats": ["climate.wz_trv"],
         "temperature_sensor": "sensor.wz_temp",
@@ -891,7 +891,7 @@ async def test_list_rooms_includes_active_schedule_index(ws_hass, store, connect
     # Create a room
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "buero",
         "thermostats": ["climate.buero_trv"],
         "temperature_sensor": "sensor.buero_temp",
@@ -913,7 +913,7 @@ async def test_list_rooms_includes_active_schedule_index(ws_hass, store, connect
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -939,7 +939,7 @@ async def test_list_rooms_includes_compressor_protection_status(ws_hass, store, 
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kinderzimmer",
         "thermostats": ["climate.kz_trv"],
         "temperature_sensor": "sensor.kz_temp",
@@ -960,7 +960,7 @@ async def test_list_rooms_includes_compressor_protection_status(ws_hass, store, 
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -982,7 +982,7 @@ async def test_list_rooms_includes_coil_dry_status(ws_hass, store, connection):
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kueche",
         "acs": ["climate.kueche_ac"],
         "temperature_sensor": "sensor.kueche_temp",
@@ -1005,7 +1005,7 @@ async def test_list_rooms_includes_coil_dry_status(ws_hass, store, connection):
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -1023,7 +1023,7 @@ async def test_list_rooms_coil_dry_defaults_without_coordinator_state(ws_hass, s
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bad",
         "acs": ["climate.bad_ac"],
         "temperature_sensor": "sensor.bad_temp",
@@ -1036,7 +1036,7 @@ async def test_list_rooms_coil_dry_defaults_without_coordinator_state(ws_hass, s
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     live = connection.send_result.call_args[0][1]["rooms"]["bad"]["live"]
@@ -1053,7 +1053,7 @@ async def test_list_rooms_includes_cover_override_until(ws_hass, store, connecti
 
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "schlafzimmer",
         "thermostats": ["climate.sz_trv"],
         "temperature_sensor": "sensor.sz_temp",
@@ -1075,7 +1075,7 @@ async def test_list_rooms_includes_cover_override_until(ws_hass, store, connecti
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -1092,7 +1092,7 @@ async def test_save_room_with_window_sensors(ws_hass, store, connection):
     # Save a room WITH window_sensors
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen_trv"],
         "temperature_sensor": "sensor.kitchen_temp",
@@ -1108,7 +1108,7 @@ async def test_save_room_with_window_sensors(ws_hass, store, connection):
     # Save a room WITHOUT window_sensors — should default to []
     msg2 = {
         "id": 3,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "hallway",
         "thermostats": ["climate.hallway_trv"],
     }
@@ -1127,7 +1127,7 @@ async def test_list_rooms_includes_window_open(ws_hass, store, connection):
     # Create a room
     save_msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "wohnzimmer",
         "thermostats": ["climate.wz_trv"],
         "temperature_sensor": "sensor.wz_temp",
@@ -1150,7 +1150,7 @@ async def test_list_rooms_includes_window_open(ws_hass, store, connection):
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    list_msg = {"id": 3, "type": "roommind/rooms/list"}
+    list_msg = {"id": 3, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, list_msg)
 
     connection.send_result.assert_called_once()
@@ -1167,7 +1167,7 @@ async def test_get_settings_empty(ws_hass, store, connection):
     """Getting settings on a fresh store returns empty dict."""
     await store.async_load()
 
-    msg = {"id": 10, "type": "roommind/settings/get"}
+    msg = {"id": 10, "type": "roommind_eklabs/settings/get"}
     await _get_settings(ws_hass, connection, msg)
 
     connection.send_result.assert_called_once_with(10, {"settings": {}})
@@ -1180,7 +1180,7 @@ async def test_save_settings(ws_hass, store, connection):
 
     msg = {
         "id": 11,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "outdoor_temp_sensor": "sensor.outdoor",
     }
     await _save_settings(ws_hass, connection, msg)
@@ -1203,7 +1203,7 @@ async def test_save_settings_vacation(ws_hass, store, connection):
     until = 1771900000.0
     msg = {
         "id": 12,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "vacation_temp": 15.0,
         "vacation_until": until,
     }
@@ -1222,7 +1222,7 @@ async def test_save_settings_vacation_clear(ws_hass, store, connection):
 
     msg = {
         "id": 13,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "vacation_until": None,
     }
     await _save_settings(ws_hass, connection, msg)
@@ -1258,7 +1258,7 @@ async def test_thermal_reset_room(ws_hass, store, connection):
 
     coordinator = _make_coordinator_with_model(ws_hass)
 
-    msg = {"id": 20, "type": "roommind/thermal/reset", "area_id": "room_a"}
+    msg = {"id": 20, "type": "roommind_eklabs/thermal/reset", "area_id": "room_a"}
     await _thermal_reset(ws_hass, connection, msg)
 
     connection.send_result.assert_called_once_with(20, {"success": True})
@@ -1280,7 +1280,7 @@ async def test_thermal_reset_all(ws_hass, store, connection):
 
     coordinator = _make_coordinator_with_model(ws_hass)
 
-    msg = {"id": 21, "type": "roommind/thermal/reset_all"}
+    msg = {"id": 21, "type": "roommind_eklabs/thermal/reset_all"}
     await _thermal_reset_all(ws_hass, connection, msg)
 
     connection.send_result.assert_called_once_with(21, {"success": True})
@@ -1300,7 +1300,7 @@ async def test_thermal_reset_nonexistent_room(ws_hass, store, connection):
 
     _make_coordinator_with_model(ws_hass)
 
-    msg = {"id": 22, "type": "roommind/thermal/reset", "area_id": "nonexistent"}
+    msg = {"id": 22, "type": "roommind_eklabs/thermal/reset", "area_id": "nonexistent"}
     await _thermal_reset(ws_hass, connection, msg)
 
     connection.send_result.assert_called_once_with(22, {"success": True})
@@ -1316,7 +1316,7 @@ async def test_save_settings_mold_fields(ws_hass, store, connection):
 
     msg = {
         "id": 30,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "mold_detection_enabled": True,
         "mold_humidity_threshold": 65.0,
         "mold_sustained_minutes": 15,
@@ -1353,7 +1353,7 @@ async def test_save_settings_mold_partial_update(ws_hass, store, connection):
     # First save all fields
     msg1 = {
         "id": 31,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "mold_detection_enabled": True,
         "mold_humidity_threshold": 75.0,
     }
@@ -1363,7 +1363,7 @@ async def test_save_settings_mold_partial_update(ws_hass, store, connection):
     # Now save only one field
     msg2 = {
         "id": 32,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "mold_prevention_enabled": True,
     }
     await _save_settings(ws_hass, connection, msg2)
@@ -1380,7 +1380,7 @@ async def test_save_settings_mold_partial_update(ws_hass, store, connection):
 @pytest.mark.asyncio
 async def test_compute_target_forecast_includes_mold_delta(ws_hass):
     """_compute_target_forecast should add mold_prevention_delta to all targets."""
-    from custom_components.roommind.websocket_api import _compute_target_forecast
+    from custom_components.roommind_eklabs.websocket_api import _compute_target_forecast
 
     room = {"comfort_temp": 21.0, "eco_temp": 17.0, "schedules": []}
     settings: dict = {}
@@ -1540,7 +1540,7 @@ def _make_analytics_coordinator(history_rows=None, estimator=None, rooms_live=No
     else:
         coordinator._history_store = None
 
-    from custom_components.roommind.control.thermal_model import RoomModelManager
+    from custom_components.roommind_eklabs.control.thermal_model import RoomModelManager
 
     mgr = RoomModelManager()
     if estimator:
@@ -1559,7 +1559,7 @@ async def test_analytics_no_history_store(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=None)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 50, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 50, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1588,7 +1588,7 @@ async def test_analytics_with_range_key(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=csv_rows)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 51, "type": "roommind/analytics/get", "area_id": "room_a", "range": "24h"}
+    msg = {"id": 51, "type": "roommind_eklabs/analytics/get", "area_id": "room_a", "range": "24h"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1621,7 +1621,7 @@ async def test_analytics_with_custom_timestamps(ws_hass, store, connection):
 
     msg = {
         "id": 52,
-        "type": "roommind/analytics/get",
+        "type": "roommind_eklabs/analytics/get",
         "area_id": "room_a",
         "start_ts": 1000.0,
         "end_ts": 2000.0,
@@ -1647,7 +1647,7 @@ async def test_analytics_no_estimator(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=[])
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 53, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 53, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1671,7 +1671,7 @@ async def test_analytics_with_estimator(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=[], estimator=est)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 54, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 54, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1700,7 +1700,7 @@ async def test_analytics_no_external_sensor_mpc_false(ws_hass, store, connection
     coordinator = _make_analytics_coordinator(history_rows=[], estimator=est)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 55, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 55, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1729,7 +1729,7 @@ async def test_analytics_prediction_disabled(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=csv_rows)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 56, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 56, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1747,7 +1747,7 @@ async def test_analytics_forecast_grid_alignment(ws_hass, store, connection):
     coordinator = _make_analytics_coordinator(history_rows=[])
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 57, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 57, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1776,7 +1776,7 @@ async def test_analytics_mold_delta_from_live(ws_hass, store, connection):
     )
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 58, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 58, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1800,7 +1800,7 @@ async def test_analytics_model_has_occupancy_sensors_true(ws_hass, store, connec
     coordinator = _make_analytics_coordinator(history_rows=[], estimator=est)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 60, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 60, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1818,7 +1818,7 @@ async def test_analytics_model_has_occupancy_sensors_false(ws_hass, store, conne
     coordinator = _make_analytics_coordinator(history_rows=[], estimator=est)
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
 
-    msg = {"id": 61, "type": "roommind/analytics/get", "area_id": "room_a"}
+    msg = {"id": 61, "type": "roommind_eklabs/analytics/get", "area_id": "room_a"}
     await _get_analytics(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]
@@ -1835,9 +1835,9 @@ def test_register_websocket_commands(hass):
     """async_register_websocket_commands registers all 13 commands."""
     from unittest.mock import patch
 
-    from custom_components.roommind.websocket_api import async_register_websocket_commands
+    from custom_components.roommind_eklabs.websocket_api import async_register_websocket_commands
 
-    with patch("custom_components.roommind.websocket_api.websocket_api.async_register_command") as mock_reg:
+    with patch("custom_components.roommind_eklabs.websocket_api.websocket_api.async_register_command") as mock_reg:
         async_register_websocket_commands(hass)
         assert mock_reg.call_count == 13
 
@@ -1853,7 +1853,7 @@ async def test_save_room_heating_system_type_accepted(ws_hass, store, connection
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "kitchen",
         "thermostats": ["climate.kitchen"],
         "heating_system_type": "underfloor",
@@ -1870,7 +1870,7 @@ async def test_save_room_heating_system_type_empty(ws_hass, store, connection):
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bedroom",
         "thermostats": ["climate.bedroom"],
         "heating_system_type": "",
@@ -1887,7 +1887,7 @@ async def test_save_room_heating_system_type_radiator(ws_hass, store, connection
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "hallway",
         "thermostats": ["climate.hallway"],
         "heating_system_type": "radiator",
@@ -1918,7 +1918,7 @@ async def test_save_room_heating_system_type_defaults_empty(ws_hass, store, conn
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "study",
         "thermostats": ["climate.study"],
     }
@@ -1942,7 +1942,7 @@ async def test_override_set_boost_cool_only_uses_comfort_cool(ws_hass, store, co
 
     msg = {
         "id": 1,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "room1",
         "override_type": "boost",
         "duration": 1.0,
@@ -1963,7 +1963,7 @@ async def test_override_set_eco_cool_only_uses_eco_cool(ws_hass, store, connecti
 
     msg = {
         "id": 1,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "room1",
         "override_type": "eco",
         "duration": 1.0,
@@ -1987,7 +1987,7 @@ async def test_override_set_triggers_coordinator_refresh(ws_hass, store, connect
 
     msg = {
         "id": 1,
-        "type": "roommind/override/set",
+        "type": "roommind_eklabs/override/set",
         "area_id": "kitchen",
         "override_type": "boost",
         "duration": 1.0,
@@ -2002,7 +2002,7 @@ async def test_override_clear_nonexistent_room_errors(ws_hass, store, connection
     """Clearing override on non-existent room sends an error."""
     await store.async_load()
 
-    msg = {"id": 1, "type": "roommind/override/clear", "area_id": "does_not_exist"}
+    msg = {"id": 1, "type": "roommind_eklabs/override/clear", "area_id": "does_not_exist"}
     await _override_clear(ws_hass, connection, msg)
 
     connection.send_error.assert_called_once()
@@ -2019,7 +2019,7 @@ async def test_override_clear_triggers_coordinator_refresh(ws_hass, store, conne
     mock_coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    msg = {"id": 1, "type": "roommind/override/clear", "area_id": "hall"}
+    msg = {"id": 1, "type": "roommind_eklabs/override/clear", "area_id": "hall"}
     await _override_clear(ws_hass, connection, msg)
 
     mock_coordinator.async_request_refresh.assert_called_once()
@@ -2033,13 +2033,13 @@ async def test_override_clear_triggers_coordinator_refresh(ws_hass, store, conne
 @pytest.mark.asyncio
 async def test_boost_learning_no_coordinator_errors(ws_hass, store, connection):
     """boost_learning without coordinator sends an error."""
-    from custom_components.roommind.websocket_api import websocket_boost_learning
+    from custom_components.roommind_eklabs.websocket_api import websocket_boost_learning
 
     _boost_learning = websocket_boost_learning.__wrapped__
 
     await store.async_load()
     # No coordinator in hass.data
-    msg = {"id": 1, "type": "roommind/model/boost_learning", "area_id": "living_room"}
+    msg = {"id": 1, "type": "roommind_eklabs/model/boost_learning", "area_id": "living_room"}
     await _boost_learning(ws_hass, connection, msg)
 
     connection.send_error.assert_called_once()
@@ -2049,7 +2049,7 @@ async def test_boost_learning_no_coordinator_errors(ws_hass, store, connection):
 @pytest.mark.asyncio
 async def test_boost_learning_success(ws_hass, store, connection):
     """boost_learning with coordinator boosts EKF and persists cooldown."""
-    from custom_components.roommind.websocket_api import websocket_boost_learning
+    from custom_components.roommind_eklabs.websocket_api import websocket_boost_learning
 
     _boost_learning = websocket_boost_learning.__wrapped__
 
@@ -2059,7 +2059,7 @@ async def test_boost_learning_success(ws_hass, store, connection):
     mock_coordinator.boost_learning = MagicMock(return_value=42)
     ws_hass.data[DOMAIN]["coordinator"] = mock_coordinator
 
-    msg = {"id": 1, "type": "roommind/model/boost_learning", "area_id": "living_room"}
+    msg = {"id": 1, "type": "roommind_eklabs/model/boost_learning", "area_id": "living_room"}
     await _boost_learning(ws_hass, connection, msg)
 
     mock_coordinator.boost_learning.assert_called_once_with("living_room")
@@ -2075,7 +2075,7 @@ async def test_save_room_with_cover_schedules(ws_hass, store, connection):
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "sunroom",
         "thermostats": ["climate.sunroom"],
         "cover_schedules": [{"entity_id": "schedule.cover_day"}],
@@ -2113,7 +2113,7 @@ async def test_save_room_with_is_outdoor(ws_hass, store, connection):
 
     msg = {
         "id": 10,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "terrasse",
         "is_outdoor": True,
     }
@@ -2136,7 +2136,7 @@ async def test_save_room_valve_protection_exclude_roundtrip(ws_hass, store, conn
 
     msg = {
         "id": 10,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "valve_protection_exclude": ["climate.boiler"],
     }
@@ -2157,7 +2157,7 @@ async def test_save_room_with_climate_control_enabled(ws_hass, store, connection
 
     msg = {
         "id": 10,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "bedroom",
         "climate_control_enabled": False,
     }
@@ -2194,18 +2194,18 @@ def test_save_room_cover_deploy_threshold_rejects_negative():
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("thermostats", ["climate.roommind_living_room_override"]),
-        ("acs", ["climate.roommind_living_room_override"]),
-        ("temperature_sensor", "sensor.roommind_living_room_target_temp"),
-        ("humidity_sensor", "sensor.roommind_living_room_mode"),
-        ("window_sensors", ["binary_sensor.roommind_test"]),
-        ("covers", ["cover.roommind_living_room_auto"]),
+        ("thermostats", ["climate.roommind_eklabs_living_room_override"]),
+        ("acs", ["climate.roommind_eklabs_living_room_override"]),
+        ("temperature_sensor", "sensor.roommind_eklabs_living_room_target_temp"),
+        ("humidity_sensor", "sensor.roommind_eklabs_living_room_mode"),
+        ("window_sensors", ["binary_sensor.roommind_eklabs_test"]),
+        ("covers", ["cover.roommind_eklabs_living_room_auto"]),
     ],
 )
 async def test_save_room_rejects_own_entities(ws_hass, store, connection, field, value):
     """Assigning RoomMind's own entities to a room is rejected."""
     await store.async_load()
-    msg = {"id": 2, "type": "roommind/rooms/save", "area_id": "living_room", field: value}
+    msg = {"id": 2, "type": "roommind_eklabs/rooms/save", "area_id": "living_room", field: value}
     await _save_room(ws_hass, connection, msg)
     connection.send_error.assert_called_once()
     assert connection.send_error.call_args[0][1] == "invalid_entity"
@@ -2217,7 +2217,7 @@ async def test_save_room_devices_duplicate_entity_rejected(ws_hass, store, conne
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
             {"entity_id": "climate.trv1", "type": "trv"},
@@ -2235,7 +2235,7 @@ async def test_save_room_allows_normal_entities(ws_hass, store, connection):
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "thermostats": ["climate.living_room_trv"],
         "temperature_sensor": "sensor.living_room_temp",
@@ -2256,7 +2256,7 @@ async def test_save_room_with_devices_accepted(ws_hass, store, connection):
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
             {"entity_id": "climate.trv1", "type": "trv", "role": "auto", "heating_system_type": "radiator"},
@@ -2297,7 +2297,7 @@ async def test_save_room_device_type_heat_pump_rejected(ws_hass, store, connecti
     save_room_schema = vol.Schema(
         {
             vol.Required("id"): int,
-            vol.Required("type"): "roommind/rooms/save",
+            vol.Required("type"): "roommind_eklabs/rooms/save",
             vol.Required("area_id"): str,
             vol.Optional("devices"): [device_schema],
         },
@@ -2306,7 +2306,7 @@ async def test_save_room_device_type_heat_pump_rejected(ws_hass, store, connecti
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
             {"entity_id": "climate.hp1", "type": "heat_pump", "role": "auto"},
@@ -2323,10 +2323,10 @@ async def test_save_room_devices_self_assignment_rejected(ws_hass, store, connec
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
-            {"entity_id": "climate.roommind_living_room_trv", "type": "trv"},
+            {"entity_id": "climate.roommind_eklabs_living_room_trv", "type": "trv"},
         ],
     }
     await _save_room(ws_hass, connection, msg)
@@ -2340,7 +2340,7 @@ async def test_save_room_accepts_idle_action_low_for_trv(ws_hass, store, connect
     await store.async_load()
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
             {"entity_id": "climate.trv1", "type": "trv", "role": "auto", "idle_action": "low"},
@@ -2361,7 +2361,7 @@ async def test_save_room_rejects_ac_with_low_idle_action(ws_hass, store, connect
     """
     import voluptuous as vol
 
-    from custom_components.roommind.websocket_api import _validate_device_idle_action
+    from custom_components.roommind_eklabs.websocket_api import _validate_device_idle_action
 
     device_schema = vol.All(
         vol.Schema(
@@ -2377,7 +2377,7 @@ async def test_save_room_rejects_ac_with_low_idle_action(ws_hass, store, connect
     save_room_schema = vol.Schema(
         {
             vol.Required("id"): int,
-            vol.Required("type"): "roommind/rooms/save",
+            vol.Required("type"): "roommind_eklabs/rooms/save",
             vol.Required("area_id"): str,
             vol.Optional("devices"): [device_schema],
         },
@@ -2386,7 +2386,7 @@ async def test_save_room_rejects_ac_with_low_idle_action(ws_hass, store, connect
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [
             {"entity_id": "climate.ac1", "type": "ac", "role": "auto", "idle_action": "low"},
@@ -2402,7 +2402,7 @@ async def test_validate_device_idle_action_unit():
     """Direct unit test of the real validator — catches regressions if the function changes."""
     import voluptuous as vol
 
-    from custom_components.roommind.websocket_api import _validate_device_idle_action
+    from custom_components.roommind_eklabs.websocket_api import _validate_device_idle_action
 
     # TRV + low is allowed
     assert _validate_device_idle_action({"type": "trv", "idle_action": "low"}) == {
@@ -2434,7 +2434,7 @@ async def test_save_room_rejects_unknown_idle_action(ws_hass, store, connection)
     save_room_schema = vol.Schema(
         {
             vol.Required("id"): int,
-            vol.Required("type"): "roommind/rooms/save",
+            vol.Required("type"): "roommind_eklabs/rooms/save",
             vol.Required("area_id"): str,
             vol.Optional("devices"): [device_schema],
         },
@@ -2443,7 +2443,7 @@ async def test_save_room_rejects_unknown_idle_action(ws_hass, store, connection)
 
     msg = {
         "id": 2,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "living_room",
         "devices": [{"entity_id": "climate.trv1", "type": "trv", "idle_action": "sleep"}],
     }
@@ -2464,7 +2464,7 @@ async def test_save_settings_compressor_groups_valid(ws_hass, store, connection)
 
     msg = {
         "id": 20,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "outdoor1",
@@ -2494,7 +2494,7 @@ async def test_save_settings_shared_heat_source_valid(ws_hass, store, connection
 
     msg = {
         "id": 201,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "shared_heat_sources": [
             {
                 "id": "gas",
@@ -2523,7 +2523,7 @@ async def test_save_settings_shared_heat_source_rejects_unknown_room(ws_hass, st
 
     msg = {
         "id": 202,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "shared_heat_sources": [
             {
                 "id": "gas",
@@ -2548,7 +2548,7 @@ async def test_save_settings_shared_heat_source_rejects_invalid_entity(ws_hass, 
 
     msg = {
         "id": 203,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "shared_heat_sources": [
             {
                 "id": "gas",
@@ -2572,7 +2572,7 @@ async def test_save_settings_compressor_groups_duplicate_member(ws_hass, store, 
 
     msg = {
         "id": 21,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "group1",
@@ -2603,7 +2603,7 @@ async def test_save_settings_compressor_groups_invalid_member(ws_hass, store, co
 
     msg = {
         "id": 22,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "group1",
@@ -2632,7 +2632,7 @@ async def test_save_settings_compressor_master_entity_valid(ws_hass, store, conn
 
     msg = {
         "id": 30,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2661,7 +2661,7 @@ async def test_save_settings_compressor_master_non_climate(ws_hass, store, conne
 
     msg = {
         "id": 31,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2684,7 +2684,7 @@ async def test_save_settings_compressor_master_in_own_members(ws_hass, store, co
 
     msg = {
         "id": 32,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2707,7 +2707,7 @@ async def test_save_settings_compressor_master_in_other_members(ws_hass, store, 
 
     msg = {
         "id": 33,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2735,7 +2735,7 @@ async def test_save_settings_compressor_duplicate_masters(ws_hass, store, connec
 
     msg = {
         "id": 34,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2764,7 +2764,7 @@ async def test_save_settings_compressor_invalid_action_script(ws_hass, store, co
 
     msg = {
         "id": 35,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2787,7 +2787,7 @@ async def test_save_settings_compressor_valid_action_script(ws_hass, store, conn
 
     msg = {
         "id": 36,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2812,7 +2812,7 @@ async def test_save_settings_compressor_backward_compat(ws_hass, store, connecti
 
     msg = {
         "id": 37,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "compressor_groups": [
             {
                 "id": "g1",
@@ -2844,7 +2844,7 @@ async def test_save_room_with_legacy_only_syncs_devices(ws_hass, store, connecti
 
     msg = {
         "id": 30,
-        "type": "roommind/rooms/save",
+        "type": "roommind_eklabs/rooms/save",
         "area_id": "legacy_room",
         "thermostats": ["climate.trv1"],
         "acs": ["climate.ac1"],
@@ -2873,7 +2873,7 @@ async def test_save_room_with_legacy_only_syncs_devices(ws_hass, store, connecti
 
 @pytest.mark.asyncio
 async def test_get_diagnostics_returns_full_structure(ws_hass, store, connection):
-    """roommind/diagnostics/get returns full integration diagnostics."""
+    """roommind_eklabs/diagnostics/get returns full integration diagnostics."""
     await store.async_load()
 
     # Mock config_entries.async_entries to return a fake config entry
@@ -2912,7 +2912,7 @@ async def test_get_diagnostics_returns_full_structure(ws_hass, store, connection
     ws_hass.config.units = MagicMock()
     ws_hass.config.units.temperature_unit = "°C"
 
-    await _get_diagnostics(ws_hass, connection, {"id": 1, "type": "roommind/diagnostics/get"})
+    await _get_diagnostics(ws_hass, connection, {"id": 1, "type": "roommind_eklabs/diagnostics/get"})
 
     connection.send_result.assert_called_once()
     result = connection.send_result.call_args[0][1]
@@ -2921,16 +2921,16 @@ async def test_get_diagnostics_returns_full_structure(ws_hass, store, connection
     assert "rooms" in result
     assert "outdoor" in result
     assert "presence" in result
-    assert result["integration"]["domain"] == "roommind"
+    assert result["integration"]["domain"] == "roommind_eklabs"
 
 
 @pytest.mark.asyncio
 async def test_get_diagnostics_no_config_entry(ws_hass, store, connection):
-    """roommind/diagnostics/get returns error when no config entry exists."""
+    """roommind_eklabs/diagnostics/get returns error when no config entry exists."""
     ws_hass.config_entries = MagicMock()
     ws_hass.config_entries.async_entries = MagicMock(return_value=[])
 
-    await _get_diagnostics(ws_hass, connection, {"id": 1, "type": "roommind/diagnostics/get"})
+    await _get_diagnostics(ws_hass, connection, {"id": 1, "type": "roommind_eklabs/diagnostics/get"})
 
     connection.send_error.assert_called_once()
     assert connection.send_error.call_args[0][1] == "not_found"
@@ -2939,7 +2939,7 @@ async def test_get_diagnostics_no_config_entry(ws_hass, store, connection):
 @pytest.mark.asyncio
 async def test_covers_clear_override_unknown_room(ws_hass, store, connection):
     await store.async_load()
-    msg = {"id": 7, "type": "roommind/covers/clear_override", "area_id": "nope"}
+    msg = {"id": 7, "type": "roommind_eklabs/covers/clear_override", "area_id": "nope"}
     await _covers_clear_override(ws_hass, connection, msg)
     connection.send_error.assert_called_once()
     assert connection.send_error.call_args[0][1] == "not_found"
@@ -2953,7 +2953,7 @@ async def test_covers_clear_override_success(ws_hass, store, connection):
     coordinator.clear_cover_override = MagicMock()
     coordinator.async_request_refresh = AsyncMock()
     ws_hass.data[DOMAIN]["coordinator"] = coordinator
-    msg = {"id": 8, "type": "roommind/covers/clear_override", "area_id": "lr"}
+    msg = {"id": 8, "type": "roommind_eklabs/covers/clear_override", "area_id": "lr"}
     await _covers_clear_override(ws_hass, connection, msg)
     coordinator.clear_cover_override.assert_called_once_with("lr")
     coordinator.async_request_refresh.assert_awaited_once()
@@ -2971,7 +2971,7 @@ async def test_coil_dry_device_schema_defaults():
     schema = websocket_save_room._ws_schema  # set by the websocket_command decorator
     result = schema(
         {
-            "type": "roommind/rooms/save",
+            "type": "roommind_eklabs/rooms/save",
             "id": 1,
             "area_id": "living_room",
             "devices": [{"entity_id": "climate.ac", "type": "ac"}],
@@ -2993,7 +2993,7 @@ async def test_coil_dry_rejects_on_for_trv():
     with pytest.raises(vol.Invalid):
         schema(
             {
-                "type": "roommind/rooms/save",
+                "type": "roommind_eklabs/rooms/save",
                 "id": 1,
                 "area_id": "living_room",
                 "devices": [{"entity_id": "climate.trv", "type": "trv", "coil_dry": "on"}],
@@ -3007,7 +3007,7 @@ async def test_coil_dry_allows_off_for_trv():
     schema = websocket_save_room._ws_schema
     result = schema(
         {
-            "type": "roommind/rooms/save",
+            "type": "roommind_eklabs/rooms/save",
             "id": 1,
             "area_id": "living_room",
             "devices": [{"entity_id": "climate.trv", "type": "trv", "coil_dry": "off"}],
@@ -3021,7 +3021,7 @@ async def test_validate_device_coil_dry_unit():
     """Direct unit test of the real validator — catches regressions if the function changes."""
     import voluptuous as vol
 
-    from custom_components.roommind.websocket_api import _validate_device_coil_dry
+    from custom_components.roommind_eklabs.websocket_api import _validate_device_coil_dry
 
     # TRV + off is allowed
     assert _validate_device_coil_dry({"type": "trv", "coil_dry": "off"}) == {
@@ -3044,15 +3044,15 @@ async def test_coil_dry_settings_schema_ranges():
     import voluptuous as vol
 
     schema = websocket_save_settings._ws_schema
-    schema({"type": "roommind/settings/save", "id": 1, "coil_dry_minutes": 60})
+    schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_minutes": 60})
     with pytest.raises(vol.Invalid):
-        schema({"type": "roommind/settings/save", "id": 1, "coil_dry_minutes": 61})
+        schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_minutes": 61})
     with pytest.raises(vol.Invalid):
-        schema({"type": "roommind/settings/save", "id": 1, "coil_dry_drain_minutes": 16})
+        schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_drain_minutes": 16})
     with pytest.raises(vol.Invalid):
-        schema({"type": "roommind/settings/save", "id": 1, "coil_dry_mode": "heat"})
+        schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_mode": "heat"})
     # 0 is valid for drain (= phase disabled)
-    schema({"type": "roommind/settings/save", "id": 1, "coil_dry_drain_minutes": 0})
+    schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_drain_minutes": 0})
 
 
 @pytest.mark.asyncio
@@ -3062,7 +3062,7 @@ async def test_coil_dry_state_not_writable_via_ws():
 
     schema = websocket_save_settings._ws_schema
     with pytest.raises(vol.Invalid):
-        schema({"type": "roommind/settings/save", "id": 1, "coil_dry_state": {}})
+        schema({"type": "roommind_eklabs/settings/save", "id": 1, "coil_dry_state": {}})
 
 
 @pytest.mark.asyncio
@@ -3076,7 +3076,7 @@ async def test_save_settings_persists_coil_dry_keys(ws_hass, store, connection):
     await store.async_load()
     msg = {
         "id": 5,
-        "type": "roommind/settings/save",
+        "type": "roommind_eklabs/settings/save",
         "coil_dry_enabled": True,
         "coil_dry_minutes": 30,
         "coil_dry_mode": "dry",
@@ -3101,7 +3101,7 @@ async def test_list_rooms_defaults_coil_dry_settings(ws_hass, store, connection)
     """rooms/list surfaces the six global coil dry settings with their documented defaults."""
     await store.async_load()
 
-    msg = {"id": 1, "type": "roommind/rooms/list"}
+    msg = {"id": 1, "type": "roommind_eklabs/rooms/list"}
     await _list_rooms(ws_hass, connection, msg)
 
     result = connection.send_result.call_args[0][1]

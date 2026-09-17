@@ -177,7 +177,7 @@ export class RsSettingsLearning extends RsSettingsBase {
     try {
       fireSaveStatus(this, "saving");
       const result = await this.hass.callWS<{ n_observations: number }>({
-        type: "roommind/model/boost_learning",
+        type: "roommind_eklabs/model/boost_learning",
         area_id: areaId,
       });
       fireSaveStatus(this, "saved");

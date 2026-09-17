@@ -1,5 +1,5 @@
 {
-  "domain": "roommind",
+  "domain": "roommind_eklabs",
   "name": "RoomMind - EKLabs Fork",
   "codeowners": ["@IsaacKirkwood"],
   "config_flow": true,
@@ -9,5 +9,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/IsaacKirkwood/roommind/issues",
   "requirements": [],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

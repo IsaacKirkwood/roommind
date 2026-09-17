@@ -223,7 +223,7 @@ def _validate_no_duplicate_devices(config: dict) -> str | None:
 # ---------------------------------------------------------------------------
 
 
-@websocket_api.websocket_command({vol.Required("type"): "roommind/rooms/list"})
+@websocket_api.websocket_command({vol.Required("type"): "roommind_eklabs/rooms/list"})
 @websocket_api.async_response
 async def websocket_list_rooms(
     hass: HomeAssistant,
@@ -353,7 +353,7 @@ async def websocket_list_rooms(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/rooms/save",
+        vol.Required("type"): "roommind_eklabs/rooms/save",
         vol.Required("area_id"): str,
         vol.Optional("thermostats"): [str],
         vol.Optional("acs"): [str],
@@ -476,7 +476,7 @@ async def websocket_save_room(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/rooms/delete",
+        vol.Required("type"): "roommind_eklabs/rooms/delete",
         vol.Required("area_id"): str,
     }
 )
@@ -511,7 +511,7 @@ async def websocket_delete_room(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/override/set",
+        vol.Required("type"): "roommind_eklabs/override/set",
         vol.Required("area_id"): str,
         vol.Required("override_type"): vol.In(OVERRIDE_TYPES),
         vol.Optional("heat"): vol.Coerce(float),
@@ -586,7 +586,7 @@ async def websocket_override_set(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/override/clear",
+        vol.Required("type"): "roommind_eklabs/override/clear",
         vol.Required("area_id"): str,
     }
 )
@@ -627,7 +627,7 @@ async def websocket_override_clear(
 # ---------------------------------------------------------------------------
 
 
-@websocket_api.websocket_command({vol.Required("type"): "roommind/settings/get"})
+@websocket_api.websocket_command({vol.Required("type"): "roommind_eklabs/settings/get"})
 @websocket_api.async_response
 async def websocket_get_settings(
     hass: HomeAssistant,
@@ -646,7 +646,7 @@ async def websocket_get_settings(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/settings/save",
+        vol.Required("type"): "roommind_eklabs/settings/save",
         vol.Optional("outdoor_temp_sensor"): str,
         vol.Optional("outdoor_humidity_sensor"): str,
         vol.Optional("outdoor_cooling_min"): vol.Coerce(float),
@@ -905,7 +905,7 @@ async def websocket_save_settings(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/analytics/get",
+        vol.Required("type"): "roommind_eklabs/analytics/get",
         vol.Required("area_id"): str,
         vol.Optional("range"): vol.In(["12h", "24h", "2d", "7d", "14d", "30d", "90d"]),
         vol.Optional("start_ts"): vol.Coerce(float),
@@ -940,7 +940,7 @@ async def websocket_get_analytics(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/thermal/reset",
+        vol.Required("type"): "roommind_eklabs/thermal/reset",
         vol.Required("area_id"): str,
     }
 )
@@ -974,7 +974,7 @@ async def websocket_thermal_reset(
 # ---------------------------------------------------------------------------
 
 
-@websocket_api.websocket_command({vol.Required("type"): "roommind/thermal/reset_all"})
+@websocket_api.websocket_command({vol.Required("type"): "roommind_eklabs/thermal/reset_all"})
 @websocket_api.async_response
 async def websocket_thermal_reset_all(
     hass: HomeAssistant,
@@ -1003,7 +1003,7 @@ async def websocket_thermal_reset_all(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/model/boost_learning",
+        vol.Required("type"): "roommind_eklabs/model/boost_learning",
         vol.Required("area_id"): str,
     }
 )
@@ -1038,7 +1038,7 @@ async def websocket_boost_learning(
 # ---------------------------------------------------------------------------
 
 
-@websocket_api.websocket_command({vol.Required("type"): "roommind/diagnostics/get"})
+@websocket_api.websocket_command({vol.Required("type"): "roommind_eklabs/diagnostics/get"})
 @websocket_api.async_response
 async def websocket_get_diagnostics(
     hass: HomeAssistant,
@@ -1063,7 +1063,7 @@ async def websocket_get_diagnostics(
 
 @websocket_api.websocket_command(
     {
-        vol.Required("type"): "roommind/covers/clear_override",
+        vol.Required("type"): "roommind_eklabs/covers/clear_override",
         vol.Required("area_id"): str,
     }
 )

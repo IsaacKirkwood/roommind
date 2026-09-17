@@ -7,13 +7,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from custom_components.roommind.const import DOMAIN
-from custom_components.roommind.diagnostics import (
+from custom_components.roommind_eklabs.const import DOMAIN
+from custom_components.roommind_eklabs.diagnostics import (
     _build_device_states,
     _build_model_info,
     async_get_config_entry_diagnostics,
 )
-from custom_components.roommind.managers.ac_coil_dry_manager import AcCoilDryManager
+from custom_components.roommind_eklabs.managers.ac_coil_dry_manager import AcCoilDryManager
 
 
 def _make_estimator():
@@ -309,7 +309,7 @@ def test_build_device_states_with_ha_state(hass):
     ]
 
     with patch(
-        "custom_components.roommind.diagnostics._last_commands",
+        "custom_components.roommind_eklabs.diagnostics._last_commands",
         {"climate.ac1": {"service": "set_hvac_mode", "hvac_mode": "heat"}},
     ):
         result = _build_device_states(hass, devices)
@@ -332,7 +332,7 @@ def test_build_device_states_entity_not_found(hass):
     hass.states.get = MagicMock(return_value=None)
     devices = [{"entity_id": "climate.gone", "type": "trv", "role": "auto"}]
 
-    with patch("custom_components.roommind.diagnostics._last_commands", {}):
+    with patch("custom_components.roommind_eklabs.diagnostics._last_commands", {}):
         result = _build_device_states(hass, devices)
 
     assert result[0]["ha_state"] == "not_found"

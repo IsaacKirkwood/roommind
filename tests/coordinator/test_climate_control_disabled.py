@@ -25,7 +25,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(temp="18.0", humidity="55.0"),
@@ -47,7 +47,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(temp="18.0", humidity="55.0"),
@@ -68,7 +68,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -109,7 +109,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         # Device in heat mode, current_temp (18) < setpoint (30) -> inferred heating
         hass.states.get = MagicMock(
@@ -144,7 +144,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         # Thermostat in heat mode, no hvac_action -> inferred heating for display
         hass.states.get = MagicMock(
@@ -180,7 +180,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -224,7 +224,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -266,7 +266,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -303,7 +303,7 @@ class TestClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -329,7 +329,7 @@ class TestClimateControlDisabled:
     async def test_observe_device_action_unit(self, hass, mock_config_entry):
         """Unit test for _observe_device_action with various device states."""
         store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.services.async_call = AsyncMock()
 
         coordinator = _create_coordinator(hass, mock_config_entry)
@@ -407,7 +407,7 @@ class TestCoverageGaps:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         device_state = MagicMock()
         device_state.state = "heat"
@@ -445,7 +445,7 @@ class TestCoverageGaps:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         device_state = MagicMock()
         device_state.state = "heat"
@@ -667,7 +667,7 @@ class TestCoverageGaps:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         # heat_cool AC, room 26 above high setpoint, NO hvac_action attribute
         hass.states.get = MagicMock(
@@ -742,7 +742,7 @@ class TestCoverageGaps:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         # Device in heat mode, at setpoint, no hvac_action -> inferred idle
         device_state = MagicMock()
@@ -780,7 +780,7 @@ class TestPerRoomClimateControlDisabled:
         room = {**SAMPLE_ROOM, "climate_control_enabled": False}
         store = _make_store_mock({"living_room_abc12345": room})
         store.get_settings.return_value = {"climate_control_active": True, "outdoor_temp_sensor": "sensor.outdoor_temp"}
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=make_mock_states_get(temp="18.0", humidity="55.0"))
         hass.services.async_call = AsyncMock()
 
@@ -795,7 +795,7 @@ class TestPerRoomClimateControlDisabled:
         room = {**SAMPLE_ROOM, "climate_control_enabled": False}
         store = _make_store_mock({"living_room_abc12345": room})
         store.get_settings.return_value = {"climate_control_active": True, "outdoor_temp_sensor": "sensor.outdoor_temp"}
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=make_mock_states_get(temp="18.0", humidity="55.0"))
         hass.services.async_call = AsyncMock()
 
@@ -823,7 +823,7 @@ class TestPerRoomClimateControlDisabled:
             }
         )
         store.get_settings.return_value = {"climate_control_active": True, "outdoor_temp_sensor": "sensor.outdoor_temp"}
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
                 temp="18.0",
@@ -855,7 +855,7 @@ class TestPerRoomClimateControlDisabled:
             "climate_control_active": False,
             "outdoor_temp_sensor": "sensor.outdoor_temp",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=make_mock_states_get(temp="18.0", humidity="55.0"))
         hass.services.async_call = AsyncMock()
 
@@ -870,7 +870,7 @@ class TestPerRoomClimateControlDisabled:
     async def test_per_room_disabled_default_true(self, hass, mock_config_entry):
         store = _make_store_mock({"living_room_abc12345": SAMPLE_ROOM})
         store.get_settings.return_value = {"climate_control_active": True, "outdoor_temp_sensor": "sensor.outdoor_temp"}
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=make_mock_states_get(temp="18.0", humidity="55.0"))
         hass.services.async_call = AsyncMock()
 

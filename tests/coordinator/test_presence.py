@@ -27,7 +27,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -46,7 +46,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get("person.kevin"))
         hass.services.async_call = AsyncMock()
 
@@ -72,7 +72,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -98,7 +98,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_clears_override": True,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -128,7 +128,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_clears_override": True,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -150,7 +150,7 @@ class TestPresenceDetection:
             "vacation_temp": 15.0,
             "vacation_until": time.time() + 86400,
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -168,7 +168,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         hass.states.get = MagicMock(
             side_effect=make_mock_states_get(
@@ -192,13 +192,13 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.nonexistent"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.is_running = True
         # The entity is gone for good: not in the state machine, not registered.
         registry = MagicMock()
         registry.async_get = MagicMock(return_value=None)
         monkeypatch.setattr(
-            "custom_components.roommind.utils.presence_utils.er.async_get",
+            "custom_components.roommind_eklabs.utils.presence_utils.er.async_get",
             lambda _hass: registry,
         )
 
@@ -224,7 +224,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         # kevin is home, anna is away
         hass.states.get = MagicMock(side_effect=_presence_states_get("person.kevin"))
         hass.services.async_call = AsyncMock()
@@ -248,7 +248,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         # anna is home, kevin is away
         hass.states.get = MagicMock(side_effect=_presence_states_get("person.anna"))
         hass.services.async_call = AsyncMock()
@@ -272,7 +272,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         # only anna is home
         hass.states.get = MagicMock(side_effect=_presence_states_get("person.anna"))
         hass.services.async_call = AsyncMock()
@@ -292,7 +292,7 @@ class TestPresenceDetection:
             "presence_enabled": False,
             "presence_persons": ["person.kevin"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -312,7 +312,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin", "person.anna"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -333,7 +333,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_away_action": "off",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -354,7 +354,7 @@ class TestPresenceDetection:
             "presence_enabled": True,
             "presence_persons": ["person.kevin"],
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -374,7 +374,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_away_action": "off",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -396,7 +396,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_away_action": "eco",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 
@@ -433,7 +433,7 @@ class TestPresenceDetection:
                 "presence_away_action": "off",
             },
         )
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
 
         ac_state = MagicMock()
         ac_state.state = "cool"
@@ -479,7 +479,7 @@ class TestPresenceDetection:
             "presence_persons": ["person.kevin"],
             "presence_away_action": "off",
         }
-        hass.data = {"roommind": {"store": store}}
+        hass.data = {"roommind_eklabs": {"store": store}}
         hass.states.get = MagicMock(side_effect=_presence_states_get())
         hass.services.async_call = AsyncMock()
 

@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from custom_components.roommind.utils.presence_utils import is_presence_away
+from custom_components.roommind_eklabs.utils.presence_utils import is_presence_away
 
 
 def _make_hass(**kwargs) -> MagicMock:
@@ -47,7 +47,7 @@ def _patch_registry(monkeypatch, known) -> None:
     registry = MagicMock()
     registry.async_get = MagicMock(side_effect=known.get)
     monkeypatch.setattr(
-        "custom_components.roommind.utils.presence_utils.er.async_get",
+        "custom_components.roommind_eklabs.utils.presence_utils.er.async_get",
         lambda _hass: registry,
     )
 

@@ -148,7 +148,7 @@ export class RsAnalytics extends LitElement {
 
   private _buildWsParams(): Record<string, unknown> {
     return {
-      type: "roommind/analytics/get",
+      type: "roommind_eklabs/analytics/get",
       area_id: this._selectedRoom,
       start_ts: this._rangeStart / 1000,
       end_ts: this._rangeEnd / 1000,

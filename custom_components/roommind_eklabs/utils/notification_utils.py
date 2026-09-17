@@ -17,7 +17,7 @@ from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
 
-NOTIF_PREFIX = "roommind_mold_"
+NOTIF_PREFIX = "roommind_eklabs_mold_"
 
 
 class NotificationThrottler:
