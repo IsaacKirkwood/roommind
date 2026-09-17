@@ -5997,6 +5997,16 @@
         justify-content: flex-end;
         margin-top: 12px;
       }
+      .entity-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        min-height: 40px;
+        gap: 8px;
+      }
+      .temperature-row {
+        grid-template-columns: minmax(0, 1fr) 120px auto;
+      }
       ha-textfield,
       ha-entity-picker {
         width: 100%;
@@ -6028,6 +6038,22 @@
           ></ha-entity-picker>
           <div class="hint">Choose the Shelly switch or its climate wrapper.</div>
         </div>
+        <ha-formfield label="Whole-house thermostat enabled">
+          <ha-checkbox
+            .checked=${e.thermostat_enabled??!0}
+            @change=${e=>this._set(t,`thermostat_enabled`,e.target.checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-textfield
+          type="number"
+          min="5"
+          max="30"
+          step="0.5"
+          label="Whole-house target"
+          suffix="°C"
+          .value=${String(e.target_temperature??18)}
+          @change=${e=>this._number(t,`target_temperature`,e)}
+        ></ha-textfield>
         <ha-textfield
           type="number"
           min="1"
@@ -6082,6 +6108,37 @@
             </ha-formfield>`)}
       </div>
       <div class="grid">
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${``}
+            .includeDomains=${[`sensor`]}
+            label="Add temperature sensor"
+            @value-changed=${e=>this._addTemperatureSensor(t,e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderTemperatureSensors(e,t)}
+        </div>
+        <div>
+          <div class="hint">Temperature inputs are averaged. Add a correction for sensors that read high or low.</div>
+        </div>
+      </div>
+      <div class="grid">
+        <ha-formfield label="Require someone to be home">
+          <ha-checkbox
+            .checked=${e.require_home_presence??!1}
+            @change=${e=>this._set(t,`require_home_presence`,e.target.checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${``}
+            .includeDomains=${[`person`]}
+            label="Add household member"
+            @value-changed=${e=>this._addEntity(t,`home_presence_entities`,e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(t,`home_presence_entities`,e.home_presence_entities??[])}
+        </div>
         <ha-formfield label="Only use gas when downstairs is occupied">
           <ha-checkbox
             .checked=${e.require_occupancy??!1}
@@ -6127,14 +6184,31 @@
           >Remove</ha-button
         >
       </div>
-    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_addEntity(e,t,n){if(!n)return;let r=[...new Set([...this.sharedHeatSources[e][t]??[],n])];this._set(e,t,r)}_renderEntities(e,t,n){return n.map(r=>h`<div>
+    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_addEntity(e,t,n){if(!n)return;let r=[...new Set([...this.sharedHeatSources[e][t]??[],n])];this._set(e,t,r)}_renderEntities(e,t,n){return n.map(r=>h`<div class="entity-row">
         ${this.hass.states[r]?.attributes?.friendly_name??r}
         <ha-icon-button
           label="Remove"
           .path=${`M19,13H5V11H19V13Z`}
           @click=${()=>this._set(e,t,n.filter(e=>e!==r))}
         ></ha-icon-button>
-      </div>`)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10,require_occupancy:!1,occupancy_entities:[],media_player_entities:[],occupancy_hold_minutes:20,target_temperature:18,thermostat_enabled:!0,temperature_sensors:[],temperature_offsets:{}}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rme-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
+      </div>`)}_addTemperatureSensor(e,t){if(!t)return;let n=this.sharedHeatSources[e],r=[...new Set([...n.temperature_sensors??[],t])],i=[...this.sharedHeatSources];i[e]={...n,temperature_sensors:r,temperature_offsets:{...n.temperature_offsets??{},[t]:n.temperature_offsets?.[t]??0}},this._fire(i)}_setTemperatureOffset(e,t,n){let r=Number(n.target.value);if(!Number.isFinite(r))return;let i=this.sharedHeatSources[e];this._set(e,`temperature_offsets`,{...i.temperature_offsets??{},[t]:r})}_removeTemperatureSensor(e,t){let n=this.sharedHeatSources[e],r={...n.temperature_offsets??{}};delete r[t];let i=[...this.sharedHeatSources];i[e]={...n,temperature_sensors:(n.temperature_sensors??[]).filter(e=>e!==t),temperature_offsets:r},this._fire(i)}_renderTemperatureSensors(e,t){return(e.temperature_sensors??[]).map(n=>h`<div class="entity-row temperature-row">
+        <span>${this.hass.states[n]?.attributes?.friendly_name??n}</span>
+        <ha-textfield
+          type="number"
+          min="-20"
+          max="20"
+          step="0.1"
+          label="Correction"
+          suffix="°C"
+          .value=${String(e.temperature_offsets?.[n]??0)}
+          @change=${e=>this._setTemperatureOffset(t,n,e)}
+        ></ha-textfield>
+        <ha-icon-button
+          label="Remove"
+          .path=${`M19,13H5V11H19V13Z`}
+          @click=${()=>this._removeTemperatureSensor(t,n)}
+        ></ha-icon-button>
+      </div>`)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10,require_occupancy:!1,occupancy_entities:[],media_player_entities:[],occupancy_hold_minutes:20,target_temperature:18,thermostat_enabled:!0,temperature_sensors:[],temperature_offsets:{},require_home_presence:!1,home_presence_entities:[]}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rme-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
       <div class="threshold-field">
         <ha-textfield
           .value=${String(t)}

@@ -39,6 +39,16 @@ export class RsSettingsSharedHeat extends LitElement {
         justify-content: flex-end;
         margin-top: 12px;
       }
+      .entity-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        min-height: 40px;
+        gap: 8px;
+      }
+      .temperature-row {
+        grid-template-columns: minmax(0, 1fr) 120px auto;
+      }
       ha-textfield,
       ha-entity-picker {
         width: 100%;
@@ -78,6 +88,23 @@ export class RsSettingsSharedHeat extends LitElement {
           ></ha-entity-picker>
           <div class="hint">Choose the Shelly switch or its climate wrapper.</div>
         </div>
+        <ha-formfield label="Whole-house thermostat enabled">
+          <ha-checkbox
+            .checked=${source.thermostat_enabled ?? true}
+            @change=${(e: Event) =>
+              this._set(index, "thermostat_enabled", (e.target as HTMLInputElement).checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-textfield
+          type="number"
+          min="5"
+          max="30"
+          step="0.5"
+          label="Whole-house target"
+          suffix="°C"
+          .value=${String(source.target_temperature ?? 18)}
+          @change=${(e: Event) => this._number(index, "target_temperature", e)}
+        ></ha-textfield>
         <ha-textfield
           type="number"
           min="1"
@@ -135,6 +162,39 @@ export class RsSettingsSharedHeat extends LitElement {
         )}
       </div>
       <div class="grid">
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${""}
+            .includeDomains=${["sensor"]}
+            label="Add temperature sensor"
+            @value-changed=${(e: CustomEvent) => this._addTemperatureSensor(index, e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderTemperatureSensors(source, index)}
+        </div>
+        <div>
+          <div class="hint">Temperature inputs are averaged. Add a correction for sensors that read high or low.</div>
+        </div>
+      </div>
+      <div class="grid">
+        <ha-formfield label="Require someone to be home">
+          <ha-checkbox
+            .checked=${source.require_home_presence ?? false}
+            @change=${(e: Event) =>
+              this._set(index, "require_home_presence", (e.target as HTMLInputElement).checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${""}
+            .includeDomains=${["person"]}
+            label="Add household member"
+            @value-changed=${(e: CustomEvent) =>
+              this._addEntity(index, "home_presence_entities", e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(index, "home_presence_entities", source.home_presence_entities ?? [])}
+        </div>
         <ha-formfield label="Only use gas when downstairs is occupied">
           <ha-checkbox
             .checked=${source.require_occupancy ?? false}
@@ -207,7 +267,7 @@ export class RsSettingsSharedHeat extends LitElement {
   }
   private _addEntity(
     index: number,
-    field: "occupancy_entities" | "media_player_entities",
+    field: "occupancy_entities" | "media_player_entities" | "home_presence_entities",
     entityId?: string,
   ) {
     if (!entityId) return;
@@ -216,16 +276,71 @@ export class RsSettingsSharedHeat extends LitElement {
   }
   private _renderEntities(
     index: number,
-    field: "occupancy_entities" | "media_player_entities",
+    field: "occupancy_entities" | "media_player_entities" | "home_presence_entities",
     entities: string[],
   ) {
     return entities.map(
-      (entityId) => html`<div>
+      (entityId) => html`<div class="entity-row">
         ${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}
         <ha-icon-button
           label="Remove"
           .path=${"M19,13H5V11H19V13Z"}
           @click=${() => this._set(index, field, entities.filter((id) => id !== entityId))}
+        ></ha-icon-button>
+      </div>`,
+    );
+  }
+  private _addTemperatureSensor(index: number, entityId?: string) {
+    if (!entityId) return;
+    const source = this.sharedHeatSources[index];
+    const sensors = [...new Set([...(source.temperature_sensors ?? []), entityId])];
+    const updated = [...this.sharedHeatSources];
+    updated[index] = {
+      ...source,
+      temperature_sensors: sensors,
+      temperature_offsets: { ...(source.temperature_offsets ?? {}), [entityId]: source.temperature_offsets?.[entityId] ?? 0 },
+    };
+    this._fire(updated);
+  }
+  private _setTemperatureOffset(index: number, entityId: string, event: Event) {
+    const value = Number((event.target as HTMLInputElement).value);
+    if (!Number.isFinite(value)) return;
+    const source = this.sharedHeatSources[index];
+    this._set(index, "temperature_offsets", {
+      ...(source.temperature_offsets ?? {}),
+      [entityId]: value,
+    });
+  }
+  private _removeTemperatureSensor(index: number, entityId: string) {
+    const source = this.sharedHeatSources[index];
+    const offsets = { ...(source.temperature_offsets ?? {}) };
+    delete offsets[entityId];
+    const updated = [...this.sharedHeatSources];
+    updated[index] = {
+      ...source,
+      temperature_sensors: (source.temperature_sensors ?? []).filter((id) => id !== entityId),
+      temperature_offsets: offsets,
+    };
+    this._fire(updated);
+  }
+  private _renderTemperatureSensors(source: SharedHeatSource, index: number) {
+    return (source.temperature_sensors ?? []).map(
+      (entityId) => html`<div class="entity-row temperature-row">
+        <span>${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}</span>
+        <ha-textfield
+          type="number"
+          min="-20"
+          max="20"
+          step="0.1"
+          label="Correction"
+          suffix="°C"
+          .value=${String(source.temperature_offsets?.[entityId] ?? 0)}
+          @change=${(e: Event) => this._setTemperatureOffset(index, entityId, e)}
+        ></ha-textfield>
+        <ha-icon-button
+          label="Remove"
+          .path=${"M19,13H5V11H19V13Z"}
+          @click=${() => this._removeTemperatureSensor(index, entityId)}
         ></ha-icon-button>
       </div>`,
     );
