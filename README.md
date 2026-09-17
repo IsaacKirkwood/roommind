@@ -2,10 +2,10 @@
 
 [![HACS Default](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.2%2B-blue.svg)](https://www.home-assistant.io/)
-[![License](https://img.shields.io/github/license/IsaacKirkwood/roommind)](https://github.com/IsaacKirkwood/roommind/blob/main/LICENSE)
-[![Tests](https://github.com/IsaacKirkwood/roommind/actions/workflows/ci.yml/badge.svg)](https://github.com/IsaacKirkwood/roommind/actions/workflows/ci.yml)
-![Coverage](https://raw.githubusercontent.com/IsaacKirkwood/roommind/python-coverage-comment-action-data/badge.svg)
-[![GitHub Release](https://img.shields.io/github/v/release/IsaacKirkwood/roommind)](https://github.com/IsaacKirkwood/roommind/releases/latest)
+[![License](https://img.shields.io/github/license/IsaacKirkwood/roommind_eklabs)](https://github.com/IsaacKirkwood/roommind_eklabs/blob/main/LICENSE)
+[![Tests](https://github.com/IsaacKirkwood/roommind_eklabs/actions/workflows/ci.yml/badge.svg)](https://github.com/IsaacKirkwood/roommind_eklabs/actions/workflows/ci.yml)
+![Coverage](https://raw.githubusercontent.com/IsaacKirkwood/roommind_eklabs/python-coverage-comment-action-data/badge.svg)
+[![GitHub Release](https://img.shields.io/github/v/release/IsaacKirkwood/roommind_eklabs)](https://github.com/IsaacKirkwood/roommind_eklabs/releases/latest)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y31VP2VK)
 
@@ -136,7 +136,7 @@ No cloud services required - everything runs locally.
 
 ## Feedback & Contributing
 
-- 🐛 **Bug reports** - [Open an issue](https://github.com/IsaacKirkwood/roommind/issues)
-- 💡 **Feature requests & ideas** - [Start a discussion](https://github.com/IsaacKirkwood/roommind/discussions)
-- 🙋 **Questions & usage help** - [Ask in Discussions](https://github.com/IsaacKirkwood/roommind/discussions)
-- 📣 **Announcements** - [View releases](https://github.com/IsaacKirkwood/roommind/releases)
+- 🐛 **Bug reports** - [Open an issue](https://github.com/IsaacKirkwood/roommind_eklabs/issues)
+- 💡 **Feature requests & ideas** - [Start a discussion](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
+- 🙋 **Questions & usage help** - [Ask in Discussions](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
+- 📣 **Announcements** - [View releases](https://github.com/IsaacKirkwood/roommind_eklabs/releases)
