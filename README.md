@@ -1,19 +1,31 @@
 # RoomMind - EKLabs Fork
 
-[![HACS Default](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.2%2B-blue.svg)](https://www.home-assistant.io/)
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.5%2B-blue.svg)](https://www.home-assistant.io/)
 [![License](https://img.shields.io/github/license/IsaacKirkwood/roommind_eklabs)](https://github.com/IsaacKirkwood/roommind_eklabs/blob/main/LICENSE)
 [![Tests](https://github.com/IsaacKirkwood/roommind_eklabs/actions/workflows/ci.yml/badge.svg)](https://github.com/IsaacKirkwood/roommind_eklabs/actions/workflows/ci.yml)
 ![Coverage](https://raw.githubusercontent.com/IsaacKirkwood/roommind_eklabs/python-coverage-comment-action-data/badge.svg)
 [![GitHub Release](https://img.shields.io/github/v/release/IsaacKirkwood/roommind_eklabs)](https://github.com/IsaacKirkwood/roommind_eklabs/releases/latest)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y31VP2VK)
+**Room-by-room and whole-house climate control for Home Assistant**, with self-learning thermal models, proportional device control, central plant coordination, and a dedicated management panel.
 
-**Intelligent room climate control for Home Assistant** - self-learning thermal model, proportional valve control, and a dedicated management panel.
+> [!IMPORTANT]
+> This is an experimental community fork of [RoomMind](https://github.com/snazzybean/roommind), originally created by [SnazzyBean](https://github.com/snazzybean). It is not the official upstream release. The EKLabs changes are being developed through an AI-assisted "vibe coding" workflow: ideas and implementations are produced collaboratively with coding agents, then reviewed and exercised with automated tests. Treat new releases as enthusiast software and keep a working Home Assistant backup.
 
 ![Dashboard](docs/images/page-dashboard.png)
 
 ## Features
+
+### EKLabs additions
+
+- **Whole-House Gas Heating** - A central heat source can maintain a configurable house target while local room heaters provide targeted trim heating.
+- **Corrected Sensor Averaging** - Combine multiple temperature sensors into the whole-house reading and apply a correction to each sensor independently.
+- **Occupancy-Led Plant Control** - Gate whole-house operation using household presence, downstairs presence sensors, and active media players.
+- **Whole-House Comfort Schedule** - Switch the central heating target between Comfort and Eco using a Home Assistant schedule helper.
+- **Single-Zone Evaporative Cooling** - Initial MagIQtouch plant controller for whole-house cooling and fresh-air operation, with weather, wet-bulb, humidity, runtime, feedback, presence, and gas-heating interlocks.
+- **Independent Room Learning** - Shared gas heat is exposed separately to each room's thermal model so central heating does not masquerade as local heater output.
+
+### Original RoomMind capabilities
 
 - **Self-Learning MPC** - Per-room thermal model (Extended Kalman Filter) that learns your home's heating/cooling behavior over time. Automatic fallback to on/off control while learning.
 - **Proportional Valve Control** - TRVs receive calculated setpoints instead of simple on/off, producing smoother temperature curves with less overshoot.
@@ -40,20 +52,23 @@
 
 ## Installation
 
-[![Open your Home Assistant instance and open RoomMind inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=IsaacKirkwood&repository=roommind&category=integration)
+[![Open your Home Assistant instance and add the EKLabs fork to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=IsaacKirkwood&repository=roommind_eklabs&category=integration)
 
 ### HACS (Recommended)
 
-1. Open HACS in Home Assistant
-2. Search for "RoomMind" and install
-3. Restart Home Assistant
-4. Go to **Settings > Devices & Services > Add Integration > RoomMind**
+1. Open HACS in Home Assistant.
+2. Add `https://github.com/IsaacKirkwood/roommind_eklabs` as a custom integration repository, or use the button above.
+3. Install **RoomMind - EKLabs Fork**.
+4. Restart Home Assistant.
+5. Go to **Settings > Devices & Services > Add Integration > RoomMind - EKLabs Fork**.
+
+The fork uses the `roommind_eklabs` integration domain and can be installed alongside upstream RoomMind while you evaluate it. Do not point both integrations at the same climate devices for active control.
 
 ### Manual
 
 1. Copy `custom_components/roommind_eklabs/` to your `config/custom_components/` directory
 2. Restart Home Assistant
-3. Go to **Settings > Devices & Services > Add Integration > RoomMind**
+3. Go to **Settings > Devices & Services > Add Integration > RoomMind - EKLabs Fork**
 
 ## Quick Start
 
@@ -128,15 +143,28 @@ These can be used in HA automations, dashboards, or other integrations.
 
 ## Requirements
 
-- **Home Assistant** 2026.2+
+- **Home Assistant** 2026.5+
 - At least one HA area with a `climate.*` entity
 - Optional: temperature sensor, humidity sensor, window sensors, weather entity, schedule helpers, person entities
 
 No cloud services required - everything runs locally.
 
+## Credits and Project Lineage
+
+RoomMind was designed and built by [SnazzyBean](https://github.com/snazzybean). The original project's architecture, thermal modelling, MPC control, frontend, documentation, and the majority of this codebase come from [snazzybean/roommind](https://github.com/snazzybean/roommind). That work made this fork possible.
+
+The EKLabs fork is maintained by [IsaacKirkwood](https://github.com/IsaacKirkwood) for whole-house HVAC experiments and a specific Home Assistant installation. Upstream remains the best destination for the original supported project. Consider [supporting the original author on Ko-fi](https://ko-fi.com/Y8Y31VP2VK).
+
+### Development disclosure
+
+EKLabs updates are vibe coded with AI coding agents under human direction. This includes design discussion, implementation, tests, documentation, and release preparation. Changes are reviewed with automated tests and targeted runtime checks, but AI assistance does not guarantee correctness. Climate control can affect comfort, energy use, and equipment operation, so review settings carefully, retain native equipment safeties, and avoid treating RoomMind as a safety system.
+
+Contributions are welcome. Please identify whether a report concerns upstream RoomMind behavior or an EKLabs-only feature, and disclose materially AI-generated contributions so they can receive the appropriate review.
+
 ## Feedback & Contributing
 
-- 🐛 **Bug reports** - [Open an issue](https://github.com/IsaacKirkwood/roommind_eklabs/issues)
-- 💡 **Feature requests & ideas** - [Start a discussion](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
-- 🙋 **Questions & usage help** - [Ask in Discussions](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
-- 📣 **Announcements** - [View releases](https://github.com/IsaacKirkwood/roommind_eklabs/releases)
+- **EKLabs bug reports** - [Open an issue](https://github.com/IsaacKirkwood/roommind_eklabs/issues)
+- **Feature requests and ideas** - [Start a discussion](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
+- **Questions and usage help** - [Ask in Discussions](https://github.com/IsaacKirkwood/roommind_eklabs/discussions)
+- **Releases** - [View EKLabs releases](https://github.com/IsaacKirkwood/roommind_eklabs/releases)
+- **Upstream project** - [Visit the original RoomMind repository](https://github.com/snazzybean/roommind)
