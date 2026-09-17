@@ -179,6 +179,7 @@ _SETTINGS_SAVE_FIELDS = (
     "group_by_floor",
     "compressor_groups",
     "shared_heat_sources",
+    "whole_house_plant",
 )
 
 
@@ -317,8 +318,7 @@ async def websocket_list_rooms(
         for plan in ((coordinator.data or {}).get("shared_heat_sources", []) if coordinator else [])
     }
     shared_sources = [
-        {**source, "live": shared_plans.get(source.get("id"), {})}
-        for source in settings.get("shared_heat_sources", [])
+        {**source, "live": shared_plans.get(source.get("id"), {})} for source in settings.get("shared_heat_sources", [])
     ]
 
     connection.send_result(
@@ -352,6 +352,10 @@ async def websocket_list_rooms(
             "coil_dry_drain_minutes": settings.get("coil_dry_drain_minutes", DEFAULT_COIL_DRY_DRAIN_MINUTES),
             "compressor_groups": settings.get("compressor_groups", []),
             "shared_heat_sources": shared_sources,
+            "whole_house_plant": {
+                **settings.get("whole_house_plant", {}),
+                "live": ((coordinator.data or {}).get("whole_house_plant", {}) if coordinator else {}),
+            },
         },
     )
 
@@ -732,9 +736,9 @@ async def websocket_get_settings(
                 vol.Required("entity_id"): str,
                 vol.Required("rooms"): vol.All([str], vol.Length(min=1)),
                 vol.Optional("enabled", default=True): bool,
-                vol.Optional(
-                    "min_requesting_rooms", default=DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS
-                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=50)),
+                vol.Optional("min_requesting_rooms", default=DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS): vol.All(
+                    vol.Coerce(int), vol.Range(min=1, max=50)
+                ),
                 vol.Optional(
                     "aggregate_power_threshold", default=DEFAULT_SHARED_HEAT_AGGREGATE_POWER_THRESHOLD
                 ): vol.All(vol.Coerce(float), vol.Range(min=0, max=50)),
@@ -759,20 +763,12 @@ async def websocket_get_settings(
                 vol.Optional("require_occupancy", default=False): bool,
                 vol.Optional("occupancy_entities", default=[]): [str],
                 vol.Optional("media_player_entities", default=[]): [str],
-                vol.Optional(
-                    "occupancy_hold_minutes", default=DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES
-                ): vol.All(
+                vol.Optional("occupancy_hold_minutes", default=DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES): vol.All(
                     vol.Coerce(int), vol.Range(min=0, max=240)
                 ),
-                vol.Optional("target_temperature", default=18.0): vol.All(
-                    vol.Coerce(float), vol.Range(min=5, max=30)
-                ),
-                vol.Optional("comfort_temperature", default=18.0): vol.All(
-                    vol.Coerce(float), vol.Range(min=5, max=30)
-                ),
-                vol.Optional("eco_temperature", default=16.0): vol.All(
-                    vol.Coerce(float), vol.Range(min=5, max=30)
-                ),
+                vol.Optional("target_temperature", default=18.0): vol.All(vol.Coerce(float), vol.Range(min=5, max=30)),
+                vol.Optional("comfort_temperature", default=18.0): vol.All(vol.Coerce(float), vol.Range(min=5, max=30)),
+                vol.Optional("eco_temperature", default=16.0): vol.All(vol.Coerce(float), vol.Range(min=5, max=30)),
                 vol.Optional("preset_mode", default="comfort"): vol.In(["comfort", "eco"]),
                 vol.Optional("schedule_entity", default=""): str,
                 vol.Optional("thermostat_enabled", default=True): bool,
@@ -784,6 +780,38 @@ async def websocket_get_settings(
                 vol.Optional("home_presence_entities", default=[]): [str],
             }
         ],
+        vol.Optional("whole_house_plant"): {
+            vol.Optional("enabled", default=False): bool,
+            vol.Optional("entity_id", default=""): str,
+            vol.Optional("cooling_target", default=24.0): vol.All(vol.Coerce(float), vol.Range(min=16, max=35)),
+            vol.Optional("cooling_start_delta", default=0.5): vol.All(vol.Coerce(float), vol.Range(min=0.1, max=5)),
+            vol.Optional("cooling_stop_delta", default=0.2): vol.All(vol.Coerce(float), vol.Range(min=0, max=5)),
+            vol.Optional("minimum_outdoor_cooling_temp", default=18.0): vol.All(
+                vol.Coerce(float), vol.Range(min=0, max=40)
+            ),
+            vol.Optional("evaporative_max_outdoor_humidity", default=80.0): vol.All(
+                vol.Coerce(float), vol.Range(min=10, max=100)
+            ),
+            vol.Optional("evaporative_min_indoor_outdoor_delta", default=1.0): vol.All(
+                vol.Coerce(float), vol.Range(min=0, max=15)
+            ),
+            vol.Optional("max_continuous_runtime_minutes", default=240): vol.All(
+                vol.Coerce(int), vol.Range(min=15, max=720)
+            ),
+            vol.Optional("feedback_timeout_seconds", default=120): vol.All(vol.Coerce(int), vol.Range(min=30, max=600)),
+            vol.Optional("stale_after_seconds", default=180): vol.All(vol.Coerce(int), vol.Range(min=60, max=1800)),
+            vol.Optional("require_home_presence", default=True): bool,
+            vol.Optional("require_occupancy", default=True): bool,
+            vol.Optional("temperature_sensors", default=[]): [str],
+            vol.Optional("temperature_offsets", default={}): {
+                str: vol.All(vol.Coerce(float), vol.Range(min=-20, max=20))
+            },
+            vol.Optional("indoor_humidity_sensor", default=""): str,
+            vol.Optional("home_presence_entities", default=[]): [str],
+            vol.Optional("occupancy_entities", default=[]): [str],
+            vol.Optional("media_player_entities", default=[]): [str],
+            vol.Optional("ventilation_request_entities", default=[]): [str],
+        },
     }
 )
 @websocket_api.async_response
@@ -900,6 +928,7 @@ async def websocket_save_settings(
                     f"Shared heat source '{entity_id}' must be a climate or switch entity",
                 )
                 return
+
             schedule_entity = source.get("schedule_entity", "")
             if schedule_entity and not schedule_entity.startswith("schedule."):
                 connection.send_error(
@@ -934,6 +963,24 @@ async def websocket_save_settings(
                 )
                 return
 
+    plant = changes.get("whole_house_plant")
+    if plant:
+        entity_id = plant.get("entity_id", "")
+        if entity_id and not entity_id.startswith("climate."):
+            connection.send_error(
+                msg["id"],
+                "invalid_whole_house_plant_entity",
+                "Whole-house cooling plant must be a climate entity",
+            )
+            return
+        if plant.get("cooling_stop_delta", 0.2) > plant.get("cooling_start_delta", 0.5):
+            connection.send_error(
+                msg["id"],
+                "invalid_whole_house_plant_hysteresis",
+                "Cooling stop delta cannot exceed start delta",
+            )
+            return
+
     settings = await store.async_save_settings(changes)
     if shared_sources is not None:
         coordinator = _get_coordinator(hass)
@@ -941,17 +988,11 @@ async def websocket_save_settings(
             from .climate import _create_shared_heat_climates
 
             new_sources = [
-                source
-                for source in shared_sources
-                if str(source["id"]) not in coordinator._shared_climate_source_ids
+                source for source in shared_sources if str(source["id"]) not in coordinator._shared_climate_source_ids
             ]
             if new_sources:
-                coordinator.async_add_climate_entities(
-                    _create_shared_heat_climates(coordinator, new_sources)
-                )
-                coordinator._shared_climate_source_ids.update(
-                    str(source["id"]) for source in new_sources
-                )
+                coordinator.async_add_climate_entities(_create_shared_heat_climates(coordinator, new_sources))
+                coordinator._shared_climate_source_ids.update(str(source["id"]) for source in new_sources)
     connection.send_result(msg["id"], {"settings": settings})
 
 

@@ -95,6 +95,7 @@ async def test_list_rooms_empty(ws_hass, store, connection):
             "coil_dry_drain_minutes": 0,
             "compressor_groups": [],
             "shared_heat_sources": [],
+            "whole_house_plant": {"live": {}},
         },
     )
 

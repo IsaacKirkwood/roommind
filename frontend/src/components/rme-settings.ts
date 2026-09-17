@@ -12,6 +12,7 @@ import type {
   NotificationTarget,
   CompressorGroup,
   SharedHeatSource,
+  WholeHousePlant,
 } from "../types";
 import { localize } from "../utils/localize";
 import { fireSaveStatus } from "../utils/events";
@@ -25,6 +26,7 @@ import "./settings/rme-settings-vacation";
 import "./settings/rme-settings-valve";
 import "./settings/rme-settings-compressor";
 import "./settings/rme-settings-shared-heat";
+import "./settings/rme-settings-whole-house-plant";
 import "./settings/rme-settings-coil-dry";
 import "./settings/rme-settings-mold";
 import "./settings/rme-settings-notifications";
@@ -69,6 +71,28 @@ export class RsSettings extends LitElement {
   @state() private _moldPreventionNotify = false;
   @state() private _compressorGroups: CompressorGroup[] = [];
   @state() private _sharedHeatSources: SharedHeatSource[] = [];
+  @state() private _wholeHousePlant: WholeHousePlant = {
+    enabled: false,
+    entity_id: "",
+    cooling_target: 24,
+    cooling_start_delta: 0.5,
+    cooling_stop_delta: 0.2,
+    minimum_outdoor_cooling_temp: 18,
+    evaporative_max_outdoor_humidity: 80,
+    evaporative_min_indoor_outdoor_delta: 1,
+    max_continuous_runtime_minutes: 240,
+    feedback_timeout_seconds: 120,
+    stale_after_seconds: 180,
+    require_home_presence: true,
+    require_occupancy: true,
+    temperature_sensors: [],
+    temperature_offsets: {},
+    indoor_humidity_sensor: "",
+    home_presence_entities: [],
+    occupancy_entities: [],
+    media_player_entities: [],
+    ventilation_request_entities: [],
+  };
   @state() private _coilDryEnabled = false;
   @state() private _coilDryMinutes = 20;
   @state() private _coilDryMode: "fan_only" | "dry" = "fan_only";
@@ -134,6 +158,7 @@ export class RsSettings extends LitElement {
       this._moldPreventionNotify = s.mold_prevention_notify_enabled ?? false;
       this._compressorGroups = s.compressor_groups ?? [];
       this._sharedHeatSources = s.shared_heat_sources ?? [];
+      this._wholeHousePlant = { ...this._wholeHousePlant, ...(s.whole_house_plant ?? {}) };
       this._coilDryEnabled = s.coil_dry_enabled ?? false;
       this._coilDryMinutes = s.coil_dry_minutes ?? 20;
       this._coilDryMode = s.coil_dry_mode ?? "fan_only";
@@ -267,6 +292,18 @@ export class RsSettings extends LitElement {
           .sharedHeatSources=${this._sharedHeatSources}
           @setting-changed=${this._onSettingChanged}
         ></rme-settings-shared-heat>
+      </rme-settings-panel>
+
+      <rme-settings-panel
+        icon="mdi:weather-windy"
+        .heading=${"Whole-house cooling & fresh air"}
+        .intro=${"Control one whole-house MagIQtouch evaporative zone with weather, presence, and gas-heating interlocks."}
+      >
+        <rme-settings-whole-house-plant
+          .hass=${this.hass}
+          .plant=${this._wholeHousePlant}
+          @setting-changed=${this._onSettingChanged}
+        ></rme-settings-whole-house-plant>
       </rme-settings-panel>
 
       <rme-settings-panel .heading=${localize("coil_dry.title", l)} icon="mdi:air-filter">
@@ -421,6 +458,7 @@ export class RsSettings extends LitElement {
         shared_heat_sources: this._sharedHeatSources.filter(
           (source) => source.entity_id && source.rooms.length > 0,
         ),
+        whole_house_plant: this._wholeHousePlant,
         coil_dry_enabled: this._coilDryEnabled,
         coil_dry_minutes: this._coilDryMinutes,
         coil_dry_mode: this._coilDryMode,

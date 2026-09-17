@@ -145,6 +145,36 @@ export interface SharedHeatSourceLive {
   schedule_active?: boolean | null;
 }
 
+export interface WholeHousePlant {
+  enabled: boolean;
+  entity_id: string;
+  cooling_target: number;
+  cooling_start_delta: number;
+  cooling_stop_delta: number;
+  minimum_outdoor_cooling_temp: number;
+  evaporative_max_outdoor_humidity: number;
+  evaporative_min_indoor_outdoor_delta: number;
+  max_continuous_runtime_minutes: number;
+  feedback_timeout_seconds: number;
+  stale_after_seconds: number;
+  require_home_presence: boolean;
+  require_occupancy: boolean;
+  temperature_sensors: string[];
+  temperature_offsets: Record<string, number>;
+  indoor_humidity_sensor: string;
+  home_presence_entities: string[];
+  occupancy_entities: string[];
+  media_player_entities: string[];
+  ventilation_request_entities: string[];
+  live?: {
+    mode?: "off" | "cool" | "fan_only";
+    reason?: string;
+    fault?: string | null;
+    current_temperature?: number | null;
+    cooling_allowed?: boolean;
+  };
+}
+
 export interface RoomConfig {
   area_id: string;
   thermostats: string[];
@@ -238,6 +268,7 @@ export interface GlobalSettings {
   mold_prevention_notify_targets?: NotificationTarget[];
   compressor_groups?: CompressorGroup[];
   shared_heat_sources?: SharedHeatSource[];
+  whole_house_plant?: WholeHousePlant;
   room_order?: string[];
   group_by_floor?: boolean;
   boost_applied_at?: Record<string, number>;

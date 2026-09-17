@@ -71,6 +71,13 @@ from .managers.residual_heat_tracker import ResidualHeatTracker
 from .managers.shared_heat_source_manager import RoomHeatDemand, SharedHeatSourceManager
 from .managers.valve_manager import ValveManager
 from .managers.weather_manager import WeatherManager
+from .managers.whole_house_plant_manager import (
+    MODE_OFF as PLANT_MODE_OFF,
+)
+from .managers.whole_house_plant_manager import (
+    WholeHousePlantConfig,
+    WholeHousePlantManager,
+)
 from .managers.window_manager import WindowManager
 from .utils.device_utils import (
     build_rooms_devices_map,
@@ -81,6 +88,7 @@ from .utils.device_utils import (
     room_contributes_to_group,
 )
 from .utils.history_store import HistoryStore
+from .utils.presence_utils import is_presence_away
 from .utils.schedule_utils import resolve_schedule_index
 from .utils.sensor_utils import read_sensor_value
 from .utils.temp_utils import celsius_delta_to_ha, ha_temp_to_celsius, ha_temp_unit_str
@@ -184,6 +192,9 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         self._shared_heat_rooms: set[str] = set()
         self._local_heat_allowed: set[str] = set()
         self._shared_heat_plans: list[dict[str, Any]] = []
+        self._whole_house_plant_manager: WholeHousePlantManager | None = None
+        self._whole_house_plant_entity = ""
+        self._whole_house_plant_live: dict[str, Any] = {}
         # Track which rooms already have entity platform entities registered
         self._entity_areas: set[str] = set()
         # Min-run enforcement: timestamp when current non-idle mode started
@@ -294,6 +305,10 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 _LOGGER.exception("Room '%s': processing failed, skipping", area_id)
 
         await self._async_control_shared_heat_sources(room_states)
+
+        # The central MagIQtouch unit is one whole-house evaporative zone.
+        # Evaluate it after gas heat so the heat/cool interlock uses live state.
+        await self._async_control_whole_house_plant(room_states, settings)
 
         # Control master devices based on aggregate room demand
         await self._async_control_master_devices(room_states, rooms, settings)
@@ -414,7 +429,139 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             self._coil_dry_manager.state_dirty = False
 
         self.rooms = room_states
-        return {"rooms": room_states, "shared_heat_sources": self._shared_heat_plans}
+        return {
+            "rooms": room_states,
+            "shared_heat_sources": self._shared_heat_plans,
+            "whole_house_plant": self._whole_house_plant_live,
+        }
+
+    async def _async_control_whole_house_plant(self, room_states: dict[str, dict], settings: dict) -> None:
+        """Control a single-zone whole-house evaporative cooler/fresh-air plant."""
+        raw = settings.get("whole_house_plant") or {}
+        entity_id = str(raw.get("entity_id", ""))
+        if not raw.get("enabled", False) or not entity_id.startswith("climate."):
+            if (
+                self._whole_house_plant_manager is not None
+                and self._whole_house_plant_manager.state.commanded_mode != PLANT_MODE_OFF
+                and self._whole_house_plant_entity.startswith("climate.")
+            ):
+                try:
+                    await self.hass.services.async_call(
+                        "climate",
+                        "set_hvac_mode",
+                        {"entity_id": self._whole_house_plant_entity, "hvac_mode": "off"},
+                        blocking=True,
+                        context=make_roommind_context(),
+                    )
+                except Exception:  # noqa: BLE001
+                    _LOGGER.exception(
+                        "Failed to stop disabled whole-house plant '%s'",
+                        self._whole_house_plant_entity,
+                    )
+                self._whole_house_plant_manager.state.commanded_mode = PLANT_MODE_OFF
+            self._whole_house_plant_live = {"configured": False, "mode": PLANT_MODE_OFF}
+            return
+
+        config = WholeHousePlantConfig(
+            entity_id=entity_id,
+            cooling_type="evaporative",
+            cooling_target=float(raw.get("cooling_target", 24.0)),
+            cooling_start_delta=float(raw.get("cooling_start_delta", 0.5)),
+            cooling_stop_delta=float(raw.get("cooling_stop_delta", 0.2)),
+            minimum_outdoor_cooling_temp=float(raw.get("minimum_outdoor_cooling_temp", 18.0)),
+            evaporative_max_outdoor_humidity=float(raw.get("evaporative_max_outdoor_humidity", 80.0)),
+            evaporative_min_indoor_outdoor_delta=float(raw.get("evaporative_min_indoor_outdoor_delta", 1.0)),
+            max_continuous_runtime_minutes=int(raw.get("max_continuous_runtime_minutes", 240)),
+            feedback_timeout_seconds=int(raw.get("feedback_timeout_seconds", 120)),
+            stale_after_seconds=int(raw.get("stale_after_seconds", 180)),
+            require_home_presence=bool(raw.get("require_home_presence", True)),
+            require_occupancy=bool(raw.get("require_occupancy", True)),
+        )
+        if self._whole_house_plant_manager is None or self._whole_house_plant_entity != entity_id:
+            self._whole_house_plant_manager = WholeHousePlantManager(config)
+            self._whole_house_plant_entity = entity_id
+        else:
+            self._whole_house_plant_manager.config = config
+
+        temperatures: list[float] = []
+        offsets = raw.get("temperature_offsets", {})
+        for sensor_id in raw.get("temperature_sensors", []):
+            value = read_sensor_value(self.hass, sensor_id, "whole_house_plant", "temperature")
+            if value is not None:
+                temperatures.append(
+                    ha_temp_to_celsius(self.hass, value, entity_id=sensor_id) + float(offsets.get(sensor_id, 0.0))
+                )
+        if not temperatures:
+            temperatures = [
+                state["current_temp"]
+                for state in room_states.values()
+                if isinstance(state.get("current_temp"), (int, float))
+            ]
+        indoor_temperature = sum(temperatures) / len(temperatures) if temperatures else None
+        indoor_humidity = read_sensor_value(
+            self.hass, raw.get("indoor_humidity_sensor"), "whole_house_plant", "humidity"
+        )
+        occupied = any(
+            (state := self.hass.states.get(eid)) is not None and state.state == "on"
+            for eid in raw.get("occupancy_entities", [])
+        ) or any(
+            (state := self.hass.states.get(eid)) is not None and state.state in {"playing", "buffering"}
+            for eid in raw.get("media_player_entities", [])
+        )
+        home_entities = raw.get("home_presence_entities", [])
+        home_occupied = (
+            any((state := self.hass.states.get(eid)) is not None and state.state == "home" for eid in home_entities)
+            if home_entities
+            else not is_presence_away(self.hass, {}, settings)
+        )
+        ventilation_requested = any(
+            (state := self.hass.states.get(eid)) is not None and state.state == "on"
+            for eid in raw.get("ventilation_request_entities", [])
+        )
+        plant_state = self.hass.states.get(entity_id)
+        feedback_available = plant_state is not None and plant_state.state not in {"unavailable", "unknown"}
+        age = max(0.0, time.time() - plant_state.last_updated.timestamp()) if plant_state is not None else float("inf")
+        heating_active = any(bool(plan.get("active")) for plan in self._shared_heat_plans)
+        plan = self._whole_house_plant_manager.evaluate(
+            indoor_temperature=indoor_temperature,
+            indoor_humidity=indoor_humidity,
+            outdoor_temperature=self.outdoor_temp_effective,
+            outdoor_humidity=self.outdoor_humidity,
+            home_occupied=home_occupied,
+            area_occupied=occupied,
+            heating_active=heating_active,
+            ventilation_requested=ventilation_requested,
+            reported_mode=plant_state.state if plant_state is not None else None,
+            feedback_available=feedback_available,
+            feedback_age_seconds=age,
+        )
+        self._whole_house_plant_live = {
+            "configured": True,
+            "entity_id": entity_id,
+            "mode": plan.mode,
+            "reason": plan.reason,
+            "fault": plan.fault,
+            "cooling_allowed": plan.cooling_allowed,
+            "ventilation_allowed": plan.ventilation_allowed,
+            "current_temperature": indoor_temperature,
+            "target_temperature": config.cooling_target,
+            "home_occupied": home_occupied,
+            "occupied": occupied,
+        }
+        for room_state in room_states.values():
+            room_state["shared_cooling_active"] = plan.mode == "cool"
+            room_state["shared_ventilation_active"] = plan.mode == "fan_only"
+        if plan.transition:
+            try:
+                await self.hass.services.async_call(
+                    "climate",
+                    "set_hvac_mode",
+                    {"entity_id": entity_id, "hvac_mode": plan.mode},
+                    blocking=True,
+                    context=make_roommind_context(),
+                )
+            except Exception:  # noqa: BLE001
+                _LOGGER.exception("Whole-house plant command failed for '%s'", entity_id)
 
     async def _async_control_shared_heat_sources(self, room_states: dict[str, dict]) -> None:
         """Evaluate aggregate room demand and command whole-house heat sources."""
@@ -439,9 +586,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             if config.temperature_sensors:
                 offsets = config.temperature_offsets or {}
                 for entity_id in config.temperature_sensors:
-                    raw_value = read_sensor_value(
-                        self.hass, entity_id, "whole_house", "temperature"
-                    )
+                    raw_value = read_sensor_value(self.hass, entity_id, "whole_house", "temperature")
                     if raw_value is None:
                         continue
                     value = ha_temp_to_celsius(self.hass, raw_value, entity_id=entity_id)
@@ -450,24 +595,18 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 source_temperatures = [
                     room_states[area_id]["current_temp"]
                     for area_id in config.rooms
-                    if area_id in room_states
-                    and isinstance(room_states[area_id].get("current_temp"), (int, float))
+                    if area_id in room_states and isinstance(room_states[area_id].get("current_temp"), (int, float))
                 ]
-            shared_current_temp = (
-                sum(source_temperatures) / len(source_temperatures) if source_temperatures else None
-            )
+            shared_current_temp = sum(source_temperatures) / len(source_temperatures) if source_temperatures else None
             occupied_now = any(
-                (state := self.hass.states.get(entity_id)) is not None
-                and state.state == "on"
+                (state := self.hass.states.get(entity_id)) is not None and state.state == "on"
                 for entity_id in config.occupancy_entities
             ) or any(
-                (state := self.hass.states.get(entity_id)) is not None
-                and state.state in {"playing", "buffering"}
+                (state := self.hass.states.get(entity_id)) is not None and state.state in {"playing", "buffering"}
                 for entity_id in config.media_player_entities
             )
             home_occupied = any(
-                (state := self.hass.states.get(entity_id)) is not None
-                and state.state == "home"
+                (state := self.hass.states.get(entity_id)) is not None and state.state == "home"
                 for entity_id in config.home_presence_entities
             )
             schedule_active: bool | None = None
@@ -526,11 +665,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             if domain == "climate":
                 if active:
                     climate_state = self.hass.states.get(entity_id)
-                    max_temp_raw = (
-                        climate_state.attributes.get("max_temp", 35.0)
-                        if climate_state is not None
-                        else 35.0
-                    )
+                    max_temp_raw = climate_state.attributes.get("max_temp", 35.0) if climate_state is not None else 35.0
                     try:
                         max_temp = float(max_temp_raw)
                     except (TypeError, ValueError):
