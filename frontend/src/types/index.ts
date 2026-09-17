@@ -121,6 +121,8 @@ export interface SharedHeatSource {
   occupancy_entities: string[];
   media_player_entities: string[];
   occupancy_hold_minutes: number;
+  target_temperature: number;
+  thermostat_enabled: boolean;
 }
 
 export interface RoomConfig {

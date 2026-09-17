@@ -9,6 +9,7 @@ from homeassistant.components.climate import (
     ATTR_TARGET_TEMP_LOW,
     ClimateEntity,
     ClimateEntityFeature,
+    HVACAction,
     HVACMode,
 )
 from homeassistant.config_entries import ConfigEntry
@@ -37,6 +38,14 @@ def _create_room_climates(
     return [RoomMindOverrideClimate(coordinator, area_id)]
 
 
+def _create_shared_heat_climates(
+    coordinator: RoomMindCoordinator,
+    sources: list[dict],
+) -> list[ClimateEntity]:
+    """Create one whole-house thermostat for each shared heat source."""
+    return [RoomMindWholeHouseClimate(coordinator, str(source["id"])) for source in sources]
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -51,6 +60,7 @@ async def async_setup_entry(
     for area_id in rooms:
         entities.extend(_create_room_climates(coordinator, area_id))
         coordinator._climate_entity_areas.add(area_id)
+    entities.extend(_create_shared_heat_climates(coordinator, store.get_settings().get("shared_heat_sources", [])))
     if entities:
         async_add_entities(entities)
 
@@ -213,3 +223,85 @@ class RoomMindOverrideClimate(CoordinatorEntity, ClimateEntity):
                 },
             )
         await self.coordinator.async_request_refresh()
+
+
+class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
+    """Thermostat for a shared whole-house heat source."""
+
+    _attr_has_entity_name = True
+    _attr_icon = "mdi:home-thermometer"
+    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_target_temperature_step = 0.5
+    _attr_min_temp = 5
+    _attr_max_temp = 30
+    _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
+    _attr_supported_features = (
+        ClimateEntityFeature.TARGET_TEMPERATURE
+        | ClimateEntityFeature.TURN_ON
+        | ClimateEntityFeature.TURN_OFF
+    )
+
+    def __init__(self, coordinator: RoomMindCoordinator, source_id: str) -> None:
+        super().__init__(coordinator)
+        self._source_id = source_id
+        self._attr_unique_id = f"{DOMAIN}_shared_heat_{source_id}"
+        self._attr_name = "Whole House"
+        self.entity_id = f"climate.{DOMAIN}_whole_house"
+
+    def _source(self) -> dict:
+        settings = self.coordinator.hass.data[DOMAIN]["store"].get_settings()
+        return next(
+            (source for source in settings.get("shared_heat_sources", []) if source.get("id") == self._source_id),
+            {},
+        )
+
+    def _plan(self) -> dict:
+        data = self.coordinator.data or {}
+        return next(
+            (plan for plan in data.get("shared_heat_sources", []) if plan.get("id") == self._source_id),
+            {},
+        )
+
+    @property
+    def current_temperature(self) -> float | None:
+        value = self._plan().get("current_temperature")
+        return float(value) if isinstance(value, (int, float)) else None
+
+    @property
+    def target_temperature(self) -> float:
+        return float(self._source().get("target_temperature", 18.0))
+
+    @property
+    def hvac_mode(self) -> HVACMode:
+        return HVACMode.HEAT if self._source().get("thermostat_enabled", True) else HVACMode.OFF
+
+    @property
+    def hvac_action(self) -> HVACAction:
+        return HVACAction.HEATING if self._plan().get("active", False) else HVACAction.IDLE
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        plan = self._plan()
+        source = self._source()
+        return {
+            "temperature_rooms": source.get("rooms", []),
+            "occupancy_eligible": plan.get("occupancy_eligible", False),
+            "control_reason": plan.get("reason", ""),
+        }
+
+    async def _async_update_source(self, **changes: Any) -> None:
+        store = self.coordinator.hass.data[DOMAIN]["store"]
+        settings = store.get_settings()
+        sources = []
+        for source in settings.get("shared_heat_sources", []):
+            sources.append({**source, **changes} if source.get("id") == self._source_id else source)
+        await store.async_save_settings({"shared_heat_sources": sources})
+        await self.coordinator.async_request_refresh()
+
+    async def async_set_temperature(self, **kwargs: Any) -> None:
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        if temperature is not None:
+            await self._async_update_source(target_temperature=float(temperature))
+
+    async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
+        await self._async_update_source(thermostat_enabled=hvac_mode != HVACMode.OFF)

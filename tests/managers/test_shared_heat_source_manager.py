@@ -194,3 +194,28 @@ def test_occupancy_loss_allows_local_heat_during_minimum_gas_run():
     assert held.reason == "minimum run time"
     assert held.occupancy_eligible is False
     assert held.local_heat_allowed == frozenset({"isaac", "jacob"})
+
+
+def test_whole_house_target_drives_shared_heat_independently_of_room_targets():
+    manager = SharedHeatSourceManager()
+    manager.load_sources([_source(target_temperature=18.0, min_run_minutes=0)])
+    room_demands = [_demand("isaac", temp=19.0, target=21.0), _demand("jacob", temp=19.0, target=21.0)]
+
+    started = manager.evaluate("gas", room_demands, now=1000, shared_current_temp=17.0)
+    stopped = manager.evaluate("gas", room_demands, now=1010, shared_current_temp=17.9)
+
+    assert started.active is True
+    assert started.max_delta == 1.0
+    assert stopped.active is False
+    assert stopped.reason == "whole-house target satisfied"
+
+
+def test_disabled_whole_house_thermostat_leaves_local_rooms_available():
+    manager = SharedHeatSourceManager()
+    manager.load_sources([_source(thermostat_enabled=False, target_temperature=18.0)])
+    demands = [_demand("isaac"), _demand("jacob")]
+
+    plan = manager.evaluate("gas", demands, now=1000, shared_current_temp=16.0)
+
+    assert plan.active is False
+    assert plan.local_heat_allowed == frozenset({"isaac", "jacob"})

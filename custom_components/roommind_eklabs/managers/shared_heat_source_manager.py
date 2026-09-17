@@ -70,6 +70,8 @@ class SharedHeatSourceConfig:
     occupancy_entities: tuple[str, ...] = ()
     media_player_entities: tuple[str, ...] = ()
     occupancy_hold_seconds: float = DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES * 60
+    target_temperature: float | None = None
+    thermostat_enabled: bool = True
     enabled: bool = True
 
     @classmethod
@@ -113,6 +115,10 @@ class SharedHeatSourceConfig:
                 0.0,
                 float(raw.get("occupancy_hold_minutes", DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES)) * 60,
             ),
+            target_temperature=(
+                float(raw["target_temperature"]) if "target_temperature" in raw else None
+            ),
+            thermostat_enabled=bool(raw.get("thermostat_enabled", True)),
             enabled=bool(raw.get("enabled", True)),
         )
 
@@ -168,6 +174,7 @@ class SharedHeatSourceManager:
         *,
         now: float | None = None,
         occupied_now: bool = False,
+        shared_current_temp: float | None = None,
     ) -> SharedHeatSourcePlan:
         """Return and record the next plan for one source."""
         timestamp = monotonic() if now is None else now
@@ -185,13 +192,24 @@ class SharedHeatSourceManager:
         aggregate_power = sum(min(1.0, max(0.0, d.power_fraction)) for d in requesting)
         max_delta = max((d.delta for d in requesting), default=0.0)
 
-        enough_rooms = len(requesting) >= config.min_requesting_rooms
-        enough_power = aggregate_power >= config.aggregate_power_threshold
-        enough_delta = max_delta >= config.start_delta
-        start_requested = occupancy_eligible and bool(requesting) and enough_delta and (enough_rooms or enough_power)
-        stop_requested = not occupancy_eligible or not requesting or all(
-            d.delta <= config.stop_delta for d in requesting
-        )
+        if shared_current_temp is not None and config.target_temperature is not None:
+            max_delta = max(0.0, config.target_temperature - shared_current_temp)
+            start_requested = (
+                config.thermostat_enabled and occupancy_eligible and max_delta >= config.start_delta
+            )
+            stop_requested = (
+                not config.thermostat_enabled
+                or not occupancy_eligible
+                or shared_current_temp >= config.target_temperature - config.stop_delta
+            )
+        else:
+            enough_rooms = len(requesting) >= config.min_requesting_rooms
+            enough_power = aggregate_power >= config.aggregate_power_threshold
+            enough_delta = max_delta >= config.start_delta
+            start_requested = occupancy_eligible and bool(requesting) and enough_delta and (enough_rooms or enough_power)
+            stop_requested = not occupancy_eligible or not requesting or all(
+                d.delta <= config.stop_delta for d in requesting
+            )
 
         transition = "none"
         reason = "no aggregate demand"
@@ -209,7 +227,14 @@ class SharedHeatSourceManager:
                 state.on_since = None
                 state.off_since = timestamp
                 transition = "stop"
-                reason = "occupancy gate clear" if not occupancy_eligible else "all participating rooms satisfied"
+                if not config.thermostat_enabled:
+                    reason = "whole-house thermostat off"
+                elif not occupancy_eligible:
+                    reason = "occupancy gate clear"
+                elif shared_current_temp is not None:
+                    reason = "whole-house target satisfied"
+                else:
+                    reason = "all participating rooms satisfied"
             elif stop_requested:
                 reason = "minimum run time"
             else:

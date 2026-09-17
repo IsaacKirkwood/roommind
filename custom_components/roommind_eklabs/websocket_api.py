@@ -755,6 +755,10 @@ async def websocket_get_settings(
                 ): vol.All(
                     vol.Coerce(int), vol.Range(min=0, max=240)
                 ),
+                vol.Optional("target_temperature", default=18.0): vol.All(
+                    vol.Coerce(float), vol.Range(min=5, max=30)
+                ),
+                vol.Optional("thermostat_enabled", default=True): bool,
             }
         ],
     }

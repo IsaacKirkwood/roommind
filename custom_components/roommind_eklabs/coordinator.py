@@ -434,6 +434,15 @@ class RoomMindCoordinator(DataUpdateCoordinator):
 
         for source_id in self._shared_heat_manager.get_configs():
             config = self._shared_heat_manager.get_configs()[source_id]
+            source_temperatures = [
+                room_states[area_id]["current_temp"]
+                for area_id in config.rooms
+                if area_id in room_states
+                and isinstance(room_states[area_id].get("current_temp"), (int, float))
+            ]
+            shared_current_temp = (
+                sum(source_temperatures) / len(source_temperatures) if source_temperatures else None
+            )
             occupied_now = any(
                 self.hass.states.get(entity_id) is not None
                 and self.hass.states[entity_id].state == "on"
@@ -443,7 +452,12 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 and self.hass.states[entity_id].state in {"playing", "buffering"}
                 for entity_id in config.media_player_entities
             )
-            plan = self._shared_heat_manager.evaluate(source_id, demands, occupied_now=occupied_now)
+            plan = self._shared_heat_manager.evaluate(
+                source_id,
+                demands,
+                occupied_now=occupied_now,
+                shared_current_temp=(shared_current_temp if config.target_temperature is not None else None),
+            )
             shared_rooms.update(plan.shared_heat_rooms)
             local_allowed.update(plan.local_heat_allowed)
             live_plans.append(
@@ -457,6 +471,9 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                     "aggregate_power": plan.aggregate_power,
                     "max_delta": plan.max_delta,
                     "occupancy_eligible": plan.occupancy_eligible,
+                    "current_temperature": shared_current_temp,
+                    "target_temperature": config.target_temperature,
+                    "thermostat_enabled": config.thermostat_enabled,
                 }
             )
             if plan.transition != "none":

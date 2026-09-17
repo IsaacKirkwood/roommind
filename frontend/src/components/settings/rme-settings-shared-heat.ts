@@ -251,6 +251,8 @@ export class RsSettingsSharedHeat extends LitElement {
         occupancy_entities: [],
         media_player_entities: [],
         occupancy_hold_minutes: 20,
+        target_temperature: 18,
+        thermostat_enabled: true,
       },
     ]);
   }

@@ -10,6 +10,7 @@ from homeassistant.components.climate import ClimateEntityFeature, HVACMode
 
 from custom_components.roommind_eklabs.climate import (
     RoomMindOverrideClimate,
+    RoomMindWholeHouseClimate,
     _create_room_climates,
     async_setup_entry,
 )
@@ -58,6 +59,34 @@ def test_unique_id_and_entity_id(mock_coordinator):
     entity = RoomMindOverrideClimate(coordinator, "living_room")
     assert entity.unique_id == "roommind_eklabs_living_room_override"
     assert entity.entity_id == "climate.roommind_eklabs_living_room_override"
+
+
+@pytest.mark.asyncio
+async def test_whole_house_climate_reads_average_and_updates_target(mock_coordinator):
+    coordinator, store = mock_coordinator
+    source = {
+        "id": "whole_house_gas",
+        "rooms": ["isaac", "jacob"],
+        "target_temperature": 18.0,
+        "thermostat_enabled": True,
+    }
+    store.get_settings.return_value = {"shared_heat_sources": [source]}
+    store.async_save_settings = AsyncMock()
+    coordinator.data = {
+        "shared_heat_sources": [
+            {"id": "whole_house_gas", "current_temperature": 17.5, "active": False}
+        ]
+    }
+    entity = RoomMindWholeHouseClimate(coordinator, "whole_house_gas")
+
+    assert entity.current_temperature == 17.5
+    assert entity.target_temperature == 18.0
+    assert entity.hvac_mode == HVACMode.HEAT
+    await entity.async_set_temperature(temperature=19.0)
+
+    store.async_save_settings.assert_awaited_once()
+    saved = store.async_save_settings.await_args.args[0]["shared_heat_sources"][0]
+    assert saved["target_temperature"] == 19.0
 
 
 def test_hvac_mode_off_when_no_override(mock_coordinator):
@@ -387,6 +416,7 @@ async def test_async_setup_entry_creates_entities_for_all_rooms():
         "living_room": {"thermostats": ["climate.living"]},
         "bedroom": {},
     }
+    store.get_settings.return_value = {}
 
     entry = MagicMock()
     entry.entry_id = "test_entry"
@@ -415,6 +445,7 @@ async def test_async_setup_entry_no_rooms():
 
     store = MagicMock()
     store.get_rooms.return_value = {}
+    store.get_settings.return_value = {}
 
     entry = MagicMock()
     entry.entry_id = "test_entry"
