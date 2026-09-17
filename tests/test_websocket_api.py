@@ -94,6 +94,7 @@ async def test_list_rooms_empty(ws_hass, store, connection):
             "coil_dry_min_cooling_minutes": 10,
             "coil_dry_drain_minutes": 0,
             "compressor_groups": [],
+            "shared_heat_sources": [],
         },
     )
 
@@ -2482,6 +2483,86 @@ async def test_save_settings_compressor_groups_valid(ws_hass, store, connection)
     assert len(groups) == 1
     assert groups[0]["id"] == "outdoor1"
     assert groups[0]["members"] == ["climate.ac_living", "climate.ac_bedroom"]
+
+
+@pytest.mark.asyncio
+async def test_save_settings_shared_heat_source_valid(ws_hass, store, connection):
+    """A climate or switch source with configured rooms is persisted."""
+    await store.async_load()
+    await store.async_save_room("isaac", {})
+    await store.async_save_room("jacob", {})
+
+    msg = {
+        "id": 201,
+        "type": "roommind/settings/save",
+        "shared_heat_sources": [
+            {
+                "id": "gas",
+                "name": "Whole-house gas",
+                "entity_id": "climate.gas_heating",
+                "rooms": ["isaac", "jacob"],
+                "min_requesting_rooms": 2,
+                "local_grace_minutes": 15,
+            }
+        ],
+    }
+
+    await _save_settings(ws_hass, connection, msg)
+
+    connection.send_result.assert_called_once()
+    saved = connection.send_result.call_args[0][1]["settings"]["shared_heat_sources"][0]
+    assert saved["entity_id"] == "climate.gas_heating"
+    assert saved["rooms"] == ["isaac", "jacob"]
+
+
+@pytest.mark.asyncio
+async def test_save_settings_shared_heat_source_rejects_unknown_room(ws_hass, store, connection):
+    """Shared source membership must reference configured RoomMind rooms."""
+    await store.async_load()
+    await store.async_save_room("isaac", {})
+
+    msg = {
+        "id": 202,
+        "type": "roommind/settings/save",
+        "shared_heat_sources": [
+            {
+                "id": "gas",
+                "name": "Whole-house gas",
+                "entity_id": "switch.gas_heating",
+                "rooms": ["isaac", "missing"],
+            }
+        ],
+    }
+
+    await _save_settings(ws_hass, connection, msg)
+
+    connection.send_error.assert_called_once()
+    assert connection.send_error.call_args[0][1] == "unknown_shared_source_room"
+
+
+@pytest.mark.asyncio
+async def test_save_settings_shared_heat_source_rejects_invalid_entity(ws_hass, store, connection):
+    """Only climate and switch entities can act as shared heat sources."""
+    await store.async_load()
+    await store.async_save_room("isaac", {})
+
+    msg = {
+        "id": 203,
+        "type": "roommind/settings/save",
+        "shared_heat_sources": [
+            {
+                "id": "gas",
+                "name": "Whole-house gas",
+                "entity_id": "sensor.gas_heating",
+                "rooms": ["isaac"],
+            }
+        ],
+    }
+
+    await _save_settings(ws_hass, connection, msg)
+
+    connection.send_error.assert_called_once()
+    assert connection.send_error.call_args[0][1] == "invalid_shared_source_entity"
 
 
 @pytest.mark.asyncio

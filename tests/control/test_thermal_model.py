@@ -363,13 +363,13 @@ def test_ekf_serialization_roundtrip():
     data = ekf.to_dict()
     restored = ThermalEKF.from_dict(data)
 
-    # Verify state vector (6D with beta_s + beta_o)
-    for i in range(6):
+    # Verify state vector (7D with beta_s + beta_o + beta_g)
+    for i in range(7):
         assert restored._x[i] == pytest.approx(ekf._x[i], rel=1e-6)
 
-    # Verify P matrix (6×6)
-    for i in range(6):
-        for j in range(6):
+    # Verify P matrix (7x7)
+    for i in range(7):
+        for j in range(7):
             assert restored._P[i][j] == pytest.approx(ekf._P[i][j], rel=1e-6)
 
     # Verify counters
@@ -382,13 +382,13 @@ def test_ekf_serialization_roundtrip():
     assert restored.confidence == pytest.approx(ekf.confidence, abs=0.01)
 
     # Verify serialization metadata
-    assert data["ekf_version"] == 6
+    assert data["ekf_version"] == 7
 
 
 def test_ekf_get_model_c1_normalization():
     """get_model() returns RCModel with C=1, U=alpha, Q_heat=beta_h, Q_cool=beta_c, Q_solar=beta_s, Q_occupancy=beta_o."""
     ekf = ThermalEKF()
-    ekf._x = [20.0, 3.5, 60.0, 80.0, 15.0, 0.3]
+    ekf._x = [20.0, 3.5, 60.0, 80.0, 15.0, 0.3, 2.0]
 
     model = ekf.get_model()
     assert model.C == pytest.approx(1.0)
@@ -889,12 +889,12 @@ def test_rc_model_from_dict_no_q_solar():
     assert model.Q_solar == 0.0
 
 
-def test_ekf_6d_initial_state():
-    """EKF initializes with 6D state vector and 6×6 P matrix."""
+def test_ekf_7d_initial_state():
+    """EKF initializes with 7D state vector and 7x7 P matrix."""
     ekf = ThermalEKF()
-    assert len(ekf._x) == 6
-    assert len(ekf._P) == 6
-    assert all(len(row) == 6 for row in ekf._P)
+    assert len(ekf._x) == 7
+    assert len(ekf._P) == 7
+    assert all(len(row) == 7 for row in ekf._P)
 
 
 def test_ekf_update_with_solar():
@@ -918,7 +918,7 @@ def test_ekf_beta_s_unchanged_at_night():
 def test_ekf_get_model_includes_q_solar():
     """get_model() returns RCModel with Q_solar from beta_s."""
     ekf = ThermalEKF()
-    ekf._x = [20.0, 3.5, 60.0, 80.0, 25.0, 0.3]
+    ekf._x = [20.0, 3.5, 60.0, 80.0, 25.0, 0.3, 2.0]
     model = ekf.get_model()
     assert model.Q_solar == pytest.approx(25.0)
 
@@ -1480,7 +1480,7 @@ def test_ekf_q_alpha_scaled_for_small_alpha():
     ekf = ThermalEKF(T_init=20.0)
     ekf._x[1] = 0.007
     ekf._initialized = True
-    ekf._P = [[0.001 if i == j else 0.0 for j in range(6)] for i in range(6)]
+    ekf._P = [[0.001 if i == j else 0.0 for j in range(7)] for i in range(7)]
     p11_before = ekf._P[1][1]
 
     ekf._predict_step(10.0, "idle", 0.05)
@@ -1495,7 +1495,7 @@ def test_ekf_q_alpha_unchanged_at_default_alpha():
     """Process noise for alpha is exactly Q_ALPHA at the default alpha value."""
     ekf = ThermalEKF(T_init=20.0)
     ekf._initialized = True
-    ekf._P = [[0.001 if i == j else 0.0 for j in range(6)] for i in range(6)]
+    ekf._P = [[0.001 if i == j else 0.0 for j in range(7)] for i in range(7)]
     p11_before = ekf._P[1][1]
 
     ekf._predict_step(10.0, "idle", 0.05)
@@ -1509,7 +1509,7 @@ def test_ekf_q_alpha_capped_for_large_alpha():
     ekf = ThermalEKF(T_init=20.0)
     ekf._x[1] = 0.5
     ekf._initialized = True
-    ekf._P = [[0.001 if i == j else 0.0 for j in range(6)] for i in range(6)]
+    ekf._P = [[0.001 if i == j else 0.0 for j in range(7)] for i in range(7)]
     p11_before = ekf._P[1][1]
 
     ekf._predict_step(10.0, "idle", 0.05)
@@ -1561,13 +1561,13 @@ def test_rc_model_q_occupancy_zero_no_effect():
     assert T_zero == pytest.approx(T_none)
 
 
-def test_ekf_6d_state_vector():
-    """EKF should have 6D state vector after upgrade."""
+def test_ekf_7d_state_vector():
+    """EKF should have 7D state vector after shared-heat upgrade."""
     ekf = ThermalEKF()
-    assert ekf._N == 6
-    assert len(ekf._x) == 6
-    assert len(ekf._P) == 6
-    assert all(len(row) == 6 for row in ekf._P)
+    assert ekf._N == 7
+    assert len(ekf._x) == 7
+    assert len(ekf._P) == 7
+    assert all(len(row) == 7 for row in ekf._P)
 
 
 def test_ekf_update_with_q_occupancy():
@@ -1595,8 +1595,8 @@ def test_ekf_get_model_includes_q_occupancy():
     assert model.Q_occupancy >= 0.0
 
 
-def test_ekf_from_dict_5d_to_6d():
-    """Old 5D persisted data should be extended to 6D on load."""
+def test_ekf_from_dict_5d_to_7d():
+    """Old 5D persisted data should be extended to 7D on load."""
     old_data = {
         "ekf_version": 3,
         "x": [20.0, 0.15, 3.0, 4.0, 0.5],
@@ -1610,9 +1610,9 @@ def test_ekf_from_dict_5d_to_6d():
         "initialized": True,
     }
     ekf = ThermalEKF.from_dict(old_data)
-    assert len(ekf._x) == 6
-    assert len(ekf._P) == 6
-    assert all(len(row) == 6 for row in ekf._P)
+    assert len(ekf._x) == 7
+    assert len(ekf._P) == 7
+    assert all(len(row) == 7 for row in ekf._P)
     # Original parameters preserved
     assert ekf._x[0] == pytest.approx(20.0)
     assert ekf._x[1] == pytest.approx(0.15)
@@ -1623,18 +1623,18 @@ def test_ekf_from_dict_5d_to_6d():
     assert ekf._n_updates == 100
 
 
-def test_ekf_from_dict_6d_roundtrip():
-    """to_dict/from_dict preserves all 6 parameters."""
+def test_ekf_from_dict_7d_roundtrip():
+    """to_dict/from_dict preserves all 7 parameters."""
     ekf = ThermalEKF()
     ekf.update(T_measured=20.0, T_outdoor=5.0, mode="idle", dt_minutes=5.0, q_occupancy=1.0)
     ekf.update(T_measured=20.5, T_outdoor=5.0, mode="idle", dt_minutes=5.0, q_occupancy=1.0)
     data = ekf.to_dict()
-    assert data["ekf_version"] == 6
+    assert data["ekf_version"] == 7
     restored = ThermalEKF.from_dict(data)
-    for i in range(6):
+    for i in range(7):
         assert restored._x[i] == pytest.approx(ekf._x[i], rel=1e-6)
-    for i in range(6):
-        for j in range(6):
+    for i in range(7):
+        for j in range(7):
             assert restored._P[i][j] == pytest.approx(ekf._P[i][j], rel=1e-6)
 
 
@@ -1645,6 +1645,43 @@ def test_ekf_prediction_std_with_q_occupancy():
     std = ekf.prediction_std(Q_active=0.0, T_room=20.0, T_outdoor=5.0, dt_minutes=5.0, q_occupancy=1.0)
     assert std > 0.0
     assert math.isfinite(std)
+
+
+def test_rc_model_shared_heat_is_additive():
+    """Whole-house heat warms a room independently of its local HVAC mode."""
+    model = RCModel(C=1.0, U=0.15, Q_shared=3.0)
+    without_shared = model.predict(20.0, 5.0, 0.0, 30.0)
+    with_shared = model.predict(20.0, 5.0, 0.0, 30.0, q_shared_heat=1.0)
+
+    assert with_shared > without_shared
+
+
+def test_ekf_shared_heat_parameter_is_observable_only_when_active():
+    """Shared heat covariance grows only while the central source is active."""
+    ekf = ThermalEKF(T_init=20.0)
+    ekf._initialized = True
+    before = ekf._P[6][6]
+
+    ekf._predict_step(10.0, "idle", 0.05, q_shared_heat=0.0)
+    inactive = ekf._P[6][6]
+    ekf._predict_step(10.0, "idle", 0.05, q_shared_heat=1.0)
+
+    assert inactive == pytest.approx(before)
+    assert ekf._P[6][6] > inactive
+
+
+def test_ekf_from_dict_6d_adds_shared_heat_parameter():
+    """Existing RoomMind models gain a fresh shared-heat parameter on load."""
+    data = {
+        "ekf_version": 6,
+        "x": [20.0, 0.15, 3.0, 4.0, 0.5, 0.3],
+        "P": [[0.1 if i == j else 0.0 for j in range(6)] for i in range(6)],
+    }
+
+    ekf = ThermalEKF.from_dict(data)
+
+    assert ekf._x[6] == pytest.approx(ThermalEKF._DEFAULT_BETA_G)
+    assert ekf._P[6][6] == pytest.approx(ThermalEKF._P_INIT_BETA_G)
 
 
 def test_ekf_p55_frozen_when_unoccupied():
@@ -1782,16 +1819,16 @@ def test_from_dict_resets_corrupt_5d_legacy():
         "initialized": True,
     }
     ekf = ThermalEKF.from_dict(data)
-    assert len(ekf._x) == 6
-    assert len(ekf._P) == 6
-    assert all(len(row) == 6 for row in ekf._P)
+    assert len(ekf._x) == 7
+    assert len(ekf._P) == 7
+    assert all(len(row) == 7 for row in ekf._P)
     # All RC parameters reset to defaults regardless of the legacy values.
     assert ekf._x[1] == pytest.approx(ThermalEKF._DEFAULT_ALPHA)
     assert ekf._x[2] == pytest.approx(ThermalEKF._DEFAULT_BETA_H)
     assert ekf._x[5] == pytest.approx(ThermalEKF._DEFAULT_BETA_O)
     # Off-diagonals zeroed
-    for i in range(6):
-        for j in range(6):
+    for i in range(7):
+        for j in range(7):
             if i != j:
                 assert ekf._P[i][j] == 0.0
     # Param diagonals at initials, P[0][0] preserved from input
@@ -1862,7 +1899,7 @@ def test_to_dict_writes_current_version():
     ekf = ThermalEKF()
     ekf.update(T_measured=20.0, T_outdoor=10.0, mode="idle", dt_minutes=5.0)
     data = ekf.to_dict()
-    assert data["ekf_version"] == 6
+    assert data["ekf_version"] == 7
 
 
 def test_from_dict_v4_at_bound_preserves_counters_and_modes():
@@ -2069,10 +2106,10 @@ def test_ekf_update_uses_current_mode_for_predict():
     """
     ekf = ThermalEKF()
     # Known state: T=21, alpha=0.15, beta_h=3.0
-    ekf._x = [21.0, 0.15, 3.0, 4.0, 0.5, 0.3]
+    ekf._x = [21.0, 0.15, 3.0, 4.0, 0.5, 0.3, 3.0]
     # Zero covariance so the Kalman update contributes nothing — only the
     # predict step moves _x[0].  This isolates predict_mode selection.
-    ekf._P = [[0.0] * 6 for _ in range(6)]
+    ekf._P = [[0.0] * 7 for _ in range(7)]
     ekf._initialized = True
     # Simulate: the previous update ended in heating mode.  Without the fix
     # this would leak into the NEXT predict step.

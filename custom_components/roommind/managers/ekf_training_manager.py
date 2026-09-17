@@ -21,6 +21,7 @@ class EkfTrainingManager:
         self._accumulated_dt: dict[str, float] = {}
         self._accumulated_mode: dict[str, str] = {}
         self._accumulated_pf: dict[str, float] = {}
+        self._accumulated_shared_heat: dict[str, float] = {}
         self.last_temps: dict[str, float] = {}
 
     def set_model_manager(self, model_manager: RoomModelManager) -> None:
@@ -38,11 +39,13 @@ class EkfTrainingManager:
         q_residual: float = 0.0,
         shading_factor: float = 1.0,
         q_occupancy: float = 0.0,
+        q_shared_heat: float = 0.0,
     ) -> None:
         """Flush accumulated EKF update (on mode change or window open)."""
         accumulated = self._accumulated_dt.pop(area_id, 0.0)
         prev_mode = self._accumulated_mode.pop(area_id, None)
         pf = self._accumulated_pf.pop(area_id, 1.0)
+        shared_heat = self._accumulated_shared_heat.pop(area_id, q_shared_heat)
         if accumulated > 0 and prev_mode is not None:
             self._model_manager.update(
                 area_id,
@@ -56,6 +59,7 @@ class EkfTrainingManager:
                 q_solar=q_solar * shading_factor,
                 q_residual=q_residual,
                 q_occupancy=q_occupancy,
+                q_shared_heat=shared_heat,
             )
 
     def process(
@@ -74,6 +78,7 @@ class EkfTrainingManager:
         can_cool: bool,
         dt_minutes: float,
         q_occupancy: float = 0.0,
+        q_shared_heat: float = 0.0,
     ) -> None:
         """Process an EKF training step for a room.
 
@@ -91,10 +96,12 @@ class EkfTrainingManager:
                 q_residual=q_residual,
                 shading_factor=shading_factor,
                 q_occupancy=q_occupancy,
+                q_shared_heat=q_shared_heat,
             )
             self._accumulated_dt.pop(area_id, None)
             self._accumulated_mode.pop(area_id, None)
             self._accumulated_pf.pop(area_id, None)
+            self._accumulated_shared_heat.pop(area_id, None)
             # Always track temperature state to prevent stale _x[0]
             # when normal learning resumes.  Only learn k_window when
             # the signal is clean (no residual heat).
@@ -116,10 +123,12 @@ class EkfTrainingManager:
                 q_residual=q_residual,
                 shading_factor=shading_factor,
                 q_occupancy=q_occupancy,
+                q_shared_heat=q_shared_heat,
             )
             self._accumulated_dt.pop(area_id, None)
             self._accumulated_mode.pop(area_id, None)
             self._accumulated_pf.pop(area_id, None)
+            self._accumulated_shared_heat.pop(area_id, None)
         else:
             prev_mode = self._accumulated_mode.get(area_id)
             if prev_mode is not None and prev_mode != ekf_mode:
@@ -133,6 +142,7 @@ class EkfTrainingManager:
                     q_residual=q_residual,
                     shading_factor=shading_factor,
                     q_occupancy=q_occupancy,
+                    q_shared_heat=q_shared_heat,
                 )
 
             old_dt = self._accumulated_dt.get(area_id, 0.0)
@@ -140,11 +150,16 @@ class EkfTrainingManager:
             if new_dt > 0:
                 old_pf = self._accumulated_pf.get(area_id, 1.0)
                 self._accumulated_pf[area_id] = (old_pf * old_dt + ekf_pf * dt_minutes) / new_dt
+                old_shared = self._accumulated_shared_heat.get(area_id, q_shared_heat)
+                self._accumulated_shared_heat[area_id] = (
+                    old_shared * old_dt + q_shared_heat * dt_minutes
+                ) / new_dt
             self._accumulated_dt[area_id] = new_dt
             self._accumulated_mode[area_id] = ekf_mode
 
             if self._accumulated_dt[area_id] >= EKF_UPDATE_MIN_DT:
                 pf = self._accumulated_pf.pop(area_id, 1.0)
+                shared_heat = self._accumulated_shared_heat.pop(area_id, q_shared_heat)
                 self._model_manager.update(
                     area_id,
                     current_temp,
@@ -157,6 +172,7 @@ class EkfTrainingManager:
                     q_solar=q_solar * shading_factor,
                     q_residual=q_residual,
                     q_occupancy=q_occupancy,
+                    q_shared_heat=shared_heat,
                 )
                 self._accumulated_dt[area_id] = 0.0
 
@@ -167,6 +183,7 @@ class EkfTrainingManager:
         self._accumulated_dt.pop(area_id, None)
         self._accumulated_mode.pop(area_id, None)
         self._accumulated_pf.pop(area_id, None)
+        self._accumulated_shared_heat.pop(area_id, None)
 
     def remove_room(self, area_id: str) -> None:
         """Clean up all state for a removed room."""

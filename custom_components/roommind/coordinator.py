@@ -68,6 +68,7 @@ from .managers.ekf_training_manager import EkfTrainingManager
 from .managers.heat_source_orchestrator import HeatSourcePlan, evaluate_heat_sources
 from .managers.mold_manager import MoldManager
 from .managers.residual_heat_tracker import ResidualHeatTracker
+from .managers.shared_heat_source_manager import RoomHeatDemand, SharedHeatSourceManager
 from .managers.valve_manager import ValveManager
 from .managers.weather_manager import WeatherManager
 from .managers.window_manager import WindowManager
@@ -179,6 +180,10 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         self._coil_dry_manager = AcCoilDryManager(hass)
         # Heat source orchestration state (per room)
         self._heat_source_states: dict[str, str] = {}
+        self._shared_heat_manager = SharedHeatSourceManager()
+        self._shared_heat_rooms: set[str] = set()
+        self._local_heat_allowed: set[str] = set()
+        self._shared_heat_plans: list[dict[str, Any]] = []
         # Track which rooms already have entity platform entities registered
         self._entity_areas: set[str] = set()
         # Min-run enforcement: timestamp when current non-idle mode started
@@ -241,6 +246,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
 
         # Load compressor groups from settings (every cycle, cheap)
         self._compressor_manager.load_groups(settings.get("compressor_groups", []))
+        self._shared_heat_manager.load_sources(settings.get("shared_heat_sources", []))
 
         # Load thermal model and valve actuation data from store (once)
         if not self._model_loaded:
@@ -285,6 +291,8 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 room_states[area_id] = room_state
             except Exception:  # noqa: BLE001
                 _LOGGER.exception("Room '%s': processing failed, skipping", area_id)
+
+        await self._async_control_shared_heat_sources(room_states)
 
         # Control master devices based on aggregate room demand
         await self._async_control_master_devices(room_states, rooms, settings)
@@ -405,7 +413,72 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             self._coil_dry_manager.state_dirty = False
 
         self.rooms = room_states
-        return {"rooms": room_states}
+        return {"rooms": room_states, "shared_heat_sources": self._shared_heat_plans}
+
+    async def _async_control_shared_heat_sources(self, room_states: dict[str, dict]) -> None:
+        """Evaluate aggregate room demand and command whole-house heat sources."""
+        demands = [
+            RoomHeatDemand(
+                area_id=area_id,
+                mode=state.get("requested_mode", state.get("commanded_mode", MODE_IDLE)),
+                current_temp=state.get("current_temp"),
+                target_temp=state.get("heat_target"),
+                power_fraction=state.get("requested_power_fraction", 0.0),
+                enabled=not state.get("force_off", False) and not state.get("window_open", False),
+            )
+            for area_id, state in room_states.items()
+        ]
+        shared_rooms: set[str] = set()
+        local_allowed: set[str] = set()
+        live_plans: list[dict[str, Any]] = []
+
+        for source_id in self._shared_heat_manager.get_configs():
+            plan = self._shared_heat_manager.evaluate(source_id, demands)
+            shared_rooms.update(plan.shared_heat_rooms)
+            local_allowed.update(plan.local_heat_allowed)
+            live_plans.append(
+                {
+                    "id": plan.source_id,
+                    "entity_id": plan.entity_id,
+                    "active": plan.active,
+                    "reason": plan.reason,
+                    "requesting_rooms": list(plan.requesting_rooms),
+                    "local_heat_allowed": sorted(plan.local_heat_allowed),
+                    "aggregate_power": plan.aggregate_power,
+                    "max_delta": plan.max_delta,
+                }
+            )
+            if plan.transition != "none":
+                await self._async_set_shared_heat_source(plan.entity_id, plan.active)
+
+        self._shared_heat_rooms = shared_rooms
+        self._local_heat_allowed = local_allowed
+        self._shared_heat_plans = live_plans
+        for area_id, room_state in room_states.items():
+            room_state["shared_heat_active"] = area_id in shared_rooms
+
+    async def _async_set_shared_heat_source(self, entity_id: str, active: bool) -> None:
+        """Apply a shared heat-source transition to a switch or climate entity."""
+        domain = entity_id.split(".", 1)[0]
+        try:
+            if domain == "climate":
+                await self.hass.services.async_call(
+                    "climate",
+                    "set_hvac_mode",
+                    {"entity_id": entity_id, "hvac_mode": "heat" if active else "off"},
+                    blocking=True,
+                    context=make_roommind_context(),
+                )
+            elif domain == "switch":
+                await self.hass.services.async_call(
+                    "switch",
+                    "turn_on" if active else "turn_off",
+                    {"entity_id": entity_id},
+                    blocking=True,
+                    context=make_roommind_context(),
+                )
+        except Exception:  # noqa: BLE001
+            _LOGGER.warning("Shared heat source '%s': service call failed", entity_id, exc_info=True)
 
     def _read_room_sensors(
         self,
@@ -752,10 +825,19 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             mode = MODE_IDLE
             power_fraction = 0.0
 
+        requested_mode = mode
+        requested_power_fraction = power_fraction
+        if mode == MODE_HEATING and area_id in self._shared_heat_rooms and area_id not in self._local_heat_allowed:
+            mode = MODE_IDLE
+            power_fraction = 0.0
+
         climate_active = settings.get("climate_control_active", True) and room.get("climate_control_enabled", True)
         # Startup guard: Full Control room without any temperature reading yet —
         # leave devices in their current state instead of idling them.
         waiting_for_data = has_external_sensor and self._waiting_for_first_reading(area_id)
+        if not climate_active or waiting_for_data:
+            requested_mode = MODE_IDLE
+            requested_power_fraction = 0.0
         if (
             climate_active
             and has_external_sensor
@@ -1019,6 +1101,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             q_residual=q_residual,
             shading_factor=shading_factor,
             q_occupancy=q_occupancy,
+            q_shared_heat=1.0 if area_id in self._shared_heat_rooms else 0.0,
             has_external_sensor=has_external_sensor,
             heat_source_plan=heat_source_plan,
             climate_active=climate_active,
@@ -1053,6 +1136,8 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             mold_prevention_temp_delta=mold_prevention_temp_delta,
             shading_factor=shading_factor,
             q_occupancy=q_occupancy,
+            requested_mode=requested_mode,
+            requested_power_fraction=requested_power_fraction,
             cover_eids=cover_eids,
             cover_result=cover_result,
             mpc_active=mpc_active,
@@ -1074,6 +1159,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         q_residual: float,
         shading_factor: float | None,
         q_occupancy: float,
+        q_shared_heat: float,
         has_external_sensor: bool,
         heat_source_plan: Any | None,
         climate_active: bool,
@@ -1207,6 +1293,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 can_cool=can_cool,
                 dt_minutes=UPDATE_INTERVAL / 60.0,
                 q_occupancy=q_occupancy,
+                q_shared_heat=q_shared_heat,
             )
         else:
             self._ekf_training.clear(area_id)
@@ -1274,6 +1361,8 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         mold_prevention_temp_delta: float,
         shading_factor: float | None,
         q_occupancy: float,
+        requested_mode: str,
+        requested_power_fraction: float,
         cover_eids: list[str],
         cover_result: CoverResult,
         mpc_active: bool,
@@ -1306,6 +1395,9 @@ class RoomMindCoordinator(DataUpdateCoordinator):
             "schedule_temp_warnings": schedule_temp_warnings,
             "mode": display_mode,
             "commanded_mode": mode,
+            "requested_mode": requested_mode,
+            "requested_power_fraction": requested_power_fraction,
+            "shared_heat_active": area_id in self._shared_heat_rooms,
             "heating_power": round(display_pf * 100) if display_mode != MODE_IDLE else 0,
             "device_setpoint": self._compute_device_setpoint_orchestrated(
                 heat_source_plan,

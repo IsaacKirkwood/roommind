@@ -1,0 +1,199 @@
+import { LitElement, html, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import type { HomeAssistant, RoomConfig, SharedHeatSource } from "../../types";
+import { inputStyles } from "../../styles/input-styles";
+
+@customElement("rs-settings-shared-heat")
+export class RsSettingsSharedHeat extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ attribute: false }) public rooms: Record<string, RoomConfig> = {};
+  @property({ type: Array }) public sharedHeatSources: SharedHeatSource[] = [];
+
+  static styles = [
+    inputStyles,
+    css`
+      .source {
+        border: 1px solid var(--divider-color);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .rooms {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .hint {
+        color: var(--secondary-text-color);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+      }
+      ha-textfield,
+      ha-entity-picker {
+        width: 100%;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    `,
+  ];
+
+  render() {
+    return html`
+      ${this.sharedHeatSources.map((source, index) => this._renderSource(source, index))}
+      <ha-button @click=${this._add}
+        ><ha-icon icon="mdi:plus" slot="icon"></ha-icon>Add whole-house heater</ha-button
+      >
+    `;
+  }
+
+  private _renderSource(source: SharedHeatSource, index: number) {
+    return html`<div class="source">
+      <ha-textfield
+        label="Name"
+        .value=${source.name}
+        @change=${(e: Event) => this._set(index, "name", (e.target as HTMLInputElement).value)}
+      ></ha-textfield>
+      <div class="grid">
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${source.entity_id}
+            .includeDomains=${["climate", "switch"]}
+            label="Heating device"
+            @value-changed=${(e: CustomEvent) => this._set(index, "entity_id", e.detail?.value ?? "")}
+          ></ha-entity-picker>
+          <div class="hint">Choose the Shelly switch or its climate wrapper.</div>
+        </div>
+        <ha-textfield
+          type="number"
+          min="1"
+          step="1"
+          label="Rooms needed to start"
+          .value=${String(source.min_requesting_rooms)}
+          @change=${(e: Event) => this._number(index, "min_requesting_rooms", e)}
+        ></ha-textfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          step="0.1"
+          label="Combined demand to start"
+          .value=${String(source.aggregate_power_threshold)}
+          @change=${(e: Event) => this._number(index, "aggregate_power_threshold", e)}
+        ></ha-textfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          step="1"
+          label="Gas-first grace"
+          suffix="min"
+          .value=${String(source.local_grace_minutes)}
+          @change=${(e: Event) => this._number(index, "local_grace_minutes", e)}
+        ></ha-textfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          step="0.1"
+          label="Local trim starts below target"
+          suffix="°C"
+          .value=${String(source.local_trim_delta)}
+          @change=${(e: Event) => this._number(index, "local_trim_delta", e)}
+        ></ha-textfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          step="1"
+          label="Minimum gas run"
+          suffix="min"
+          .value=${String(source.min_run_minutes)}
+          @change=${(e: Event) => this._number(index, "min_run_minutes", e)}
+        ></ha-textfield>
+      </div>
+      <div class="hint">Rooms heated by this device</div>
+      <div class="rooms">
+        ${Object.entries(this.rooms).map(
+        ([id, room]) =>
+          html` <ha-formfield .label=${(room as RoomConfig & { name?: string }).name || id}>
+            <ha-checkbox
+              .checked=${source.rooms.includes(id)}
+              @change=${(e: Event) => this._room(index, id, (e.target as HTMLInputElement).checked)}
+            ></ha-checkbox>
+          </ha-formfield>`,
+      )}
+      </div>
+      <div class="actions">
+        <ha-button @click=${() => this._fire(this.sharedHeatSources.filter((_, i) => i !== index))}
+          >Remove</ha-button
+        >
+      </div>
+    </div>`;
+  }
+
+  private _set(
+    index: number,
+    field: keyof SharedHeatSource,
+    value: SharedHeatSource[keyof SharedHeatSource],
+  ) {
+    const updated = [...this.sharedHeatSources];
+    updated[index] = { ...updated[index], [field]: value };
+    this._fire(updated);
+  }
+  private _number(index: number, field: keyof SharedHeatSource, event: Event) {
+    const value = Number((event.target as HTMLInputElement).value);
+    if (Number.isFinite(value)) this._set(index, field, value);
+  }
+  private _room(index: number, roomId: string, checked: boolean) {
+    const rooms = checked
+      ? [...new Set([...this.sharedHeatSources[index].rooms, roomId])]
+      : this.sharedHeatSources[index].rooms.filter((id) => id !== roomId);
+    this._set(index, "rooms", rooms);
+  }
+  private _add() {
+    this._fire([
+      ...this.sharedHeatSources,
+      {
+        id: self.crypto?.randomUUID?.() ?? String(Date.now()),
+        name: "Whole house gas heating",
+        entity_id: "",
+        rooms: [],
+        enabled: true,
+        min_requesting_rooms: 2,
+        aggregate_power_threshold: 1.2,
+        start_delta: 0.5,
+        stop_delta: 0.2,
+        local_trim_delta: 1.0,
+        local_grace_minutes: 15,
+        min_run_minutes: 15,
+        min_off_minutes: 10,
+      },
+    ]);
+  }
+  private _fire(value: SharedHeatSource[]) {
+    this.dispatchEvent(
+      new CustomEvent("setting-changed", {
+        detail: { key: "sharedHeatSources", value },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "rs-settings-shared-heat": RsSettingsSharedHeat;
+  }
+}

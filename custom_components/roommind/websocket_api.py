@@ -20,6 +20,14 @@ from .const import (
     DEFAULT_CONFLICT_RESOLUTION,
     DEFAULT_ECO_COOL,
     DEFAULT_ECO_HEAT,
+    DEFAULT_SHARED_HEAT_AGGREGATE_POWER_THRESHOLD,
+    DEFAULT_SHARED_HEAT_LOCAL_GRACE_MINUTES,
+    DEFAULT_SHARED_HEAT_LOCAL_TRIM_DELTA,
+    DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES,
+    DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS,
+    DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES,
+    DEFAULT_SHARED_HEAT_START_DELTA,
+    DEFAULT_SHARED_HEAT_STOP_DELTA,
     DOMAIN,
     OVERRIDE_TYPES,
     build_override_live,
@@ -169,6 +177,7 @@ _SETTINGS_SAVE_FIELDS = (
     "room_order",
     "group_by_floor",
     "compressor_groups",
+    "shared_heat_sources",
 )
 
 
@@ -332,6 +341,7 @@ async def websocket_list_rooms(
             ),
             "coil_dry_drain_minutes": settings.get("coil_dry_drain_minutes", DEFAULT_COIL_DRY_DRAIN_MINUTES),
             "compressor_groups": settings.get("compressor_groups", []),
+            "shared_heat_sources": settings.get("shared_heat_sources", []),
         },
     )
 
@@ -705,6 +715,39 @@ async def websocket_get_settings(
                 vol.Optional("enforce_uniform_mode", default=False): bool,
             }
         ],
+        vol.Optional("shared_heat_sources"): [
+            {
+                vol.Required("id"): str,
+                vol.Required("name"): str,
+                vol.Required("entity_id"): str,
+                vol.Required("rooms"): vol.All([str], vol.Length(min=1)),
+                vol.Optional("enabled", default=True): bool,
+                vol.Optional(
+                    "min_requesting_rooms", default=DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS
+                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=50)),
+                vol.Optional(
+                    "aggregate_power_threshold", default=DEFAULT_SHARED_HEAT_AGGREGATE_POWER_THRESHOLD
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=50)),
+                vol.Optional("start_delta", default=DEFAULT_SHARED_HEAT_START_DELTA): vol.All(
+                    vol.Coerce(float), vol.Range(min=0, max=10)
+                ),
+                vol.Optional("stop_delta", default=DEFAULT_SHARED_HEAT_STOP_DELTA): vol.All(
+                    vol.Coerce(float), vol.Range(min=0, max=10)
+                ),
+                vol.Optional("local_trim_delta", default=DEFAULT_SHARED_HEAT_LOCAL_TRIM_DELTA): vol.All(
+                    vol.Coerce(float), vol.Range(min=0, max=10)
+                ),
+                vol.Optional("local_grace_minutes", default=DEFAULT_SHARED_HEAT_LOCAL_GRACE_MINUTES): vol.All(
+                    vol.Coerce(int), vol.Range(min=0, max=120)
+                ),
+                vol.Optional("min_run_minutes", default=DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES): vol.All(
+                    vol.Coerce(int), vol.Range(min=0, max=120)
+                ),
+                vol.Optional("min_off_minutes", default=DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES): vol.All(
+                    vol.Coerce(int), vol.Range(min=0, max=120)
+                ),
+            }
+        ],
     }
 )
 @websocket_api.async_response
@@ -792,6 +835,60 @@ async def websocket_save_settings(
                 "A master entity cannot be assigned to multiple groups",
             )
             return
+
+    shared_sources = changes.get("shared_heat_sources")
+    if shared_sources:
+        source_ids = [source.get("id", "") for source in shared_sources]
+        if len(source_ids) != len(set(source_ids)):
+            connection.send_error(
+                msg["id"],
+                "duplicate_shared_source_id",
+                "Shared heat source IDs must be unique",
+            )
+            return
+        source_entities = [source.get("entity_id", "") for source in shared_sources]
+        if len(source_entities) != len(set(source_entities)):
+            connection.send_error(
+                msg["id"],
+                "duplicate_shared_source_entity",
+                "A whole-house entity cannot be assigned to multiple shared sources",
+            )
+            return
+        configured_rooms = set(store.get_rooms())
+        for source in shared_sources:
+            entity_id = source.get("entity_id", "")
+            if not entity_id.startswith(("climate.", "switch.")):
+                connection.send_error(
+                    msg["id"],
+                    "invalid_shared_source_entity",
+                    f"Shared heat source '{entity_id}' must be a climate or switch entity",
+                )
+                return
+            rooms = source.get("rooms", [])
+            if len(rooms) != len(set(rooms)):
+                connection.send_error(
+                    msg["id"],
+                    "duplicate_shared_source_room",
+                    f"Shared heat source '{source.get('id', '')}' contains duplicate rooms",
+                )
+                return
+            unknown_rooms = sorted(set(rooms) - configured_rooms)
+            if unknown_rooms:
+                connection.send_error(
+                    msg["id"],
+                    "unknown_shared_source_room",
+                    f"Unknown RoomMind room(s): {', '.join(unknown_rooms)}",
+                )
+                return
+            if source.get("stop_delta", DEFAULT_SHARED_HEAT_STOP_DELTA) > source.get(
+                "start_delta", DEFAULT_SHARED_HEAT_START_DELTA
+            ):
+                connection.send_error(
+                    msg["id"],
+                    "invalid_shared_source_hysteresis",
+                    "Shared heat source stop_delta cannot exceed start_delta",
+                )
+                return
 
     settings = await store.async_save_settings(changes)
     connection.send_result(msg["id"], {"settings": settings})

@@ -103,6 +103,22 @@ export interface CompressorGroup {
   enforce_uniform_mode: boolean;
 }
 
+export interface SharedHeatSource {
+  id: string;
+  name: string;
+  entity_id: string;
+  rooms: string[];
+  enabled: boolean;
+  min_requesting_rooms: number;
+  aggregate_power_threshold: number;
+  start_delta: number;
+  stop_delta: number;
+  local_trim_delta: number;
+  local_grace_minutes: number;
+  min_run_minutes: number;
+  min_off_minutes: number;
+}
+
 export interface RoomConfig {
   area_id: string;
   thermostats: string[];
@@ -195,6 +211,7 @@ export interface GlobalSettings {
   mold_prevention_notify_enabled?: boolean;
   mold_prevention_notify_targets?: NotificationTarget[];
   compressor_groups?: CompressorGroup[];
+  shared_heat_sources?: SharedHeatSource[];
   room_order?: string[];
   group_by_floor?: boolean;
   boost_applied_at?: Record<string, number>;
