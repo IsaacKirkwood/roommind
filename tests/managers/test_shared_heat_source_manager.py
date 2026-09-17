@@ -219,3 +219,29 @@ def test_disabled_whole_house_thermostat_leaves_local_rooms_available():
 
     assert plan.active is False
     assert plan.local_heat_allowed == frozenset({"isaac", "jacob"})
+
+
+def test_nobody_home_stops_shared_heat_immediately_and_blocks_local_heat():
+    manager = SharedHeatSourceManager()
+    manager.load_sources(
+        [
+            _source(
+                require_home_presence=True,
+                home_presence_entities=["person.isaac", "person.jacob"],
+                target_temperature=18.0,
+            )
+        ]
+    )
+    demands = [_demand("isaac"), _demand("jacob")]
+    manager.evaluate(
+        "gas", demands, now=1000, shared_current_temp=16.0, home_occupied=True
+    )
+
+    away = manager.evaluate(
+        "gas", demands, now=1010, shared_current_temp=16.0, home_occupied=False
+    )
+
+    assert away.active is False
+    assert away.transition == "stop"
+    assert away.reason == "nobody home"
+    assert away.local_heat_allowed == frozenset()

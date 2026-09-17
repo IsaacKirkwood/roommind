@@ -763,6 +763,8 @@ async def websocket_get_settings(
                 vol.Optional("temperature_offsets", default={}): {
                     str: vol.All(vol.Coerce(float), vol.Range(min=-20, max=20))
                 },
+                vol.Optional("require_home_presence", default=False): bool,
+                vol.Optional("home_presence_entities", default=[]): [str],
             }
         ],
     }

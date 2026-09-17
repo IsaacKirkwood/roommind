@@ -125,6 +125,8 @@ export interface SharedHeatSource {
   thermostat_enabled: boolean;
   temperature_sensors: string[];
   temperature_offsets: Record<string, number>;
+  require_home_presence: boolean;
+  home_presence_entities: string[];
 }
 
 export interface RoomConfig {

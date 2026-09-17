@@ -465,11 +465,17 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 and state.state in {"playing", "buffering"}
                 for entity_id in config.media_player_entities
             )
+            home_occupied = any(
+                (state := self.hass.states.get(entity_id)) is not None
+                and state.state == "home"
+                for entity_id in config.home_presence_entities
+            )
             plan = self._shared_heat_manager.evaluate(
                 source_id,
                 demands,
                 occupied_now=occupied_now,
                 shared_current_temp=(shared_current_temp if config.target_temperature is not None else None),
+                home_occupied=home_occupied,
             )
             shared_rooms.update(plan.shared_heat_rooms)
             local_allowed.update(plan.local_heat_allowed)
@@ -487,6 +493,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                     "current_temperature": shared_current_temp,
                     "target_temperature": config.target_temperature,
                     "thermostat_enabled": config.thermostat_enabled,
+                    "home_occupied": home_occupied,
                 }
             )
             if plan.transition != "none":

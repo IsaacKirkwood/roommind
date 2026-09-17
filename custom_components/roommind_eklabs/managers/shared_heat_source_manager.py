@@ -74,6 +74,8 @@ class SharedHeatSourceConfig:
     thermostat_enabled: bool = True
     temperature_sensors: tuple[str, ...] = ()
     temperature_offsets: dict[str, float] | None = None
+    require_home_presence: bool = False
+    home_presence_entities: tuple[str, ...] = ()
     enabled: bool = True
 
     @classmethod
@@ -126,6 +128,10 @@ class SharedHeatSourceConfig:
                 str(entity_id): float(offset)
                 for entity_id, offset in raw.get("temperature_offsets", {}).items()
             },
+            require_home_presence=bool(raw.get("require_home_presence", False)),
+            home_presence_entities=tuple(
+                str(entity_id) for entity_id in raw.get("home_presence_entities", [])
+            ),
             enabled=bool(raw.get("enabled", True)),
         )
 
@@ -182,6 +188,7 @@ class SharedHeatSourceManager:
         now: float | None = None,
         occupied_now: bool = False,
         shared_current_temp: float | None = None,
+        home_occupied: bool = True,
     ) -> SharedHeatSourcePlan:
         """Return and record the next plan for one source."""
         timestamp = monotonic() if now is None else now
@@ -189,10 +196,11 @@ class SharedHeatSourceManager:
         state = self._states[source_id]
         if occupied_now:
             state.last_occupied = timestamp
-        occupancy_eligible = not config.require_occupancy or (
+        home_eligible = not config.require_home_presence or home_occupied
+        occupancy_eligible = home_eligible and (not config.require_occupancy or (
             state.last_occupied is not None
             and timestamp - state.last_occupied <= config.occupancy_hold_seconds
-        )
+        ))
         demand_by_room = {d.area_id: d for d in demands}
         participating = [demand_by_room[area_id] for area_id in config.rooms if area_id in demand_by_room]
         requesting = [d for d in participating if d.requesting]
@@ -229,7 +237,13 @@ class SharedHeatSourceManager:
             reason = "source disabled or incomplete"
         elif state.active:
             run_elapsed = timestamp - state.on_since if state.on_since is not None else config.min_run_seconds
-            if stop_requested and run_elapsed >= config.min_run_seconds:
+            if not home_eligible:
+                state.active = False
+                state.on_since = None
+                state.off_since = timestamp
+                transition = "stop"
+                reason = "nobody home"
+            elif stop_requested and run_elapsed >= config.min_run_seconds:
                 state.active = False
                 state.on_since = None
                 state.off_since = timestamp
@@ -260,7 +274,7 @@ class SharedHeatSourceManager:
             reason = "demand below shared-source threshold"
 
         local_allowed: set[str] = set()
-        if not state.active or not occupancy_eligible:
+        if home_eligible and (not state.active or not occupancy_eligible):
             local_allowed.update(d.area_id for d in requesting)
         else:
             active_elapsed = timestamp - state.on_since if state.on_since is not None else 0.0

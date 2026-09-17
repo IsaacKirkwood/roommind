@@ -291,6 +291,7 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
             "temperature_offsets": source.get("temperature_offsets", {}),
             "occupancy_eligible": plan.get("occupancy_eligible", False),
             "control_reason": plan.get("reason", ""),
+            "home_occupied": plan.get("home_occupied", True),
         }
 
     async def _async_update_source(self, **changes: Any) -> None:

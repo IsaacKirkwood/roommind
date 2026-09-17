@@ -255,6 +255,8 @@ export class RsSettingsSharedHeat extends LitElement {
         thermostat_enabled: true,
         temperature_sensors: [],
         temperature_offsets: {},
+        require_home_presence: false,
+        home_presence_entities: [],
       },
     ]);
   }
