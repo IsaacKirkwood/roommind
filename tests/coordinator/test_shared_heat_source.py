@@ -3,6 +3,8 @@
 from unittest.mock import ANY, AsyncMock, call
 
 import pytest
+from homeassistant.const import UnitOfTemperature
+from homeassistant.core import State
 
 from .conftest import _create_coordinator
 
@@ -70,3 +72,34 @@ async def test_shared_heat_climate_uses_hvac_mode(hass, mock_config_entry):
         blocking=True,
         context=ANY,
     )
+
+
+@pytest.mark.asyncio
+async def test_shared_heat_averages_calibrated_temperature_sensors(hass, mock_config_entry):
+    coordinator = _create_coordinator(hass, mock_config_entry)
+    hass.config.units.temperature_unit = UnitOfTemperature.CELSIUS
+    source = _source()
+    source.update(
+        {
+            "target_temperature": 18.0,
+            "temperature_sensors": ["sensor.office", "sensor.bedroom"],
+            "temperature_offsets": {"sensor.office": -5.0},
+            "min_run_minutes": 0,
+        }
+    )
+    coordinator._shared_heat_manager.load_sources([source])
+    states = {
+        "sensor.office": State("sensor.office", "22", {"unit_of_measurement": "°C"}),
+        "sensor.bedroom": State("sensor.bedroom", "17", {"unit_of_measurement": "°C"}),
+    }
+    hass.states.get.side_effect = states.get
+    hass.services.async_call = AsyncMock()
+
+    await coordinator._async_control_shared_heat_sources(
+        {"isaac": _room_state("isaac"), "jacob": _room_state("jacob")}
+    )
+
+    plan = coordinator._shared_heat_plans[0]
+    assert plan["current_temperature"] == 17.0
+    assert plan["target_temperature"] == 18.0
+    assert plan["active"] is True

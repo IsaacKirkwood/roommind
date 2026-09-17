@@ -435,12 +435,24 @@ class RoomMindCoordinator(DataUpdateCoordinator):
 
         for source_id in self._shared_heat_manager.get_configs():
             config = self._shared_heat_manager.get_configs()[source_id]
-            source_temperatures = [
-                room_states[area_id]["current_temp"]
-                for area_id in config.rooms
-                if area_id in room_states
-                and isinstance(room_states[area_id].get("current_temp"), (int, float))
-            ]
+            source_temperatures: list[float] = []
+            if config.temperature_sensors:
+                offsets = config.temperature_offsets or {}
+                for entity_id in config.temperature_sensors:
+                    raw_value = read_sensor_value(
+                        self.hass, entity_id, "whole_house", "temperature"
+                    )
+                    if raw_value is None:
+                        continue
+                    value = ha_temp_to_celsius(self.hass, raw_value, entity_id=entity_id)
+                    source_temperatures.append(value + offsets.get(entity_id, 0.0))
+            else:
+                source_temperatures = [
+                    room_states[area_id]["current_temp"]
+                    for area_id in config.rooms
+                    if area_id in room_states
+                    and isinstance(room_states[area_id].get("current_temp"), (int, float))
+                ]
             shared_current_temp = (
                 sum(source_temperatures) / len(source_temperatures) if source_temperatures else None
             )

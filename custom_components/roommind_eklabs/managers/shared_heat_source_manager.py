@@ -72,6 +72,8 @@ class SharedHeatSourceConfig:
     occupancy_hold_seconds: float = DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES * 60
     target_temperature: float | None = None
     thermostat_enabled: bool = True
+    temperature_sensors: tuple[str, ...] = ()
+    temperature_offsets: dict[str, float] | None = None
     enabled: bool = True
 
     @classmethod
@@ -119,6 +121,11 @@ class SharedHeatSourceConfig:
                 float(raw["target_temperature"]) if "target_temperature" in raw else None
             ),
             thermostat_enabled=bool(raw.get("thermostat_enabled", True)),
+            temperature_sensors=tuple(str(entity_id) for entity_id in raw.get("temperature_sensors", [])),
+            temperature_offsets={
+                str(entity_id): float(offset)
+                for entity_id, offset in raw.get("temperature_offsets", {}).items()
+            },
             enabled=bool(raw.get("enabled", True)),
         )
 

@@ -253,6 +253,8 @@ export class RsSettingsSharedHeat extends LitElement {
         occupancy_hold_minutes: 20,
         target_temperature: 18,
         thermostat_enabled: true,
+        temperature_sensors: [],
+        temperature_offsets: {},
       },
     ]);
   }

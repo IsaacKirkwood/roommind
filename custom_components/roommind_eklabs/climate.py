@@ -287,6 +287,8 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
         source = self._source()
         return {
             "temperature_rooms": source.get("rooms", []),
+            "temperature_sensors": source.get("temperature_sensors", []),
+            "temperature_offsets": source.get("temperature_offsets", {}),
             "occupancy_eligible": plan.get("occupancy_eligible", False),
             "control_reason": plan.get("reason", ""),
         }

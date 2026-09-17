@@ -123,6 +123,8 @@ export interface SharedHeatSource {
   occupancy_hold_minutes: number;
   target_temperature: number;
   thermostat_enabled: boolean;
+  temperature_sensors: string[];
+  temperature_offsets: Record<string, number>;
 }
 
 export interface RoomConfig {
