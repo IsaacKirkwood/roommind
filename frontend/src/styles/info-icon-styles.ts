@@ -2,7 +2,7 @@ import { css } from "lit";
 
 /**
  * Shared CSS for info-icon toggle pattern.
- * Used by rs-analytics (model stats) and rs-climate-mode-selector.
+ * Used by rme-analytics (model stats) and rme-climate-mode-selector.
  */
 export const infoIconStyles = css`
   .info-icon {

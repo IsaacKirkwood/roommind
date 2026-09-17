@@ -114,7 +114,7 @@ export const loadHaElements = async (): Promise<void> => {
 
   await customElements.whenDefined("ha-card");
 
-  // Step 3: Load ha-date-range-picker (used by rs-analytics).
+  // Step 3: Load ha-date-range-picker (used by rme-analytics).
   if (!customElements.get("ha-date-range-picker")) {
     try {
       const helpers = await (window as any).loadCardHelpers();
@@ -131,7 +131,7 @@ export const loadHaElements = async (): Promise<void> => {
     }
   }
 
-  // Step 4: Load ha-chart-base (used by rs-analytics).
+  // Step 4: Load ha-chart-base (used by rme-analytics).
   // It is part of HA's history/energy modules and NOT loaded by the
   // config panel or card-helpers entities card.  Trigger the import
   // chain via the statistics-graph lovelace card, which depends on it.

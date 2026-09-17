@@ -526,7 +526,7 @@
         <span class="configure-text">${C(`card.tap_configure`,t)}</span>
         <span class="configure-arrow">›</span>
       </div>
-    `}_onCardClick(){this.dispatchEvent(new CustomEvent(`area-selected`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onMoveUp(e){e.stopPropagation(),this.canMoveUp&&this.dispatchEvent(new CustomEvent(`move-room-up`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onMoveDown(e){e.stopPropagation(),this.canMoveDown&&this.dispatchEvent(new CustomEvent(`move-room-down`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onHideClick(e){e.stopPropagation(),this.dispatchEvent(new CustomEvent(`hide-room`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],N.prototype,`area`,void 0),j([b({attribute:!1})],N.prototype,`config`,void 0),j([b({type:Number})],N.prototype,`climateEntityCount`,void 0),j([b({type:Number})],N.prototype,`tempSensorCount`,void 0),j([b({attribute:!1})],N.prototype,`hass`,void 0),j([b({type:String})],N.prototype,`controlMode`,void 0),j([b({type:Boolean})],N.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],N.prototype,`reordering`,void 0),j([b({type:Boolean})],N.prototype,`canMoveUp`,void 0),j([b({type:Boolean})],N.prototype,`canMoveDown`,void 0),N=j([y(`rs-area-card`)],N);var Dt={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},Ot=e=>(...t)=>({_$litDirective$:e,values:t}),kt=class{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,t,n){this._$Ct=e,this._$AM=t,this._$Ci=n}_$AS(e,t){return this.update(e,t)}update(e,t){return this.render(...t)}};Qe();var At=class extends kt{constructor(e){if(super(e),this.it=g,e.type!==Dt.CHILD)throw Error(this.constructor.directiveName+`() can only be used in child bindings`)}render(e){if(e===g||e==null)return this._t=void 0,this.it=e;if(e===Re)return e;if(typeof e!=`string`)throw Error(this.constructor.directiveName+`() called with a non-string value`);if(e===this.it)return this._t;this.it=e;let t=[e];return t.raw=t,this._t={_$litType$:this.constructor.resultType,strings:t,values:[]}}};At.directiveName=`unsafeHTML`,At.resultType=1;var P=Ot(At);v(),S(),M();var jt=class extends _{constructor(...e){super(...e),this.text=``,this.icon=`mdi:information-outline`,this._open=!1,this._style=`visibility: hidden;`,this._onDocPointer=e=>{e.composedPath().includes(this)||this._close()},this._onKey=e=>{e.key===`Escape`&&(e.stopPropagation(),this._close())},this._onScroll=()=>this._close()}disconnectedCallback(){super.disconnectedCallback(),this._removeListeners()}static{this.styles=l`
+    `}_onCardClick(){this.dispatchEvent(new CustomEvent(`area-selected`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onMoveUp(e){e.stopPropagation(),this.canMoveUp&&this.dispatchEvent(new CustomEvent(`move-room-up`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onMoveDown(e){e.stopPropagation(),this.canMoveDown&&this.dispatchEvent(new CustomEvent(`move-room-down`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}_onHideClick(e){e.stopPropagation(),this.dispatchEvent(new CustomEvent(`hide-room`,{detail:{areaId:this.area.area_id},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],N.prototype,`area`,void 0),j([b({attribute:!1})],N.prototype,`config`,void 0),j([b({type:Number})],N.prototype,`climateEntityCount`,void 0),j([b({type:Number})],N.prototype,`tempSensorCount`,void 0),j([b({attribute:!1})],N.prototype,`hass`,void 0),j([b({type:String})],N.prototype,`controlMode`,void 0),j([b({type:Boolean})],N.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],N.prototype,`reordering`,void 0),j([b({type:Boolean})],N.prototype,`canMoveUp`,void 0),j([b({type:Boolean})],N.prototype,`canMoveDown`,void 0),N=j([y(`rme-area-card`)],N);var Dt={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},Ot=e=>(...t)=>({_$litDirective$:e,values:t}),kt=class{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,t,n){this._$Ct=e,this._$AM=t,this._$Ci=n}_$AS(e,t){return this.update(e,t)}update(e,t){return this.render(...t)}};Qe();var At=class extends kt{constructor(e){if(super(e),this.it=g,e.type!==Dt.CHILD)throw Error(this.constructor.directiveName+`() can only be used in child bindings`)}render(e){if(e===g||e==null)return this._t=void 0,this.it=e;if(e===Re)return e;if(typeof e!=`string`)throw Error(this.constructor.directiveName+`() called with a non-string value`);if(e===this.it)return this._t;this.it=e;let t=[e];return t.raw=t,this._t={_$litType$:this.constructor.resultType,strings:t,values:[]}}};At.directiveName=`unsafeHTML`,At.resultType=1;var P=Ot(At);v(),S(),M();var jt=class extends _{constructor(...e){super(...e),this.text=``,this.icon=`mdi:information-outline`,this._open=!1,this._style=`visibility: hidden;`,this._onDocPointer=e=>{e.composedPath().includes(this)||this._close()},this._onKey=e=>{e.key===`Escape`&&(e.stopPropagation(),this._close())},this._onScroll=()=>this._close()}disconnectedCallback(){super.disconnectedCallback(),this._removeListeners()}static{this.styles=l`
     :host {
       display: inline-flex;
       position: relative;
@@ -619,7 +619,7 @@
             >
               ${this.text?this.text:g}<slot></slot>
             </div>`:g}
-    `}_toggle(e){e.stopPropagation(),this._open?this._close():this._openTooltip()}_openTooltip(){this._open=!0,this._style=`visibility: hidden;`,requestAnimationFrame(()=>{this._positionTooltip()}),setTimeout(()=>{document.addEventListener(`pointerdown`,this._onDocPointer,!0),document.addEventListener(`keydown`,this._onKey,!0),document.addEventListener(`scroll`,this._onScroll,!0),window.addEventListener(`resize`,this._onScroll,!0)},0)}_positionTooltip(){let e=this.renderRoot.querySelector(`.tooltip`),t=this.renderRoot.querySelector(`button`);if(!e||!t)return;let n=t.getBoundingClientRect(),r=e.getBoundingClientRect(),i=window.innerWidth,a=window.innerHeight,o=a-n.bottom,s=n.top,c;c=o>=r.height+8?n.bottom+6:s>=r.height+8?n.top-r.height-6:Math.max(8,(a-r.height)/2);let l=n.left+n.width/2-r.width/2;l=Math.max(8,Math.min(l,i-r.width-8)),this._style=`top: ${c}px; left: ${l}px;`}_close(){this._open&&(this._open=!1,this._style=`visibility: hidden;`,this._removeListeners())}_removeListeners(){document.removeEventListener(`pointerdown`,this._onDocPointer,!0),document.removeEventListener(`keydown`,this._onKey,!0),document.removeEventListener(`scroll`,this._onScroll,!0),window.removeEventListener(`resize`,this._onScroll,!0)}};j([b({type:String})],jt.prototype,`text`,void 0),j([b({type:String})],jt.prototype,`icon`,void 0),j([x()],jt.prototype,`_open`,void 0),j([x()],jt.prototype,`_style`,void 0),jt=j([y(`rs-info-icon`)],jt),v(),S(),M();var Mt=`M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z`,Nt=`M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z`,F=class extends _{constructor(...e){super(...e),this.config=null,this.climateControlActive=!0,this.isOutdoor=!1,this.overrideInfo=null,this._countdown=``,this._editingName=!1,this._nameInput=``,this._controlModeInfoExpanded=!1}static{this.styles=[Ct,l`
+    `}_toggle(e){e.stopPropagation(),this._open?this._close():this._openTooltip()}_openTooltip(){this._open=!0,this._style=`visibility: hidden;`,requestAnimationFrame(()=>{this._positionTooltip()}),setTimeout(()=>{document.addEventListener(`pointerdown`,this._onDocPointer,!0),document.addEventListener(`keydown`,this._onKey,!0),document.addEventListener(`scroll`,this._onScroll,!0),window.addEventListener(`resize`,this._onScroll,!0)},0)}_positionTooltip(){let e=this.renderRoot.querySelector(`.tooltip`),t=this.renderRoot.querySelector(`button`);if(!e||!t)return;let n=t.getBoundingClientRect(),r=e.getBoundingClientRect(),i=window.innerWidth,a=window.innerHeight,o=a-n.bottom,s=n.top,c;c=o>=r.height+8?n.bottom+6:s>=r.height+8?n.top-r.height-6:Math.max(8,(a-r.height)/2);let l=n.left+n.width/2-r.width/2;l=Math.max(8,Math.min(l,i-r.width-8)),this._style=`top: ${c}px; left: ${l}px;`}_close(){this._open&&(this._open=!1,this._style=`visibility: hidden;`,this._removeListeners())}_removeListeners(){document.removeEventListener(`pointerdown`,this._onDocPointer,!0),document.removeEventListener(`keydown`,this._onKey,!0),document.removeEventListener(`scroll`,this._onScroll,!0),window.removeEventListener(`resize`,this._onScroll,!0)}};j([b({type:String})],jt.prototype,`text`,void 0),j([b({type:String})],jt.prototype,`icon`,void 0),j([x()],jt.prototype,`_open`,void 0),j([x()],jt.prototype,`_style`,void 0),jt=j([y(`rme-info-icon`)],jt),v(),S(),M();var Mt=`M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z`,Nt=`M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z`,F=class extends _{constructor(...e){super(...e),this.config=null,this.climateControlActive=!0,this.isOutdoor=!1,this.overrideInfo=null,this._countdown=``,this._editingName=!1,this._nameInput=``,this._controlModeInfoExpanded=!1}static{this.styles=[Ct,l`
       :host {
         display: block;
       }
@@ -871,7 +871,7 @@
         border-radius: 8px;
       }
 
-      .learning-paused rs-info-icon {
+      .learning-paused rme-info-icon {
         margin-left: 2px;
       }
 
@@ -989,18 +989,18 @@
                 ${e.compressor_protection_active&&!this.isOutdoor?h`<div class="hero-metric info">
                         <ha-icon icon="mdi:timer-sand"></ha-icon>
                         ${e.compressor_protection_reason===`min_run`?C(`hero.compressor_protection_min_run`,this.hass?.language??`en`):C(`hero.compressor_protection_min_off`,this.hass?.language??`en`)}
-                        <rs-info-icon
+                        <rme-info-icon
                           icon="mdi:information-outline"
                           .text=${C(`hero.compressor_protection_info`,this.hass?.language??`en`)}
-                        ></rs-info-icon>
+                        ></rme-info-icon>
                       </div>`:g}
                 ${e.coil_dry_active&&!this.isOutdoor?h`<div class="hero-metric info">
                         <ha-icon icon="mdi:air-filter"></ha-icon>
                         ${C(e.coil_dry_phase===`drain`?`hero.coil_dry_drain`:`hero.coil_dry`,this.hass?.language??`en`,{minutes:this._coilDryMinutesLeft(e.coil_dry_until)})}
-                        <rs-info-icon
+                        <rme-info-icon
                           icon="mdi:information-outline"
                           .text=${C(`hero.coil_dry_info`,this.hass?.language??`en`)}
-                        ></rs-info-icon>
+                        ></rme-info-icon>
                       </div>`:g}
                 ${e.mold_surface_rh!=null&&!this.isOutdoor?h`<div
                         class="hero-metric ${e.mold_risk_level===`critical`?`critical`:e.mold_risk_level===`warning`?`warning`:``}"
@@ -1015,10 +1015,10 @@
                 ${e.learning_paused_reason===`outdoor_unavailable`&&!this.isOutdoor?h`<div class="hero-metric warning learning-paused">
                         <ha-icon icon="mdi:school-outline"></ha-icon>
                         ${C(`hero.mpc_learning_paused`,this.hass?.language??`en`)}
-                        <rs-info-icon
+                        <rme-info-icon
                           icon="mdi:information-outline"
                           .text=${C(`hero.mpc_learning_paused.outdoor_unavailable`,this.hass?.language??`en`)}
-                        ></rs-info-icon>
+                        ></rme-info-icon>
                       </div>`:g}
                 ${!this.climateControlActive&&!this.isOutdoor?h`<div class="uncontrolled-hint">
                         ${C(`card.not_controlled`,this.hass?.language??`en`)}
@@ -1029,7 +1029,7 @@
                   ${C(`hero.not_configured`,this.hass?.language??`en`)}
                 </div>`}
       </ha-card>
-    `}};j([b({attribute:!1})],F.prototype,`hass`,void 0),j([b({attribute:!1})],F.prototype,`area`,void 0),j([b({attribute:!1})],F.prototype,`config`,void 0),j([b({type:Boolean})],F.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],F.prototype,`isOutdoor`,void 0),j([b({attribute:!1})],F.prototype,`overrideInfo`,void 0),j([x()],F.prototype,`_countdown`,void 0),j([x()],F.prototype,`_editingName`,void 0),j([x()],F.prototype,`_nameInput`,void 0),j([x()],F.prototype,`_controlModeInfoExpanded`,void 0),F=j([y(`rs-hero-status`)],F),v(),S(),M();var Pt=class extends _{constructor(...e){super(...e),this.climateMode=`auto`,this.language=`en`}static{this.styles=l`
+    `}};j([b({attribute:!1})],F.prototype,`hass`,void 0),j([b({attribute:!1})],F.prototype,`area`,void 0),j([b({attribute:!1})],F.prototype,`config`,void 0),j([b({type:Boolean})],F.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],F.prototype,`isOutdoor`,void 0),j([b({attribute:!1})],F.prototype,`overrideInfo`,void 0),j([x()],F.prototype,`_countdown`,void 0),j([x()],F.prototype,`_editingName`,void 0),j([x()],F.prototype,`_nameInput`,void 0),j([x()],F.prototype,`_controlModeInfoExpanded`,void 0),F=j([y(`rme-hero-status`)],F),v(),S(),M();var Pt=class extends _{constructor(...e){super(...e),this.climateMode=`auto`,this.language=`en`}static{this.styles=l`
     :host {
       display: block;
     }
@@ -1099,7 +1099,7 @@
             </button>
           `)}
       </div>
-    `}_onModeClick(e){this.dispatchEvent(new CustomEvent(`mode-changed`,{detail:{mode:e},bubbles:!0,composed:!0}))}};j([b({type:String})],Pt.prototype,`climateMode`,void 0),j([b({type:String})],Pt.prototype,`language`,void 0),Pt=j([y(`rs-climate-mode-selector`)],Pt);function I(e){return e.detail?.value??e.target.value??``}function L(e,t){e.dispatchEvent(new CustomEvent(`save-status`,{detail:{status:t},bubbles:!0,composed:!0}))}function Ft(e,t){e.dispatchEvent(new CustomEvent(`hass-more-info`,{bubbles:!0,composed:!0,detail:{entityId:t}}))}v(),S(),M();var It=class e extends _{constructor(...e){super(...e),this.activeIndex=-1,this.selectorEntity=``,this.editing=!1}static{this.sharedStyles=l`
+    `}_onModeClick(e){this.dispatchEvent(new CustomEvent(`mode-changed`,{detail:{mode:e},bubbles:!0,composed:!0}))}};j([b({type:String})],Pt.prototype,`climateMode`,void 0),j([b({type:String})],Pt.prototype,`language`,void 0),Pt=j([y(`rme-climate-mode-selector`)],Pt);function I(e){return e.detail?.value??e.target.value??``}function L(e,t){e.dispatchEvent(new CustomEvent(`save-status`,{detail:{status:t},bubbles:!0,composed:!0}))}function Ft(e,t){e.dispatchEvent(new CustomEvent(`hass-more-info`,{bubbles:!0,composed:!0,detail:{entityId:t}}))}v(),S(),M();var It=class e extends _{constructor(...e){super(...e),this.activeIndex=-1,this.selectorEntity=``,this.editing=!1}static{this.sharedStyles=l`
     :host {
       display: block;
     }
@@ -1595,7 +1595,7 @@
         </div>
       </div>
       <div class="fallback-hint">${C(`schedule.comfort_hint`,e)}</div>
-    `}_getSelectorValueText(e){let t=this.hass?.states?.[this.scheduleSelectorEntity];return t?this.scheduleSelectorEntity.startsWith(`input_boolean.`)?C(`schedule.selector_value_boolean`,e,{value:t.state===`on`?`On`:`Off`}):C(`schedule.selector_value_number`,e,{value:t.state}):``}_readBlockTemps(e){let t=this.hass?.states?.[this.schedules[e].entity_id]?.attributes??{},n=e=>e!=null&&Et(e,this.hass)?e:void 0;return{blockTemp:n(t.temperature),heatTemp:n(t.heat_temperature),coolTemp:n(t.cool_temperature)}}_getStatusText(e,t){let n=this.hass.language;if(t===`unreachable`)return C(`schedule.state_unreachable`,n);if(t===`inactive`)return C(`schedule.state_inactive`,n);let r=this.schedules[e],i=this.hass?.states?.[r.entity_id];if(!i)return C(`schedule.state_active`,n);if(i.state===`on`){let{blockTemp:t,heatTemp:r,coolTemp:i}=this._readBlockTemps(e);return t==null?r!=null||i!=null?C(`schedule.from_schedule_split`,n,{heat:r==null?O(this.comfortHeat,this.hass):String(r),cool:i==null?O(this.comfortCool,this.hass):String(i),unit:w(this.hass)}):C(`schedule.fallback`,n,{temp:O(this.climateMode===`cool_only`?this.comfortCool:this.comfortHeat,this.hass),unit:w(this.hass)}):C(`schedule.from_schedule`,n,{temp:String(t),unit:w(this.hass)})}return C(`schedule.eco_detail`,n,{temp:O(this.climateMode===`cool_only`?this.ecoCool:this.ecoHeat,this.hass),unit:w(this.hass)})}_addSchedule(e){this._emitSchedules([...this.schedules,{entity_id:e}])}_removeSchedule(e){this._emitSchedules(this.schedules.filter((t,n)=>n!==e))}_moveSchedule(e,t){let n=e+t;if(n<0||n>=this.schedules.length)return;let r=[...this.schedules];[r[e],r[n]]=[r[n],r[e]],this._emitSchedules(r)}_emitSchedules(e){this.dispatchEvent(new CustomEvent(`schedules-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_onSelectorEntityChange(e){this.dispatchEvent(new CustomEvent(`schedule-selector-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_onComfortHeatChange(e){let t=e.target,n=E(parseFloat(t.value)||T(21,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`comfort-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.comfortCool<n&&this.dispatchEvent(new CustomEvent(`comfort-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onComfortCoolChange(e){let t=e.target,n=E(parseFloat(t.value)||T(24,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`comfort-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.comfortHeat>n&&this.dispatchEvent(new CustomEvent(`comfort-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onEcoHeatChange(e){let t=e.target,n=E(parseFloat(t.value)||T(17,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`eco-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.ecoCool<n&&this.dispatchEvent(new CustomEvent(`eco-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onEcoCoolChange(e){let t=e.target,n=E(parseFloat(t.value)||T(27,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`eco-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.ecoHeat>n&&this.dispatchEvent(new CustomEvent(`eco-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],z.prototype,`schedules`,void 0),j([b({type:String})],z.prototype,`scheduleSelectorEntity`,null),j([b({type:Number})],z.prototype,`activeScheduleIndex`,null),j([b({type:Number})],z.prototype,`comfortHeat`,void 0),j([b({type:Number})],z.prototype,`comfortCool`,void 0),j([b({type:Number})],z.prototype,`ecoHeat`,void 0),j([b({type:Number})],z.prototype,`ecoCool`,void 0),j([b({type:String})],z.prototype,`climateMode`,void 0),j([b({attribute:!1})],z.prototype,`scheduleTempWarnings`,void 0),z=j([y(`rs-schedule-settings`)],z);var Rt={underfloor:2,radiator:1,"":0};function zt(e){let t=``;for(let n of e){if(n.type!==`trv`)continue;let e=n.heating_system_type??``;(Rt[e]??0)>(Rt[t]??0)&&(t=e)}return t}v();var Bt=l`
+    `}_getSelectorValueText(e){let t=this.hass?.states?.[this.scheduleSelectorEntity];return t?this.scheduleSelectorEntity.startsWith(`input_boolean.`)?C(`schedule.selector_value_boolean`,e,{value:t.state===`on`?`On`:`Off`}):C(`schedule.selector_value_number`,e,{value:t.state}):``}_readBlockTemps(e){let t=this.hass?.states?.[this.schedules[e].entity_id]?.attributes??{},n=e=>e!=null&&Et(e,this.hass)?e:void 0;return{blockTemp:n(t.temperature),heatTemp:n(t.heat_temperature),coolTemp:n(t.cool_temperature)}}_getStatusText(e,t){let n=this.hass.language;if(t===`unreachable`)return C(`schedule.state_unreachable`,n);if(t===`inactive`)return C(`schedule.state_inactive`,n);let r=this.schedules[e],i=this.hass?.states?.[r.entity_id];if(!i)return C(`schedule.state_active`,n);if(i.state===`on`){let{blockTemp:t,heatTemp:r,coolTemp:i}=this._readBlockTemps(e);return t==null?r!=null||i!=null?C(`schedule.from_schedule_split`,n,{heat:r==null?O(this.comfortHeat,this.hass):String(r),cool:i==null?O(this.comfortCool,this.hass):String(i),unit:w(this.hass)}):C(`schedule.fallback`,n,{temp:O(this.climateMode===`cool_only`?this.comfortCool:this.comfortHeat,this.hass),unit:w(this.hass)}):C(`schedule.from_schedule`,n,{temp:String(t),unit:w(this.hass)})}return C(`schedule.eco_detail`,n,{temp:O(this.climateMode===`cool_only`?this.ecoCool:this.ecoHeat,this.hass),unit:w(this.hass)})}_addSchedule(e){this._emitSchedules([...this.schedules,{entity_id:e}])}_removeSchedule(e){this._emitSchedules(this.schedules.filter((t,n)=>n!==e))}_moveSchedule(e,t){let n=e+t;if(n<0||n>=this.schedules.length)return;let r=[...this.schedules];[r[e],r[n]]=[r[n],r[e]],this._emitSchedules(r)}_emitSchedules(e){this.dispatchEvent(new CustomEvent(`schedules-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_onSelectorEntityChange(e){this.dispatchEvent(new CustomEvent(`schedule-selector-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_onComfortHeatChange(e){let t=e.target,n=E(parseFloat(t.value)||T(21,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`comfort-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.comfortCool<n&&this.dispatchEvent(new CustomEvent(`comfort-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onComfortCoolChange(e){let t=e.target,n=E(parseFloat(t.value)||T(24,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`comfort-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.comfortHeat>n&&this.dispatchEvent(new CustomEvent(`comfort-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onEcoHeatChange(e){let t=e.target,n=E(parseFloat(t.value)||T(17,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`eco-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.ecoCool<n&&this.dispatchEvent(new CustomEvent(`eco-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}_onEcoCoolChange(e){let t=e.target,n=E(parseFloat(t.value)||T(27,this.hass),this.hass);this.dispatchEvent(new CustomEvent(`eco-cool-changed`,{detail:{value:n},bubbles:!0,composed:!0})),this.ecoHeat>n&&this.dispatchEvent(new CustomEvent(`eco-heat-changed`,{detail:{value:n},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],z.prototype,`schedules`,void 0),j([b({type:String})],z.prototype,`scheduleSelectorEntity`,null),j([b({type:Number})],z.prototype,`activeScheduleIndex`,null),j([b({type:Number})],z.prototype,`comfortHeat`,void 0),j([b({type:Number})],z.prototype,`comfortCool`,void 0),j([b({type:Number})],z.prototype,`ecoHeat`,void 0),j([b({type:Number})],z.prototype,`ecoCool`,void 0),j([b({type:String})],z.prototype,`climateMode`,void 0),j([b({attribute:!1})],z.prototype,`scheduleTempWarnings`,void 0),z=j([y(`rme-schedule-settings`)],z);var Rt={underfloor:2,radiator:1,"":0};function zt(e){let t=``;for(let n of e){if(n.type!==`trv`)continue;let e=n.heating_system_type??``;(Rt[e]??0)>(Rt[t]??0)&&(t=e)}return t}v();var Bt=l`
   .master {
     display: flex;
     flex-direction: column;
@@ -1777,7 +1777,7 @@
     min-width: 0;
   }
 
-  .detail-field.with-info rs-info-icon {
+  .detail-field.with-info rme-info-icon {
     flex-shrink: 0;
   }
 
@@ -1857,7 +1857,7 @@
 
     .wrap {
       display: grid;
-      grid-template-columns: var(--rs-master-width, 260px) minmax(0, 1fr);
+      grid-template-columns: var(--rme-master-width, 260px) minmax(0, 1fr);
       gap: 20px;
       align-items: start;
     }
@@ -1883,11 +1883,11 @@
       min-width: 0;
     }
   `}render(){return h`
-      <div class="wrap" style="--rs-master-width: ${this.masterWidth};">
+      <div class="wrap" style="--rme-master-width: ${this.masterWidth};">
         <div class="master"><slot name="master"></slot></div>
         <div class="detail"><slot name="detail"></slot></div>
       </div>
-    `}};j([b({type:String})],Vt.prototype,`masterWidth`,void 0),j([b({type:Number})],Vt.prototype,`breakpoint`,void 0),Vt=j([y(`rs-master-detail`)],Vt),v(),S(),M();var Ht=`__inherit__`,Ut=e=>e===Ht?``:e??``,B=class extends _{constructor(...e){super(...e),this.devices=[],this.selectedTempSensor=``,this.valveProtectionExclude=new Set,this.valveProtectionEnabled=!1,this.coilDryEnabledGlobal=!1,this.coilDryMinutesGlobal=20,this.coilDryModeGlobal=`fan_only`,this.coilDryFanModeGlobal=`low`,this.editing=!1,this._systemTypeInfoExpanded=!1,this._showBoostHint=!1,this._selectedThermostats=new Set,this._selectedCoolingDevices=new Set,this._heatingSystemType=``,this._selectedForEdit=``,this._entityFilter=e=>{let t=e.entity_id;return t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`)||this.devices.some(e=>e.entity_id===t)?!1:t.startsWith(`climate.`)}}willUpdate(e){if(e.has(`devices`)){this._selectedThermostats=new Set(this.devices.filter(e=>e.type===`trv`).map(e=>e.entity_id)),this._selectedCoolingDevices=new Set(this.devices.filter(e=>e.type===`ac`).map(e=>e.entity_id)),this._heatingSystemType=zt(this.devices);let e=new Set(this.devices.map(e=>e.entity_id));this._selectedForEdit&&!e.has(this._selectedForEdit)&&(this._selectedForEdit=``),!this._selectedForEdit&&this.devices.length>0&&(this._selectedForEdit=this.devices[0].entity_id)}}static{this.styles=[Bt,R,l`
+    `}};j([b({type:String})],Vt.prototype,`masterWidth`,void 0),j([b({type:Number})],Vt.prototype,`breakpoint`,void 0),Vt=j([y(`rme-master-detail`)],Vt),v(),S(),M();var Ht=`__inherit__`,Ut=e=>e===Ht?``:e??``,B=class extends _{constructor(...e){super(...e),this.devices=[],this.selectedTempSensor=``,this.valveProtectionExclude=new Set,this.valveProtectionEnabled=!1,this.coilDryEnabledGlobal=!1,this.coilDryMinutesGlobal=20,this.coilDryModeGlobal=`fan_only`,this.coilDryFanModeGlobal=`low`,this.editing=!1,this._systemTypeInfoExpanded=!1,this._showBoostHint=!1,this._selectedThermostats=new Set,this._selectedCoolingDevices=new Set,this._heatingSystemType=``,this._selectedForEdit=``,this._entityFilter=e=>{let t=e.entity_id;return t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`)||this.devices.some(e=>e.entity_id===t)?!1:t.startsWith(`climate.`)}}willUpdate(e){if(e.has(`devices`)){this._selectedThermostats=new Set(this.devices.filter(e=>e.type===`trv`).map(e=>e.entity_id)),this._selectedCoolingDevices=new Set(this.devices.filter(e=>e.type===`ac`).map(e=>e.entity_id)),this._heatingSystemType=zt(this.devices);let e=new Set(this.devices.map(e=>e.entity_id));this._selectedForEdit&&!e.has(this._selectedForEdit)&&(this._selectedForEdit=``),!this._selectedForEdit&&this.devices.length>0&&(this._selectedForEdit=this.devices[0].entity_id)}}static{this.styles=[Bt,R,l`
       :host {
         display: block;
       }
@@ -2192,7 +2192,7 @@
         ${o?h`<span class="view-value">${o}</span>`:g}
       </div>
     `}_renderEditMode(){let e=yt(this.area.area_id,this.hass?.entities,this.hass?.devices).filter(e=>!e.entity_id.substring(e.entity_id.indexOf(`.`)+1).startsWith(`roommind_`)).filter(e=>e.entity_id.startsWith(`climate.`)),t=new Set(e.map(e=>e.entity_id)),n=new Set(this.devices.map(e=>e.entity_id)),r=[...n].filter(e=>!t.has(e)),i=e=>n.has(e),a=this._selectedForEdit;return h`
-      <rs-master-detail>
+      <rme-master-detail>
         <div slot="master" class="master">
           <div class="section-subtitle">
             ${C(`devices.climate_entities`,this.hass.language)}
@@ -2221,7 +2221,7 @@
                   <span>${C(`devices.select_to_configure`,this.hass.language)}</span>
                 </div>`}
         </div>
-      </rs-master-detail>
+      </rme-master-detail>
 
       ${this._selectedThermostats.size>0?h`
               <div class="block-divider"></div>
@@ -2410,10 +2410,10 @@
                           <ha-list-item value="fan_only">fan_only</ha-list-item>
                           <ha-list-item value="dry">dry</ha-list-item>
                         </ha-select>
-                        ${t.coil_dry_mode===`dry`?h`<rs-info-icon
+                        ${t.coil_dry_mode===`dry`?h`<rme-info-icon
                                 icon="mdi:alert-outline"
                                 .text=${C(`coil_dry.mode_dry_warning`,c)}
-                              ></rs-info-icon>`:g}
+                              ></rme-info-icon>`:g}
                       </div>
 
                       <div class="detail-field">
@@ -2453,9 +2453,9 @@
                     >${C(`devices.idle_action_low`,c)}</ha-list-item
                   >
                 </ha-select>
-                ${t.idle_action===`low`?h`<rs-info-icon
+                ${t.idle_action===`low`?h`<rme-info-icon
                         .text=${C(`devices.idle_action_low_hint`,c)}
-                      ></rs-info-icon>`:g}
+                      ></rme-info-icon>`:g}
               </div>
             `:g}
       ${this.selectedTempSensor?h`
@@ -2475,7 +2475,9 @@
                     >${C(`devices.setpoint_mode_direct`,c)}</ha-list-item
                   >
                 </ha-select>
-                <rs-info-icon .text=${C(`devices.setpoint_mode_hint`,c)}></rs-info-icon>
+                <rme-info-icon
+                  .text=${C(`devices.setpoint_mode_hint`,c)}
+                ></rme-info-icon>
               </div>
             `:g}
       ${n&&this.valveProtectionEnabled?h`
@@ -2487,13 +2489,13 @@
                 <div class="detail-toggle-label">
                   <ha-icon icon="mdi:shield-off-outline"></ha-icon>
                   ${C(`devices.valve_protection_excluded`,c)}
-                  <rs-info-icon
+                  <rme-info-icon
                     .text=${C(`devices.valve_protection_exclude_hint`,c)}
-                  ></rs-info-icon>
+                  ></rme-info-icon>
                 </div>
               </div>
             `:g}
-    `}_detectClimateType(e){return(this.hass.states[e]?.attributes?.hvac_modes??[]).some(e=>[`cool`,`heat_cool`].includes(e))?`ac`:`thermostat`}_getDeviceDisplayType(e){let t=this.devices.find(t=>t.entity_id===e);return t&&t.type===`ac`?`ac`:`thermostat`}_onClimateToggle(e,t){let n;if(t){let t=this._detectClimateType(e)===`thermostat`?`trv`:`ac`;n=[...this.devices,{entity_id:e,type:t,role:`auto`}]}else n=this.devices.filter(t=>t.entity_id!==e);this._fireDeviceChanged(n)}_onDeviceTypeChange(e,t){let n=t===`thermostat`?`trv`:`ac`,r=this.devices.map(t=>{if(t.entity_id!==e)return t;let r={...t,type:n};return n===`ac`&&r.idle_action===`low`&&(r.idle_action=`off`),n===`trv`&&r.coil_dry===`on`&&(r.coil_dry=`inherit`),r});this._fireDeviceChanged(r)}_onValveProtectionExcludeToggle(e,t){this.dispatchEvent(new CustomEvent(`valve-protection-exclude-toggle`,{detail:{entityId:e,excluded:t},bubbles:!0,composed:!0}))}_onIdleActionChange(e,t){let n=this.devices.map(n=>{if(n.entity_id!==e)return n;let r={...n,idle_action:t};return t===`fan_only`&&!n.idle_fan_mode&&(r.idle_fan_mode=`low`),r});this._fireDeviceChanged(n)}_onIdleFanModeChange(e,t){let n=this.devices.map(n=>n.entity_id===e?{...n,idle_fan_mode:t}:n);this._fireDeviceChanged(n)}_onSetpointModeChange(e,t){let n=this.devices.map(n=>n.entity_id===e?{...n,setpoint_mode:t}:n);this._fireDeviceChanged(n)}_globalFanModeLabel(e){return this.coilDryFanModeGlobal===``?C(`devices.coil_dry_fan_mode_keep`,e):this.coilDryFanModeGlobal}_onCoilDryChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry:t}:n))}_onCoilDryMinutesChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_minutes:t}:n))}_onCoilDryModeChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_mode:t}:n))}_onCoilDryFanModeChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_fan_mode:t}:n))}_onHeatingSystemTypeChange(e){let t=I(e)??``,n=t===`standard`?``:t;this._showBoostHint=!0;let r=this.devices.map(e=>e.type===`trv`?{...e,heating_system_type:n}:e);this._fireDeviceChanged(r)}_fireDeviceChanged(e){this.dispatchEvent(new CustomEvent(`device-changed`,{detail:{devices:e},bubbles:!0,composed:!0}))}_onEntityPicked(e){let t=e.detail?.value,n=e.target;if(n.value=``,!t||!t.startsWith(`climate.`)||this.devices.some(e=>e.entity_id===t))return;let r=this._detectClimateType(t)===`thermostat`?`trv`:`ac`,i=[...this.devices,{entity_id:t,type:r,role:`auto`}];this._fireDeviceChanged(i)}};j([b({attribute:!1})],B.prototype,`hass`,void 0),j([b({attribute:!1})],B.prototype,`area`,void 0),j([b({attribute:!1})],B.prototype,`devices`,void 0),j([b({type:String})],B.prototype,`selectedTempSensor`,void 0),j([b({attribute:!1})],B.prototype,`valveProtectionExclude`,void 0),j([b({type:Boolean})],B.prototype,`valveProtectionEnabled`,void 0),j([b({type:Boolean})],B.prototype,`coilDryEnabledGlobal`,void 0),j([b({type:Number})],B.prototype,`coilDryMinutesGlobal`,void 0),j([b({type:String})],B.prototype,`coilDryModeGlobal`,void 0),j([b({type:String})],B.prototype,`coilDryFanModeGlobal`,void 0),j([b({type:Boolean})],B.prototype,`editing`,void 0),j([x()],B.prototype,`_systemTypeInfoExpanded`,void 0),j([x()],B.prototype,`_showBoostHint`,void 0),j([x()],B.prototype,`_selectedThermostats`,void 0),j([x()],B.prototype,`_selectedCoolingDevices`,void 0),j([x()],B.prototype,`_heatingSystemType`,void 0),j([x()],B.prototype,`_selectedForEdit`,void 0),B=j([y(`rs-device-section`)],B),v(),S(),M();var V=class extends _{constructor(...e){super(...e),this.temperatureSensor=``,this.humiditySensor=``,this.occupancySensors=new Set,this.windowSensors=new Set,this.windowOpenDelay=0,this.windowCloseDelay=0,this.heatingSystemType=``,this.editing=!1,this.language=`en`,this._pickerOpen=!1,this._collapsed={},this._globalEntityFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`)||this.temperatureSensor===t||this.humiditySensor===t||this.occupancySensors.has(t)||this.windowSensors.has(t))return!1;if(t.startsWith(`sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;return e===`temperature`||e===`humidity`}if(t.startsWith(`binary_sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;return e===`occupancy`||e===`motion`||e===`presence`||e===`window`||e===`door`||e===`opening`}return t.startsWith(`climate.`)?this.hass.states[t]?.attributes?.current_temperature!=null:t.startsWith(`input_number.`)||t.startsWith(`input_boolean.`)},this._onGlobalPickerValueChanged=e=>{let t=e.detail?.value,n=e.target;if(n.value=``,t){if(t.startsWith(`binary_sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;e===`window`||e===`door`||e===`opening`?this.windowSensors.has(t)||this._onWindowToggle(t,!0):this.occupancySensors.has(t)||this._onOccupancyToggle(t,!0)}else if(t.startsWith(`input_boolean.`))this.occupancySensors.has(t)||this._onOccupancyToggle(t,!0);else if(t.startsWith(`input_number.`)){let e=this.hass.states[t]?.attributes?.unit_of_measurement;this._onSensorSelected(t,e===`%`?`humidity`:`temp`)}else if(t.startsWith(`climate.`))this._onSensorSelected(t,`temp`);else{let e=this.hass.states[t]?.attributes?.device_class;this._onSensorSelected(t,e===`humidity`?`humidity`:`temp`)}this._pickerOpen=!1}},this._onWindowOpenDelayChange=e=>{let t=Math.max(0,parseInt(e.target.value)||0);this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_open_delay`,value:t},bubbles:!0,composed:!0}))},this._onWindowCloseDelayChange=e=>{let t=Math.max(0,parseInt(e.target.value)||0);this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_close_delay`,value:t},bubbles:!0,composed:!0}))}}static{this.styles=[R,l`
+    `}_detectClimateType(e){return(this.hass.states[e]?.attributes?.hvac_modes??[]).some(e=>[`cool`,`heat_cool`].includes(e))?`ac`:`thermostat`}_getDeviceDisplayType(e){let t=this.devices.find(t=>t.entity_id===e);return t&&t.type===`ac`?`ac`:`thermostat`}_onClimateToggle(e,t){let n;if(t){let t=this._detectClimateType(e)===`thermostat`?`trv`:`ac`;n=[...this.devices,{entity_id:e,type:t,role:`auto`}]}else n=this.devices.filter(t=>t.entity_id!==e);this._fireDeviceChanged(n)}_onDeviceTypeChange(e,t){let n=t===`thermostat`?`trv`:`ac`,r=this.devices.map(t=>{if(t.entity_id!==e)return t;let r={...t,type:n};return n===`ac`&&r.idle_action===`low`&&(r.idle_action=`off`),n===`trv`&&r.coil_dry===`on`&&(r.coil_dry=`inherit`),r});this._fireDeviceChanged(r)}_onValveProtectionExcludeToggle(e,t){this.dispatchEvent(new CustomEvent(`valve-protection-exclude-toggle`,{detail:{entityId:e,excluded:t},bubbles:!0,composed:!0}))}_onIdleActionChange(e,t){let n=this.devices.map(n=>{if(n.entity_id!==e)return n;let r={...n,idle_action:t};return t===`fan_only`&&!n.idle_fan_mode&&(r.idle_fan_mode=`low`),r});this._fireDeviceChanged(n)}_onIdleFanModeChange(e,t){let n=this.devices.map(n=>n.entity_id===e?{...n,idle_fan_mode:t}:n);this._fireDeviceChanged(n)}_onSetpointModeChange(e,t){let n=this.devices.map(n=>n.entity_id===e?{...n,setpoint_mode:t}:n);this._fireDeviceChanged(n)}_globalFanModeLabel(e){return this.coilDryFanModeGlobal===``?C(`devices.coil_dry_fan_mode_keep`,e):this.coilDryFanModeGlobal}_onCoilDryChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry:t}:n))}_onCoilDryMinutesChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_minutes:t}:n))}_onCoilDryModeChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_mode:t}:n))}_onCoilDryFanModeChange(e,t){this._fireDeviceChanged(this.devices.map(n=>n.entity_id===e?{...n,coil_dry_fan_mode:t}:n))}_onHeatingSystemTypeChange(e){let t=I(e)??``,n=t===`standard`?``:t;this._showBoostHint=!0;let r=this.devices.map(e=>e.type===`trv`?{...e,heating_system_type:n}:e);this._fireDeviceChanged(r)}_fireDeviceChanged(e){this.dispatchEvent(new CustomEvent(`device-changed`,{detail:{devices:e},bubbles:!0,composed:!0}))}_onEntityPicked(e){let t=e.detail?.value,n=e.target;if(n.value=``,!t||!t.startsWith(`climate.`)||this.devices.some(e=>e.entity_id===t))return;let r=this._detectClimateType(t)===`thermostat`?`trv`:`ac`,i=[...this.devices,{entity_id:t,type:r,role:`auto`}];this._fireDeviceChanged(i)}};j([b({attribute:!1})],B.prototype,`hass`,void 0),j([b({attribute:!1})],B.prototype,`area`,void 0),j([b({attribute:!1})],B.prototype,`devices`,void 0),j([b({type:String})],B.prototype,`selectedTempSensor`,void 0),j([b({attribute:!1})],B.prototype,`valveProtectionExclude`,void 0),j([b({type:Boolean})],B.prototype,`valveProtectionEnabled`,void 0),j([b({type:Boolean})],B.prototype,`coilDryEnabledGlobal`,void 0),j([b({type:Number})],B.prototype,`coilDryMinutesGlobal`,void 0),j([b({type:String})],B.prototype,`coilDryModeGlobal`,void 0),j([b({type:String})],B.prototype,`coilDryFanModeGlobal`,void 0),j([b({type:Boolean})],B.prototype,`editing`,void 0),j([x()],B.prototype,`_systemTypeInfoExpanded`,void 0),j([x()],B.prototype,`_showBoostHint`,void 0),j([x()],B.prototype,`_selectedThermostats`,void 0),j([x()],B.prototype,`_selectedCoolingDevices`,void 0),j([x()],B.prototype,`_heatingSystemType`,void 0),j([x()],B.prototype,`_selectedForEdit`,void 0),B=j([y(`rme-device-section`)],B),v(),S(),M();var V=class extends _{constructor(...e){super(...e),this.temperatureSensor=``,this.humiditySensor=``,this.occupancySensors=new Set,this.windowSensors=new Set,this.windowOpenDelay=0,this.windowCloseDelay=0,this.heatingSystemType=``,this.editing=!1,this.language=`en`,this._pickerOpen=!1,this._collapsed={},this._globalEntityFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`)||this.temperatureSensor===t||this.humiditySensor===t||this.occupancySensors.has(t)||this.windowSensors.has(t))return!1;if(t.startsWith(`sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;return e===`temperature`||e===`humidity`}if(t.startsWith(`binary_sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;return e===`occupancy`||e===`motion`||e===`presence`||e===`window`||e===`door`||e===`opening`}return t.startsWith(`climate.`)?this.hass.states[t]?.attributes?.current_temperature!=null:t.startsWith(`input_number.`)||t.startsWith(`input_boolean.`)},this._onGlobalPickerValueChanged=e=>{let t=e.detail?.value,n=e.target;if(n.value=``,t){if(t.startsWith(`binary_sensor.`)){let e=this.hass.states[t]?.attributes?.device_class;e===`window`||e===`door`||e===`opening`?this.windowSensors.has(t)||this._onWindowToggle(t,!0):this.occupancySensors.has(t)||this._onOccupancyToggle(t,!0)}else if(t.startsWith(`input_boolean.`))this.occupancySensors.has(t)||this._onOccupancyToggle(t,!0);else if(t.startsWith(`input_number.`)){let e=this.hass.states[t]?.attributes?.unit_of_measurement;this._onSensorSelected(t,e===`%`?`humidity`:`temp`)}else if(t.startsWith(`climate.`))this._onSensorSelected(t,`temp`);else{let e=this.hass.states[t]?.attributes?.device_class;this._onSensorSelected(t,e===`humidity`?`humidity`:`temp`)}this._pickerOpen=!1}},this._onWindowOpenDelayChange=e=>{let t=Math.max(0,parseInt(e.target.value)||0);this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_open_delay`,value:t},bubbles:!0,composed:!0}))},this._onWindowCloseDelayChange=e=>{let t=Math.max(0,parseInt(e.target.value)||0);this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_close_delay`,value:t},bubbles:!0,composed:!0}))}}static{this.styles=[R,l`
       :host {
         display: block;
       }
@@ -2992,7 +2994,7 @@
         </div>
         ${l?h`<span class="value-chip">${l}</span>`:g}
       </div>
-    `}_onSensorSelected(e,t){let n=t===`temp`?`temperature_sensor`:`humidity_sensor`;this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:n,value:e},bubbles:!0,composed:!0}))}_onOccupancyToggle(e,t){let n=new Set(this.occupancySensors);t?n.add(e):n.delete(e),this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`occupancy_sensors`,value:[...n]},bubbles:!0,composed:!0}))}_onWindowToggle(e,t){let n=new Set(this.windowSensors);t?n.add(e):n.delete(e),this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_sensors`,value:[...n]},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],V.prototype,`hass`,void 0),j([b({attribute:!1})],V.prototype,`area`,void 0),j([b({type:String})],V.prototype,`temperatureSensor`,void 0),j([b({type:String})],V.prototype,`humiditySensor`,void 0),j([b({attribute:!1})],V.prototype,`occupancySensors`,void 0),j([b({attribute:!1})],V.prototype,`windowSensors`,void 0),j([b({type:Number})],V.prototype,`windowOpenDelay`,void 0),j([b({type:Number})],V.prototype,`windowCloseDelay`,void 0),j([b({type:String})],V.prototype,`heatingSystemType`,void 0),j([b({type:Boolean})],V.prototype,`editing`,void 0),j([b()],V.prototype,`language`,void 0),j([x()],V.prototype,`_pickerOpen`,void 0),j([x()],V.prototype,`_collapsed`,void 0),V=j([y(`rs-sensor-section`)],V),v(),S(),M();var Wt=class extends _{constructor(...e){super(...e),this.label=``,this.hint=``}static{this.styles=l`
+    `}_onSensorSelected(e,t){let n=t===`temp`?`temperature_sensor`:`humidity_sensor`;this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:n,value:e},bubbles:!0,composed:!0}))}_onOccupancyToggle(e,t){let n=new Set(this.occupancySensors);t?n.add(e):n.delete(e),this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`occupancy_sensors`,value:[...n]},bubbles:!0,composed:!0}))}_onWindowToggle(e,t){let n=new Set(this.windowSensors);t?n.add(e):n.delete(e),this.dispatchEvent(new CustomEvent(`sensor-changed`,{detail:{key:`window_sensors`,value:[...n]},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],V.prototype,`hass`,void 0),j([b({attribute:!1})],V.prototype,`area`,void 0),j([b({type:String})],V.prototype,`temperatureSensor`,void 0),j([b({type:String})],V.prototype,`humiditySensor`,void 0),j([b({attribute:!1})],V.prototype,`occupancySensors`,void 0),j([b({attribute:!1})],V.prototype,`windowSensors`,void 0),j([b({type:Number})],V.prototype,`windowOpenDelay`,void 0),j([b({type:Number})],V.prototype,`windowCloseDelay`,void 0),j([b({type:String})],V.prototype,`heatingSystemType`,void 0),j([b({type:Boolean})],V.prototype,`editing`,void 0),j([b()],V.prototype,`language`,void 0),j([x()],V.prototype,`_pickerOpen`,void 0),j([x()],V.prototype,`_collapsed`,void 0),V=j([y(`rme-sensor-section`)],V),v(),S(),M();var Wt=class extends _{constructor(...e){super(...e),this.label=``,this.hint=``}static{this.styles=l`
     :host {
       display: inline-block;
     }
@@ -3008,7 +3010,7 @@
       text-transform: uppercase;
       cursor: default;
     }
-  `}render(){return h`<span class="badge" title=${this.hint}>${this.label}</span>`}};j([b({type:String})],Wt.prototype,`label`,void 0),j([b({type:String})],Wt.prototype,`hint`,void 0),Wt=j([y(`rs-badge`)],Wt),v(),S(),M();var Gt=`M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z`,Kt=class extends _{constructor(...e){super(...e),this.icon=``,this.heading=``,this.badge=``,this.badgeHint=``,this.editable=!1}static{this.styles=l`
+  `}render(){return h`<span class="badge" title=${this.hint}>${this.label}</span>`}};j([b({type:String})],Wt.prototype,`label`,void 0),j([b({type:String})],Wt.prototype,`hint`,void 0),Wt=j([y(`rme-badge`)],Wt),v(),S(),M();var Gt=`M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z`,Kt=class extends _{constructor(...e){super(...e),this.icon=``,this.heading=``,this.badge=``,this.badgeHint=``,this.editable=!1}static{this.styles=l`
     :host {
       display: block;
     }
@@ -3065,7 +3067,7 @@
         <div class="section-header">
           <ha-icon class="section-icon" icon=${this.icon}></ha-icon>
           <h3 class="section-title">${this.heading}</h3>
-          ${this.badge?h`<rs-badge .label=${this.badge} .hint=${this.badgeHint}></rs-badge>`:g}
+          ${this.badge?h`<rme-badge .label=${this.badge} .hint=${this.badgeHint}></rme-badge>`:g}
           <slot name="header-extras"></slot>
           ${this.editable?h`
                   <ha-icon-button
@@ -3079,7 +3081,7 @@
           <slot></slot>
         </div>
       </ha-card>
-    `}_onEditClick(){this.dispatchEvent(new CustomEvent(`edit-click`,{bubbles:!0,composed:!0}))}};j([b({type:String})],Kt.prototype,`icon`,void 0),j([b({type:String})],Kt.prototype,`heading`,void 0),j([b({type:String})],Kt.prototype,`badge`,void 0),j([b({type:String})],Kt.prototype,`badgeHint`,void 0),j([b({type:Boolean})],Kt.prototype,`editable`,void 0),Kt=j([y(`rs-section-card`)],Kt),v(),S(),M();var H=class extends _{constructor(...e){super(...e),this.climateMode=`auto`,this.comfortHeat=21,this.comfortCool=24,this.ecoHeat=17,this.ecoCool=27,this.language=`en`,this._overridePending=null,this._overrideCustomHeat=21,this._overrideCustomCool=24,this._overrideError=``,this._optimisticOverride=null,this._optimisticClear=!1}static{this.styles=[R,l`
+    `}_onEditClick(){this.dispatchEvent(new CustomEvent(`edit-click`,{bubbles:!0,composed:!0}))}};j([b({type:String})],Kt.prototype,`icon`,void 0),j([b({type:String})],Kt.prototype,`heading`,void 0),j([b({type:String})],Kt.prototype,`badge`,void 0),j([b({type:String})],Kt.prototype,`badgeHint`,void 0),j([b({type:Boolean})],Kt.prototype,`editable`,void 0),Kt=j([y(`rme-section-card`)],Kt),v(),S(),M();var H=class extends _{constructor(...e){super(...e),this.climateMode=`auto`,this.comfortHeat=21,this.comfortCool=24,this.ecoHeat=17,this.ecoCool=27,this.language=`en`,this._overridePending=null,this._overrideCustomHeat=21,this._overrideCustomCool=24,this._overrideError=``,this._optimisticOverride=null,this._optimisticClear=!1}static{this.styles=[R,l`
       :host {
         display: block;
       }
@@ -3275,7 +3277,7 @@
         .value=${String(T(this._overrideCustomCool,this.hass))}
         @input=${this._onCustomCoolInput}
       ></ha-textfield>
-    `;return this.climateMode===`heat_only`?t:this.climateMode===`cool_only`?n:h`${t} ${n}`}_onOverridePreset(e){this._overridePending===e?this._overridePending=null:(this._overridePending=e,e===`custom`&&(this._overrideCustomHeat=this.comfortHeat,this._overrideCustomCool=this.comfortCool)),this._overrideError=``}_onCustomHeatInput(e){this._overrideCustomHeat=E(Number(e.target.value)||T(21,this.hass),this.hass)}_onCustomCoolInput(e){this._overrideCustomCool=E(Number(e.target.value)||T(24,this.hass),this.hass)}async _onOverrideActivate(e){if(!this._overridePending||!this.config)return;let t=this._overridePending,n,r;if(t===`boost`?(n=this.comfortHeat,r=this.comfortCool):t===`eco`?(n=this.ecoHeat,r=this.ecoCool):(n=this._overrideCustomHeat,r=this._overrideCustomCool),this.climateMode===`heat_only`&&(r=null),this.climateMode===`cool_only`&&(n=null),n!=null&&r!=null&&r<n){this._overrideError=C(`override.invalid_band`,this.language);return}this._optimisticOverride={type:t,heat:n,cool:r,until:Date.now()/1e3+e*3600},this._optimisticClear=!1,this._overridePending=null,this._overrideError=``;let i={type:`roommind_eklabs/override/set`,area_id:this.config.area_id,override_type:t,duration:e};t===`custom`&&(this.climateMode!==`cool_only`&&(i.heat=this._overrideCustomHeat),this.climateMode!==`heat_only`&&(i.cool=this._overrideCustomCool));try{await this.hass.callWS(i),this._fireRoomUpdated()}catch(e){this._optimisticOverride=null,this._overrideError=e instanceof Error?e.message:C(`override.error_set`,this.language),console.error(`Override set failed:`,e)}}async _onClearOverride(){if(this.config){this._optimisticClear=!0,this._optimisticOverride=null,this._overrideError=``;try{await this.hass.callWS({type:`roommind_eklabs/override/clear`,area_id:this.config.area_id}),this._fireRoomUpdated()}catch(e){this._optimisticClear=!1,this._overrideError=e instanceof Error?e.message:C(`override.error_clear`,this.language),console.error(`Override clear failed:`,e)}}}_fireRoomUpdated(){this.dispatchEvent(new CustomEvent(`room-updated`,{bubbles:!0,composed:!0}))}};j([b({attribute:!1})],H.prototype,`hass`,void 0),j([b({attribute:!1})],H.prototype,`config`,void 0),j([b()],H.prototype,`climateMode`,void 0),j([b({type:Number})],H.prototype,`comfortHeat`,void 0),j([b({type:Number})],H.prototype,`comfortCool`,void 0),j([b({type:Number})],H.prototype,`ecoHeat`,void 0),j([b({type:Number})],H.prototype,`ecoCool`,void 0),j([b()],H.prototype,`language`,void 0),j([x()],H.prototype,`_overridePending`,void 0),j([x()],H.prototype,`_overrideCustomHeat`,void 0),j([x()],H.prototype,`_overrideCustomCool`,void 0),j([x()],H.prototype,`_overrideError`,void 0),j([x()],H.prototype,`_optimisticOverride`,void 0),j([x()],H.prototype,`_optimisticClear`,void 0),H=j([y(`rs-override-section`)],H),v(),S(),M();var qt=class extends _{constructor(...e){super(...e),this.label=``,this.hint=``,this.checked=!1,this.disabled=!1}static{this.styles=l`
+    `;return this.climateMode===`heat_only`?t:this.climateMode===`cool_only`?n:h`${t} ${n}`}_onOverridePreset(e){this._overridePending===e?this._overridePending=null:(this._overridePending=e,e===`custom`&&(this._overrideCustomHeat=this.comfortHeat,this._overrideCustomCool=this.comfortCool)),this._overrideError=``}_onCustomHeatInput(e){this._overrideCustomHeat=E(Number(e.target.value)||T(21,this.hass),this.hass)}_onCustomCoolInput(e){this._overrideCustomCool=E(Number(e.target.value)||T(24,this.hass),this.hass)}async _onOverrideActivate(e){if(!this._overridePending||!this.config)return;let t=this._overridePending,n,r;if(t===`boost`?(n=this.comfortHeat,r=this.comfortCool):t===`eco`?(n=this.ecoHeat,r=this.ecoCool):(n=this._overrideCustomHeat,r=this._overrideCustomCool),this.climateMode===`heat_only`&&(r=null),this.climateMode===`cool_only`&&(n=null),n!=null&&r!=null&&r<n){this._overrideError=C(`override.invalid_band`,this.language);return}this._optimisticOverride={type:t,heat:n,cool:r,until:Date.now()/1e3+e*3600},this._optimisticClear=!1,this._overridePending=null,this._overrideError=``;let i={type:`roommind_eklabs/override/set`,area_id:this.config.area_id,override_type:t,duration:e};t===`custom`&&(this.climateMode!==`cool_only`&&(i.heat=this._overrideCustomHeat),this.climateMode!==`heat_only`&&(i.cool=this._overrideCustomCool));try{await this.hass.callWS(i),this._fireRoomUpdated()}catch(e){this._optimisticOverride=null,this._overrideError=e instanceof Error?e.message:C(`override.error_set`,this.language),console.error(`Override set failed:`,e)}}async _onClearOverride(){if(this.config){this._optimisticClear=!0,this._optimisticOverride=null,this._overrideError=``;try{await this.hass.callWS({type:`roommind_eklabs/override/clear`,area_id:this.config.area_id}),this._fireRoomUpdated()}catch(e){this._optimisticClear=!1,this._overrideError=e instanceof Error?e.message:C(`override.error_clear`,this.language),console.error(`Override clear failed:`,e)}}}_fireRoomUpdated(){this.dispatchEvent(new CustomEvent(`room-updated`,{bubbles:!0,composed:!0}))}};j([b({attribute:!1})],H.prototype,`hass`,void 0),j([b({attribute:!1})],H.prototype,`config`,void 0),j([b()],H.prototype,`climateMode`,void 0),j([b({type:Number})],H.prototype,`comfortHeat`,void 0),j([b({type:Number})],H.prototype,`comfortCool`,void 0),j([b({type:Number})],H.prototype,`ecoHeat`,void 0),j([b({type:Number})],H.prototype,`ecoCool`,void 0),j([b()],H.prototype,`language`,void 0),j([x()],H.prototype,`_overridePending`,void 0),j([x()],H.prototype,`_overrideCustomHeat`,void 0),j([x()],H.prototype,`_overrideCustomCool`,void 0),j([x()],H.prototype,`_overrideError`,void 0),j([x()],H.prototype,`_optimisticOverride`,void 0),j([x()],H.prototype,`_optimisticClear`,void 0),H=j([y(`rme-override-section`)],H),v(),S(),M();var qt=class extends _{constructor(...e){super(...e),this.label=``,this.hint=``,this.checked=!1,this.disabled=!1}static{this.styles=l`
     :host {
       display: block;
     }
@@ -3305,7 +3307,7 @@
       <div class="toggle-row">
         <div class="toggle-text">
           <span class="toggle-label">${this.label}</span>
-          ${this.hint?h`<rs-info-icon .text=${this.hint}></rs-info-icon>`:g}
+          ${this.hint?h`<rme-info-icon .text=${this.hint}></rme-info-icon>`:g}
         </div>
         <ha-switch
           .checked=${this.checked}
@@ -3313,7 +3315,7 @@
           @change=${this._onToggle}
         ></ha-switch>
       </div>
-    `}_onToggle(e){this.dispatchEvent(new CustomEvent(`toggle-changed`,{detail:e.target.checked,bubbles:!0,composed:!0}))}};j([b({type:String})],qt.prototype,`label`,void 0),j([b({type:String})],qt.prototype,`hint`,void 0),j([b({type:Boolean})],qt.prototype,`checked`,void 0),j([b({type:Boolean})],qt.prototype,`disabled`,void 0),qt=j([y(`rs-toggle-row`)],qt),v(),S(),M();var U=class extends _{constructor(...e){super(...e),this.presenceEnabled=!1,this.presencePersons=[],this.selectedPresencePersons=[],this.ignorePresence=!1,this.editing=!1,this.language=`en`}static{this.styles=l`
+    `}_onToggle(e){this.dispatchEvent(new CustomEvent(`toggle-changed`,{detail:e.target.checked,bubbles:!0,composed:!0}))}};j([b({type:String})],qt.prototype,`label`,void 0),j([b({type:String})],qt.prototype,`hint`,void 0),j([b({type:Boolean})],qt.prototype,`checked`,void 0),j([b({type:Boolean})],qt.prototype,`disabled`,void 0),qt=j([y(`rme-toggle-row`)],qt),v(),S(),M();var U=class extends _{constructor(...e){super(...e),this.presenceEnabled=!1,this.presencePersons=[],this.selectedPresencePersons=[],this.ignorePresence=!1,this.editing=!1,this.language=`en`}static{this.styles=l`
     :host {
       display: block;
     }
@@ -3469,11 +3471,11 @@
       font-size: 12px;
     }
   `}get _allPersons(){let e=this.selectedPresencePersons.filter(e=>!this.presencePersons.includes(e));return[...this.presencePersons,...e]}_isMissing(e){return!this.hass.states[e]}render(){return!this.presenceEnabled||!this.editing&&this._allPersons.length===0?g:this.editing?h`
-      <rs-toggle-row
+      <rme-toggle-row
         .label=${C(`presence.ignore_toggle`,this.language)}
         .checked=${this.ignorePresence}
         @toggle-changed=${this._onIgnoreToggle}
-      ></rs-toggle-row>
+      ></rme-toggle-row>
       ${this.ignorePresence?g:h`<div class="section-divider"></div>
               ${this._renderEditMode()}`}
     `:this.ignorePresence?h`<span class="field-hint"
@@ -3523,7 +3525,7 @@
             </div>
           `})}
       </div>
-    `}_onIgnoreToggle(e){this.dispatchEvent(new CustomEvent(`ignore-presence-changed`,{detail:e.detail,bubbles:!0,composed:!0}))}_onTogglePerson(e,t){let n;n=t?this.selectedPresencePersons.filter(t=>t!==e):[...this.selectedPresencePersons,e],this.dispatchEvent(new CustomEvent(`presence-persons-changed`,{detail:n,bubbles:!0,composed:!0}))}};j([b({attribute:!1})],U.prototype,`hass`,void 0),j([b({type:Boolean})],U.prototype,`presenceEnabled`,void 0),j([b({attribute:!1})],U.prototype,`presencePersons`,void 0),j([b({attribute:!1})],U.prototype,`selectedPresencePersons`,void 0),j([b({type:Boolean})],U.prototype,`ignorePresence`,void 0),j([b({type:Boolean})],U.prototype,`editing`,void 0),j([b()],U.prototype,`language`,void 0),U=j([y(`rs-presence-section`)],U),v(),S(),M();var Jt=class extends _{constructor(...e){super(...e),this.label=``,this.suffix=``,this.hint=``}static{this.styles=[R,l`
+    `}_onIgnoreToggle(e){this.dispatchEvent(new CustomEvent(`ignore-presence-changed`,{detail:e.detail,bubbles:!0,composed:!0}))}_onTogglePerson(e,t){let n;n=t?this.selectedPresencePersons.filter(t=>t!==e):[...this.selectedPresencePersons,e],this.dispatchEvent(new CustomEvent(`presence-persons-changed`,{detail:n,bubbles:!0,composed:!0}))}};j([b({attribute:!1})],U.prototype,`hass`,void 0),j([b({type:Boolean})],U.prototype,`presenceEnabled`,void 0),j([b({attribute:!1})],U.prototype,`presencePersons`,void 0),j([b({attribute:!1})],U.prototype,`selectedPresencePersons`,void 0),j([b({type:Boolean})],U.prototype,`ignorePresence`,void 0),j([b({type:Boolean})],U.prototype,`editing`,void 0),j([b()],U.prototype,`language`,void 0),U=j([y(`rme-presence-section`)],U),v(),S(),M();var Jt=class extends _{constructor(...e){super(...e),this.label=``,this.suffix=``,this.hint=``}static{this.styles=[R,l`
       :host {
         display: block;
       }
@@ -3540,7 +3542,7 @@
         min-width: 0;
       }
 
-      rs-info-icon {
+      rme-info-icon {
         flex-shrink: 0;
       }
     `]}render(){return h`
@@ -3555,9 +3557,9 @@
           type="number"
           @input=${this._onInput}
         ></ha-textfield>
-        ${this.hint?h`<rs-info-icon .text=${this.hint}></rs-info-icon>`:g}
+        ${this.hint?h`<rme-info-icon .text=${this.hint}></rme-info-icon>`:g}
       </div>
-    `}_onInput(e){let t=parseFloat(e.target.value);isNaN(t)||this.dispatchEvent(new CustomEvent(`value-changed`,{detail:t,bubbles:!0,composed:!0}))}};j([b({type:String})],Jt.prototype,`label`,void 0),j([b({type:String})],Jt.prototype,`suffix`,void 0),j([b({type:Number})],Jt.prototype,`value`,void 0),j([b({type:Number})],Jt.prototype,`min`,void 0),j([b({type:Number})],Jt.prototype,`max`,void 0),j([b({type:Number})],Jt.prototype,`step`,void 0),j([b({type:String})],Jt.prototype,`hint`,void 0),Jt=j([y(`rs-threshold-field`)],Jt),v(),S(),M();var Yt=class extends It{constructor(...e){super(...e),this.schedules=[]}static{this.styles=[It.sharedStyles,R,l`
+    `}_onInput(e){let t=parseFloat(e.target.value);isNaN(t)||this.dispatchEvent(new CustomEvent(`value-changed`,{detail:t,bubbles:!0,composed:!0}))}};j([b({type:String})],Jt.prototype,`label`,void 0),j([b({type:String})],Jt.prototype,`suffix`,void 0),j([b({type:Number})],Jt.prototype,`value`,void 0),j([b({type:Number})],Jt.prototype,`min`,void 0),j([b({type:Number})],Jt.prototype,`max`,void 0),j([b({type:Number})],Jt.prototype,`step`,void 0),j([b({type:String})],Jt.prototype,`hint`,void 0),Jt=j([y(`rme-threshold-field`)],Jt),v(),S(),M();var Yt=class extends It{constructor(...e){super(...e),this.schedules=[]}static{this.styles=[It.sharedStyles,R,l`
       .pos-badge {
         font-size: 0.8em;
         padding: 1px 6px;
@@ -3666,12 +3668,12 @@
             `:g}
       ${this._renderAddRow(C(`covers.add_schedule`,e),this._getAvailableEntities(n),e=>this._addSchedule(e),C(`covers.schedule_create_link`,e))}
       ${this._renderSelectorSection(t,C(`covers.schedule_selector`,e),C(`covers.schedule_selector_hint`,e),C(`covers.schedule_selector_warning`,e),e=>this._emitSelectorChanged(e))}
-    `}_getBlockPosition(e){let t=this.hass?.states?.[e];if(!t||t.state!==`on`)return null;let n=t.attributes?.position;return n==null?null:Number(n)}_statusText(e,t){return C(e===`active`?`covers.schedule_state_active`:e===`unreachable`?`covers.schedule_state_unreachable`:`covers.schedule_state_inactive`,t)}_addSchedule(e){this._emitSchedules([...this.schedules,{entity_id:e,mode:`force`}])}_removeSchedule(e){this._emitSchedules(this.schedules.filter((t,n)=>n!==e))}_moveSchedule(e,t){let n=e+t;if(n<0||n>=this.schedules.length)return;let r=[...this.schedules];[r[e],r[n]]=[r[n],r[e]],this._emitSchedules(r)}_updateMode(e,t){let n=this.schedules.map((n,r)=>r===e?{...n,mode:t}:n);this._emitSchedules(n)}_emitSchedules(e){this.dispatchEvent(new CustomEvent(`cover-schedules-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_emitSelectorChanged(e){this.dispatchEvent(new CustomEvent(`cover-schedule-selector-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Yt.prototype,`schedules`,void 0),Yt=j([y(`rs-cover-schedule`)],Yt),v(),S(),M();var Xt,W=class extends _{static{Xt=this}constructor(...e){super(...e),this.selectedCovers=new Set,this.editing=!1,this.autoEnabled=!1,this.deployThreshold=1.5,this.minPosition=0,this.overrideMinutes=60,this.autoPaused=!1,this.overrideUntil=null,this.coverSchedules=[],this.coverScheduleSelectorEntity=``,this.activeCoverScheduleIndex=-1,this.nightClose=!1,this.nightPosition=0,this.snapDeploy=!1,this.forcedReason=``,this.coverOrientations={},this.nightCloseElevation=0,this.nightCloseOffsetMinutes=0,this.outdoorMinTemp=10,this.coverMinPositions={},this._selectedForEdit=``,this._scheduleCollapsed=!0,this._solarCollapsed=!0,this._entityFilter=e=>{let t=e.entity_id;return!t.startsWith(`cover.roommind_`)&&t.startsWith(`cover.`)&&!this.selectedCovers.has(t)}}willUpdate(e){e.has(`selectedCovers`)&&(this._selectedForEdit&&!this.selectedCovers.has(this._selectedForEdit)&&(this._selectedForEdit=``),!this._selectedForEdit&&this.selectedCovers.size>0&&(this._selectedForEdit=[...this.selectedCovers][0]))}static{this.styles=[Bt,R,l`
+    `}_getBlockPosition(e){let t=this.hass?.states?.[e];if(!t||t.state!==`on`)return null;let n=t.attributes?.position;return n==null?null:Number(n)}_statusText(e,t){return C(e===`active`?`covers.schedule_state_active`:e===`unreachable`?`covers.schedule_state_unreachable`:`covers.schedule_state_inactive`,t)}_addSchedule(e){this._emitSchedules([...this.schedules,{entity_id:e,mode:`force`}])}_removeSchedule(e){this._emitSchedules(this.schedules.filter((t,n)=>n!==e))}_moveSchedule(e,t){let n=e+t;if(n<0||n>=this.schedules.length)return;let r=[...this.schedules];[r[e],r[n]]=[r[n],r[e]],this._emitSchedules(r)}_updateMode(e,t){let n=this.schedules.map((n,r)=>r===e?{...n,mode:t}:n);this._emitSchedules(n)}_emitSchedules(e){this.dispatchEvent(new CustomEvent(`cover-schedules-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}_emitSelectorChanged(e){this.dispatchEvent(new CustomEvent(`cover-schedule-selector-changed`,{detail:{value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Yt.prototype,`schedules`,void 0),Yt=j([y(`rme-cover-schedule`)],Yt),v(),S(),M();var Xt,W=class extends _{static{Xt=this}constructor(...e){super(...e),this.selectedCovers=new Set,this.editing=!1,this.autoEnabled=!1,this.deployThreshold=1.5,this.minPosition=0,this.overrideMinutes=60,this.autoPaused=!1,this.overrideUntil=null,this.coverSchedules=[],this.coverScheduleSelectorEntity=``,this.activeCoverScheduleIndex=-1,this.nightClose=!1,this.nightPosition=0,this.snapDeploy=!1,this.forcedReason=``,this.coverOrientations={},this.nightCloseElevation=0,this.nightCloseOffsetMinutes=0,this.outdoorMinTemp=10,this.coverMinPositions={},this._selectedForEdit=``,this._scheduleCollapsed=!0,this._solarCollapsed=!0,this._entityFilter=e=>{let t=e.entity_id;return!t.startsWith(`cover.roommind_`)&&t.startsWith(`cover.`)&&!this.selectedCovers.has(t)}}willUpdate(e){e.has(`selectedCovers`)&&(this._selectedForEdit&&!this.selectedCovers.has(this._selectedForEdit)&&(this._selectedForEdit=``),!this._selectedForEdit&&this.selectedCovers.size>0&&(this._selectedForEdit=[...this.selectedCovers][0]))}static{this.styles=[Bt,R,l`
       :host {
         display: block;
       }
 
-      /* Tile view rows (match rs-sensor-section visual rhythm) */
+      /* Tile view rows (match rme-sensor-section visual rhythm) */
       .view-row {
         display: flex;
         align-items: center;
@@ -3707,7 +3709,7 @@
         color: var(--primary-text-color);
       }
 
-      /* Device-row style (matches rs-device-section) */
+      /* Device-row style (matches rme-device-section) */
       .device-list-scroll {
         max-height: 210px;
         overflow-y: auto;
@@ -4019,7 +4021,7 @@
         </ha-select>
       </div>
       <div class="detail-field">
-        <rs-threshold-field
+        <rme-threshold-field
           .label=${C(`covers.per_cover_min_position`,t)}
           .value=${i??0}
           .min=${0}
@@ -4027,10 +4029,10 @@
           .step=${1}
           suffix="%"
           @value-changed=${t=>this._setMinPosition(e,t.detail)}
-        ></rs-threshold-field>
+        ></rme-threshold-field>
       </div>
     `}_renderEdit(e){let t=yt(this.area.area_id,this.hass?.entities,this.hass?.devices).filter(e=>!e.entity_id.substring(e.entity_id.indexOf(`.`)+1).startsWith(`roommind_`)).filter(e=>e.entity_id.startsWith(`cover.`)),n=new Set(t.map(e=>e.entity_id)),r=[...this.selectedCovers].filter(e=>!n.has(e)),i=this.selectedCovers.size>0,a=this._selectedForEdit,o=a&&this.selectedCovers.has(a);return h`
-      <rs-master-detail>
+      <rme-master-detail>
         <div slot="master" class="master">
           <div class="block-title">${C(`covers.add_cover`,e)}</div>
           <div class="master-list">
@@ -4056,7 +4058,7 @@
                   </div>
                 </div>`}
         </div>
-      </rs-master-detail>
+      </rme-master-detail>
 
       ${i?h`
               <div class="block-divider"></div>
@@ -4079,15 +4081,15 @@
                         >
                           <ha-icon icon="mdi:calendar-clock"></ha-icon>
                           <span>${C(`covers.schedule_group_title`,e)}</span>
-                          <rs-info-icon
+                          <rme-info-icon
                             .text=${C(`covers.schedule_section_hint`,e)}
-                          ></rs-info-icon>
+                          ></rme-info-icon>
                           <ha-icon
                             class="chevron ${this._scheduleCollapsed?`collapsed`:``}"
                             icon="mdi:chevron-down"
                           ></ha-icon>
                         </div>
-                        ${this._scheduleCollapsed?g:h`<rs-cover-schedule
+                        ${this._scheduleCollapsed?g:h`<rme-cover-schedule
                                   .hass=${this.hass}
                                   .schedules=${this.coverSchedules}
                                   .selectorEntity=${this.coverScheduleSelectorEntity}
@@ -4095,16 +4097,16 @@
                                   .editing=${!0}
                                   @cover-schedules-changed=${e=>this._emit(`cover_schedules`,e.detail.value)}
                                   @cover-schedule-selector-changed=${e=>this._emit(`cover_schedule_selector_entity`,e.detail.value)}
-                                ></rs-cover-schedule>
+                                ></rme-cover-schedule>
                                 <div class="group-divider"></div>
-                                <rs-toggle-row
+                                <rme-toggle-row
                                   .label=${C(`covers.night_close`,e)}
                                   .hint=${C(`covers.night_close_hint`,e)}
                                   .checked=${this.nightClose}
                                   @toggle-changed=${e=>this._emit(`covers_night_close`,e.detail)}
-                                ></rs-toggle-row>
+                                ></rme-toggle-row>
                                 ${this.nightClose?h`
-                                        <rs-threshold-field
+                                        <rme-threshold-field
                                           .label=${C(`covers.night_position`,e)}
                                           .hint=${C(`covers.night_position_hint`,e)}
                                           .value=${this.nightPosition}
@@ -4113,13 +4115,13 @@
                                           .step=${5}
                                           suffix="%"
                                           @value-changed=${e=>this._emit(`covers_night_position`,e.detail)}
-                                        ></rs-threshold-field>
+                                        ></rme-threshold-field>
                                         <ha-expansion-panel
                                           .header=${C(`covers.night_close_advanced`,e)}
                                           outlined
                                         >
                                           <div class="field-row" style="padding:8px 0;">
-                                            <rs-threshold-field
+                                            <rme-threshold-field
                                               .label=${C(`covers.night_close_elevation`,e)}
                                               .hint=${C(`covers.night_close_elevation_hint`,e)}
                                               .value=${this.nightCloseElevation}
@@ -4128,8 +4130,8 @@
                                               .step=${1}
                                               suffix="°"
                                               @value-changed=${e=>this._emit(`covers_night_close_elevation`,e.detail)}
-                                            ></rs-threshold-field>
-                                            <rs-threshold-field
+                                            ></rme-threshold-field>
+                                            <rme-threshold-field
                                               .label=${C(`covers.night_close_offset`,e)}
                                               .hint=${C(`covers.night_close_offset_hint`,e)}
                                               .value=${this.nightCloseOffsetMinutes}
@@ -4138,7 +4140,7 @@
                                               .step=${5}
                                               suffix="min"
                                               @value-changed=${e=>this._emit(`covers_night_close_offset_minutes`,e.detail)}
-                                            ></rs-threshold-field>
+                                            ></rme-threshold-field>
                                           </div>
                                         </ha-expansion-panel>
                                       `:g}`}
@@ -4157,7 +4159,7 @@
                           ></ha-icon>
                         </div>
                         ${this._solarCollapsed?g:h`<div class="field-row">
-                                  <rs-threshold-field
+                                  <rme-threshold-field
                                     .label=${C(`covers.deploy_threshold`,e)}
                                     .hint=${C(`covers.deploy_threshold_hint`,e)}
                                     .value=${this.deployThreshold}
@@ -4166,8 +4168,8 @@
                                     .step=${.5}
                                     suffix="°C"
                                     @value-changed=${e=>this._emit(`covers_deploy_threshold`,e.detail)}
-                                  ></rs-threshold-field>
-                                  <rs-threshold-field
+                                  ></rme-threshold-field>
+                                  <rme-threshold-field
                                     .label=${C(`covers.min_position`,e)}
                                     .hint=${C(`covers.min_position_hint`,e)}
                                     .value=${this.minPosition}
@@ -4176,10 +4178,10 @@
                                     .step=${5}
                                     suffix="%"
                                     @value-changed=${e=>this._emit(`covers_min_position`,e.detail)}
-                                  ></rs-threshold-field>
+                                  ></rme-threshold-field>
                                 </div>
                                 <div class="field-row">
-                                  <rs-threshold-field
+                                  <rme-threshold-field
                                     .label=${C(`covers.override_minutes`,e)}
                                     .hint=${C(`covers.override_minutes_hint`,e)}
                                     .value=${this.overrideMinutes}
@@ -4188,8 +4190,8 @@
                                     .step=${15}
                                     suffix="min"
                                     @value-changed=${e=>this._emit(`covers_override_minutes`,e.detail)}
-                                  ></rs-threshold-field>
-                                  <rs-threshold-field
+                                  ></rme-threshold-field>
+                                  <rme-threshold-field
                                     .label=${C(`covers.outdoor_min_temp`,e)}
                                     .hint=${C(`covers.outdoor_min_temp_hint`,e)}
                                     .value=${this.outdoorMinTemp??10}
@@ -4198,19 +4200,19 @@
                                     .step=${1}
                                     suffix="°C"
                                     @value-changed=${e=>this._emit(`covers_outdoor_min_temp`,e.detail)}
-                                  ></rs-threshold-field>
+                                  ></rme-threshold-field>
                                 </div>
                                 <div class="group-divider"></div>
-                                <rs-toggle-row
+                                <rme-toggle-row
                                   .label=${C(`covers.snap_deploy`,e)}
                                   .hint=${C(`covers.snap_deploy_hint`,e)}
                                   .checked=${this.snapDeploy}
                                   @toggle-changed=${e=>this._emit(`covers_snap_deploy`,e.detail)}
-                                ></rs-toggle-row>`}
+                                ></rme-toggle-row>`}
                       </div>
                     `:g}
             `:g}
-    `}static{this._DIRECTIONS=[{shortLabel:`covers.orientation_N`,longLabel:`covers.orientation_N_full`,deg:0},{shortLabel:`covers.orientation_NE`,longLabel:`covers.orientation_NE_full`,deg:45},{shortLabel:`covers.orientation_E`,longLabel:`covers.orientation_E_full`,deg:90},{shortLabel:`covers.orientation_SE`,longLabel:`covers.orientation_SE_full`,deg:135},{shortLabel:`covers.orientation_S`,longLabel:`covers.orientation_S_full`,deg:180},{shortLabel:`covers.orientation_SW`,longLabel:`covers.orientation_SW_full`,deg:225},{shortLabel:`covers.orientation_W`,longLabel:`covers.orientation_W_full`,deg:270},{shortLabel:`covers.orientation_NW`,longLabel:`covers.orientation_NW_full`,deg:315}]}_setMinPosition(e,t){let n={...this.coverMinPositions};n[e]=t,this._emit(`cover_min_positions`,n)}_setOrientation(e,t){let n={...this.coverOrientations};t===void 0?delete n[e]:n[e]=t,this._emit(`cover_orientations`,n)}_onEntityPicked(e){e.stopPropagation();let t=e.detail.value;if(!t)return;this._onToggle(t,!0);let n=e.target;n.value=``}_onToggle(e,t){this.dispatchEvent(new CustomEvent(`covers-toggle`,{detail:{entityId:e,checked:t},bubbles:!0,composed:!0}))}_onResumeAuto(){this.dispatchEvent(new CustomEvent(`cover-resume-auto`,{bubbles:!0,composed:!0}))}_emit(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],W.prototype,`hass`,void 0),j([b({attribute:!1})],W.prototype,`area`,void 0),j([b({attribute:!1})],W.prototype,`selectedCovers`,void 0),j([b({type:Boolean})],W.prototype,`editing`,void 0),j([b({type:Boolean})],W.prototype,`autoEnabled`,void 0),j([b({type:Number})],W.prototype,`deployThreshold`,void 0),j([b({type:Number})],W.prototype,`minPosition`,void 0),j([b({type:Number})],W.prototype,`overrideMinutes`,void 0),j([b({type:Boolean})],W.prototype,`autoPaused`,void 0),j([b({type:Number})],W.prototype,`overrideUntil`,void 0),j([b({attribute:!1})],W.prototype,`coverSchedules`,void 0),j([b({type:String})],W.prototype,`coverScheduleSelectorEntity`,void 0),j([b({type:Number})],W.prototype,`activeCoverScheduleIndex`,void 0),j([b({type:Boolean})],W.prototype,`nightClose`,void 0),j([b({type:Number})],W.prototype,`nightPosition`,void 0),j([b({type:Boolean})],W.prototype,`snapDeploy`,void 0),j([b({type:String})],W.prototype,`forcedReason`,void 0),j([b({attribute:!1})],W.prototype,`coverOrientations`,void 0),j([b({type:Number})],W.prototype,`nightCloseElevation`,void 0),j([b({type:Number})],W.prototype,`nightCloseOffsetMinutes`,void 0),j([b({type:Number})],W.prototype,`outdoorMinTemp`,void 0),j([b({attribute:!1})],W.prototype,`coverMinPositions`,void 0),j([x()],W.prototype,`_selectedForEdit`,void 0),j([x()],W.prototype,`_scheduleCollapsed`,void 0),j([x()],W.prototype,`_solarCollapsed`,void 0),W=Xt=j([y(`rs-covers-section`)],W),v(),S(),M();var Zt=class extends _{constructor(...e){super(...e),this.enabled=!1,this.primaryDelta=1.5,this.outdoorThreshold=5,this.acMinOutdoor=-15,this.editing=!1}static{this.styles=[R,l`
+    `}static{this._DIRECTIONS=[{shortLabel:`covers.orientation_N`,longLabel:`covers.orientation_N_full`,deg:0},{shortLabel:`covers.orientation_NE`,longLabel:`covers.orientation_NE_full`,deg:45},{shortLabel:`covers.orientation_E`,longLabel:`covers.orientation_E_full`,deg:90},{shortLabel:`covers.orientation_SE`,longLabel:`covers.orientation_SE_full`,deg:135},{shortLabel:`covers.orientation_S`,longLabel:`covers.orientation_S_full`,deg:180},{shortLabel:`covers.orientation_SW`,longLabel:`covers.orientation_SW_full`,deg:225},{shortLabel:`covers.orientation_W`,longLabel:`covers.orientation_W_full`,deg:270},{shortLabel:`covers.orientation_NW`,longLabel:`covers.orientation_NW_full`,deg:315}]}_setMinPosition(e,t){let n={...this.coverMinPositions};n[e]=t,this._emit(`cover_min_positions`,n)}_setOrientation(e,t){let n={...this.coverOrientations};t===void 0?delete n[e]:n[e]=t,this._emit(`cover_orientations`,n)}_onEntityPicked(e){e.stopPropagation();let t=e.detail.value;if(!t)return;this._onToggle(t,!0);let n=e.target;n.value=``}_onToggle(e,t){this.dispatchEvent(new CustomEvent(`covers-toggle`,{detail:{entityId:e,checked:t},bubbles:!0,composed:!0}))}_onResumeAuto(){this.dispatchEvent(new CustomEvent(`cover-resume-auto`,{bubbles:!0,composed:!0}))}_emit(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],W.prototype,`hass`,void 0),j([b({attribute:!1})],W.prototype,`area`,void 0),j([b({attribute:!1})],W.prototype,`selectedCovers`,void 0),j([b({type:Boolean})],W.prototype,`editing`,void 0),j([b({type:Boolean})],W.prototype,`autoEnabled`,void 0),j([b({type:Number})],W.prototype,`deployThreshold`,void 0),j([b({type:Number})],W.prototype,`minPosition`,void 0),j([b({type:Number})],W.prototype,`overrideMinutes`,void 0),j([b({type:Boolean})],W.prototype,`autoPaused`,void 0),j([b({type:Number})],W.prototype,`overrideUntil`,void 0),j([b({attribute:!1})],W.prototype,`coverSchedules`,void 0),j([b({type:String})],W.prototype,`coverScheduleSelectorEntity`,void 0),j([b({type:Number})],W.prototype,`activeCoverScheduleIndex`,void 0),j([b({type:Boolean})],W.prototype,`nightClose`,void 0),j([b({type:Number})],W.prototype,`nightPosition`,void 0),j([b({type:Boolean})],W.prototype,`snapDeploy`,void 0),j([b({type:String})],W.prototype,`forcedReason`,void 0),j([b({attribute:!1})],W.prototype,`coverOrientations`,void 0),j([b({type:Number})],W.prototype,`nightCloseElevation`,void 0),j([b({type:Number})],W.prototype,`nightCloseOffsetMinutes`,void 0),j([b({type:Number})],W.prototype,`outdoorMinTemp`,void 0),j([b({attribute:!1})],W.prototype,`coverMinPositions`,void 0),j([x()],W.prototype,`_selectedForEdit`,void 0),j([x()],W.prototype,`_scheduleCollapsed`,void 0),j([x()],W.prototype,`_solarCollapsed`,void 0),W=Xt=j([y(`rme-covers-section`)],W),v(),S(),M();var Zt=class extends _{constructor(...e){super(...e),this.enabled=!1,this.primaryDelta=1.5,this.outdoorThreshold=5,this.acMinOutdoor=-15,this.editing=!1}static{this.styles=[R,l`
       :host {
         display: block;
       }
@@ -4341,7 +4343,7 @@
       <div class="threshold-cell">
         <div class="threshold-label">
           <span>${e.label}</span>
-          <rs-info-icon .text=${e.hint}></rs-info-icon>
+          <rme-info-icon .text=${e.hint}></rme-info-icon>
         </div>
         <ha-textfield
           .value=${String(e.value)}
@@ -4353,7 +4355,7 @@
           @input=${t=>this._onNumberInput(e.key,t)}
         ></ha-textfield>
       </div>
-    `}_onSwitchChange(e){this._emit(`heat_source_orchestration`,e.target.checked)}_onNumberInput(e,t){let n=parseFloat(t.target.value);isNaN(n)||this._emit(e,n)}_emit(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Zt.prototype,`hass`,void 0),j([b({type:Boolean})],Zt.prototype,`enabled`,void 0),j([b({type:Number})],Zt.prototype,`primaryDelta`,void 0),j([b({type:Number})],Zt.prototype,`outdoorThreshold`,void 0),j([b({type:Number})],Zt.prototype,`acMinOutdoor`,void 0),j([b({type:Boolean})],Zt.prototype,`editing`,void 0),Zt=j([y(`rs-heat-source-section`)],Zt),v(),S(),M();var Qt=class extends _{constructor(...e){super(...e),this.icon=``,this.label=``,this.hint=``,this.checked=!1,this.disabled=!1}static{this.styles=l`
+    `}_onSwitchChange(e){this._emit(`heat_source_orchestration`,e.target.checked)}_onNumberInput(e,t){let n=parseFloat(t.target.value);isNaN(n)||this._emit(e,n)}_emit(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Zt.prototype,`hass`,void 0),j([b({type:Boolean})],Zt.prototype,`enabled`,void 0),j([b({type:Number})],Zt.prototype,`primaryDelta`,void 0),j([b({type:Number})],Zt.prototype,`outdoorThreshold`,void 0),j([b({type:Number})],Zt.prototype,`acMinOutdoor`,void 0),j([b({type:Boolean})],Zt.prototype,`editing`,void 0),Zt=j([y(`rme-heat-source-section`)],Zt),v(),S(),M();var Qt=class extends _{constructor(...e){super(...e),this.icon=``,this.label=``,this.hint=``,this.checked=!1,this.disabled=!1}static{this.styles=l`
     :host {
       display: block;
     }
@@ -4376,7 +4378,7 @@
       flex-shrink: 0;
     }
 
-    rs-toggle-row {
+    rme-toggle-row {
       flex: 1;
       min-width: 0;
     }
@@ -4384,16 +4386,16 @@
       <ha-card>
         <div class="row">
           ${this.icon?h`<ha-icon class="icon" icon=${this.icon}></ha-icon>`:g}
-          <rs-toggle-row
+          <rme-toggle-row
             .label=${this.label}
             .hint=${this.hint}
             .checked=${this.checked}
             .disabled=${this.disabled}
             @toggle-changed=${this._onToggle}
-          ></rs-toggle-row>
+          ></rme-toggle-row>
         </div>
       </ha-card>
-    `}_onToggle(e){e.stopPropagation(),this.dispatchEvent(new CustomEvent(`toggle-changed`,{detail:e.detail,bubbles:!0,composed:!0}))}};j([b({type:String})],Qt.prototype,`icon`,void 0),j([b({type:String})],Qt.prototype,`label`,void 0),j([b({type:String})],Qt.prototype,`hint`,void 0),j([b({type:Boolean})],Qt.prototype,`checked`,void 0),j([b({type:Boolean})],Qt.prototype,`disabled`,void 0),Qt=j([y(`rs-toggle-card`)],Qt),v(),S(),M();var $t=`M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z`,en=`M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z`,tn=class extends _{constructor(...e){super(...e),this.open=!1,this.heading=``,this.icon=``,this.hasInfo=!1,this._infoExpanded=!1,this._onKeyDown=e=>{e.key===`Escape`&&this.open&&(e.stopPropagation(),this._close())}}connectedCallback(){super.connectedCallback(),window.addEventListener(`keydown`,this._onKeyDown)}disconnectedCallback(){super.disconnectedCallback(),window.removeEventListener(`keydown`,this._onKeyDown)}static{this.styles=l`
+    `}_onToggle(e){e.stopPropagation(),this.dispatchEvent(new CustomEvent(`toggle-changed`,{detail:e.detail,bubbles:!0,composed:!0}))}};j([b({type:String})],Qt.prototype,`icon`,void 0),j([b({type:String})],Qt.prototype,`label`,void 0),j([b({type:String})],Qt.prototype,`hint`,void 0),j([b({type:Boolean})],Qt.prototype,`checked`,void 0),j([b({type:Boolean})],Qt.prototype,`disabled`,void 0),Qt=j([y(`rme-toggle-card`)],Qt),v(),S(),M();var $t=`M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z`,en=`M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z`,tn=class extends _{constructor(...e){super(...e),this.open=!1,this.heading=``,this.icon=``,this.hasInfo=!1,this._infoExpanded=!1,this._onKeyDown=e=>{e.key===`Escape`&&this.open&&(e.stopPropagation(),this._close())}}connectedCallback(){super.connectedCallback(),window.addEventListener(`keydown`,this._onKeyDown)}disconnectedCallback(){super.disconnectedCallback(),window.removeEventListener(`keydown`,this._onKeyDown)}static{this.styles=l`
     :host {
       display: contents;
     }
@@ -4574,7 +4576,7 @@
           </div>
         </div>
       </div>
-    `:g}_onBackdropClick(e){e.target===e.currentTarget&&this._close()}_toggleInfo(){this._infoExpanded=!this._infoExpanded}_close(){this._infoExpanded=!1,this.dispatchEvent(new CustomEvent(`rs-dialog-closed`,{bubbles:!0,composed:!0}))}};j([b({type:Boolean,reflect:!0})],tn.prototype,`open`,void 0),j([b({type:String})],tn.prototype,`heading`,void 0),j([b({type:String})],tn.prototype,`icon`,void 0),j([b({type:Boolean})],tn.prototype,`hasInfo`,void 0),j([x()],tn.prototype,`_infoExpanded`,void 0),tn=j([y(`rs-edit-dialog`)],tn),v(),S(),M();var nn=`https://github.com/snazzybean/roommind/blob/main/docs/control-and-devices.md`,G=class extends _{constructor(...e){super(...e),this.config=null,this.presenceEnabled=!1,this.presencePersons=[],this.climateControlActive=!0,this.valveProtectionEnabled=!1,this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this._devices=[],this._selectedTempSensor=``,this._selectedHumiditySensor=``,this._selectedOccupancySensors=new Set,this._selectedWindowSensors=new Set,this._windowOpenDelay=0,this._windowCloseDelay=0,this._climateMode=`auto`,this._schedules=[],this._scheduleSelectorEntity=``,this._comfortHeat=21,this._comfortCool=24,this._ecoHeat=17,this._ecoCool=27,this._error=``,this._dirty=!1,this._editing=null,this._selectedPresencePersons=[],this._displayName=``,this._selectedCovers=new Set,this._coversAutoEnabled=!1,this._coversDeployThreshold=1.5,this._coversMinPosition=0,this._coversOverrideMinutes=60,this._coverSchedules=[],this._coverScheduleSelectorEntity=``,this._coversNightClose=!1,this._coversNightPosition=0,this._coversSnapDeploy=!1,this._coverOrientations={},this._coversNightCloseElevation=0,this._coversNightCloseOffsetMinutes=0,this._coversOutdoorMinTemp=10,this._coverMinPositions={},this._ignorePresence=!1,this._isOutdoor=!1,this._valveProtectionExclude=new Set,this._climateControlEnabled=!0,this._heatSourceOrchestration=!1,this._heatSourcePrimaryDelta=1.5,this._heatSourceOutdoorThreshold=5,this._heatSourceAcMinOutdoor=-15,this._optimisticCoverResume=!1,this._prevAreaId=null,this._openEdit=e=>()=>{this._editing=e},this._closeEdit=()=>{this._editing=null}}static{this.styles=l`
+    `:g}_onBackdropClick(e){e.target===e.currentTarget&&this._close()}_toggleInfo(){this._infoExpanded=!this._infoExpanded}_close(){this._infoExpanded=!1,this.dispatchEvent(new CustomEvent(`rme-dialog-closed`,{bubbles:!0,composed:!0}))}};j([b({type:Boolean,reflect:!0})],tn.prototype,`open`,void 0),j([b({type:String})],tn.prototype,`heading`,void 0),j([b({type:String})],tn.prototype,`icon`,void 0),j([b({type:Boolean})],tn.prototype,`hasInfo`,void 0),j([x()],tn.prototype,`_infoExpanded`,void 0),tn=j([y(`rme-edit-dialog`)],tn),v(),S(),M();var nn=`https://github.com/snazzybean/roommind/blob/main/docs/control-and-devices.md`,G=class extends _{constructor(...e){super(...e),this.config=null,this.presenceEnabled=!1,this.presencePersons=[],this.climateControlActive=!0,this.valveProtectionEnabled=!1,this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this._devices=[],this._selectedTempSensor=``,this._selectedHumiditySensor=``,this._selectedOccupancySensors=new Set,this._selectedWindowSensors=new Set,this._windowOpenDelay=0,this._windowCloseDelay=0,this._climateMode=`auto`,this._schedules=[],this._scheduleSelectorEntity=``,this._comfortHeat=21,this._comfortCool=24,this._ecoHeat=17,this._ecoCool=27,this._error=``,this._dirty=!1,this._editing=null,this._selectedPresencePersons=[],this._displayName=``,this._selectedCovers=new Set,this._coversAutoEnabled=!1,this._coversDeployThreshold=1.5,this._coversMinPosition=0,this._coversOverrideMinutes=60,this._coverSchedules=[],this._coverScheduleSelectorEntity=``,this._coversNightClose=!1,this._coversNightPosition=0,this._coversSnapDeploy=!1,this._coverOrientations={},this._coversNightCloseElevation=0,this._coversNightCloseOffsetMinutes=0,this._coversOutdoorMinTemp=10,this._coverMinPositions={},this._ignorePresence=!1,this._isOutdoor=!1,this._valveProtectionExclude=new Set,this._climateControlEnabled=!0,this._heatSourceOrchestration=!1,this._heatSourcePrimaryDelta=1.5,this._heatSourceOutdoorThreshold=5,this._heatSourceAcMinOutdoor=-15,this._optimisticCoverResume=!1,this._prevAreaId=null,this._openEdit=e=>()=>{this._editing=e},this._closeEdit=()=>{this._editing=null}}static{this.styles=l`
     :host {
       display: block;
       max-width: 2400px;
@@ -4608,7 +4610,7 @@
       }
     }
 
-    /* Section cards handled by rs-section-card */
+    /* Section cards handled by rme-section-card */
 
     /* YAML code block for info panels (slotted into edit dialogs) */
     .yaml-block {
@@ -4680,9 +4682,9 @@
     .helper-link:hover {
       text-decoration: underline;
     }
-  `}connectedCallback(){super.connectedCallback(),this._initFromConfig()}disconnectedCallback(){super.disconnectedCallback(),this._saveDebounce&&clearTimeout(this._saveDebounce)}updated(e){let t=this.config?.area_id??this.area?.area_id??null;t===this._prevAreaId?e.has(`config`)&&!this._dirty&&(e.get(`config`)??this._initFromConfig()):(this._initFromConfig(),this._prevAreaId=t),e.has(`config`)&&this._optimisticCoverResume&&!this.config?.live?.cover_auto_paused&&(this._optimisticCoverResume=!1)}_initFromConfig(){this.config?(this._devices=this.config.devices?.length?[...this.config.devices]:[...(this.config.thermostats??[]).map(e=>({entity_id:e,type:`trv`,role:`auto`,heating_system_type:this.config.heating_system_type??``})),...(this.config.acs??[]).map(e=>({entity_id:e,type:`ac`,role:`auto`}))],this._selectedTempSensor=this.config.temperature_sensor,this._selectedHumiditySensor=this.config.humidity_sensor??``,this._selectedOccupancySensors=new Set(this.config.occupancy_sensors??[]),this._selectedWindowSensors=new Set(this.config.window_sensors??[]),this._windowOpenDelay=this.config.window_open_delay??0,this._windowCloseDelay=this.config.window_close_delay??0,this._climateMode=this.config.climate_mode,this._schedules=this.config.schedules??[],this._scheduleSelectorEntity=this.config.schedule_selector_entity??``,this._comfortHeat=this.config.comfort_heat??this.config.comfort_temp??21,this._comfortCool=this.config.comfort_cool??24,this._ecoHeat=this.config.eco_heat??this.config.eco_temp??17,this._ecoCool=this.config.eco_cool??27,this._selectedPresencePersons=this.config.presence_persons??[],this._displayName=this.config.display_name??``,this._selectedCovers=new Set(this.config.covers??[]),this._coversAutoEnabled=this.config.covers_auto_enabled??!1,this._coversDeployThreshold=this.config.covers_deploy_threshold??1.5,this._coversMinPosition=this.config.covers_min_position??0,this._coversOverrideMinutes=this.config.covers_override_minutes??60,this._coverSchedules=this.config.cover_schedules??[],this._coverScheduleSelectorEntity=this.config.cover_schedule_selector_entity??``,this._coversNightClose=this.config.covers_night_close??!1,this._coversNightPosition=this.config.covers_night_position??0,this._coversSnapDeploy=this.config.covers_snap_deploy??!1,this._coverOrientations=this.config.cover_orientations??{},this._coversNightCloseElevation=this.config.covers_night_close_elevation??0,this._coversNightCloseOffsetMinutes=this.config.covers_night_close_offset_minutes??0,this._coversOutdoorMinTemp=this.config.covers_outdoor_min_temp??10,this._coverMinPositions=this.config.cover_min_positions??{},this._ignorePresence=this.config.ignore_presence??!1,this._isOutdoor=this.config.is_outdoor??!1,this._valveProtectionExclude=new Set(this.config.valve_protection_exclude??[]),this._climateControlEnabled=this.config.climate_control_enabled??!0,this._heatSourceOrchestration=this.config.heat_source_orchestration??!1,this._heatSourcePrimaryDelta=this.config.heat_source_primary_delta??1.5,this._heatSourceOutdoorThreshold=this.config.heat_source_outdoor_threshold??5,this._heatSourceAcMinOutdoor=this.config.heat_source_ac_min_outdoor??-15):(this._devices=[],this._selectedTempSensor=``,this._selectedHumiditySensor=``,this._selectedOccupancySensors=new Set,this._selectedWindowSensors=new Set,this._windowOpenDelay=0,this._windowCloseDelay=0,this._climateMode=`auto`,this._schedules=[],this._scheduleSelectorEntity=``,this._comfortHeat=21,this._comfortCool=24,this._ecoHeat=17,this._ecoCool=27,this._selectedPresencePersons=[],this._displayName=``,this._selectedCovers=new Set,this._coversAutoEnabled=!1,this._coversDeployThreshold=1.5,this._coversMinPosition=0,this._coversOverrideMinutes=60,this._coverSchedules=[],this._coverScheduleSelectorEntity=``,this._coversNightClose=!1,this._coversNightPosition=0,this._coversSnapDeploy=!1,this._coverOrientations={},this._coversNightCloseElevation=0,this._coversNightCloseOffsetMinutes=0,this._coversOutdoorMinTemp=10,this._coverMinPositions={},this._ignorePresence=!1,this._isOutdoor=!1,this._valveProtectionExclude=new Set,this._climateControlEnabled=!0,this._heatSourceOrchestration=!1,this._heatSourcePrimaryDelta=1.5,this._heatSourceOutdoorThreshold=5,this._heatSourceAcMinOutdoor=-15),this._dirty=!1,this._devices.length===0&&this._editing===null&&(this._editing=`devices`)}_getEffectiveOverride(){let e=this.shadowRoot?.querySelector(`rs-override-section`);if(e)return e.getEffectiveOverride();let t=this.config?.live;return t?.override_active&&t.override_type?{active:!0,type:t.override_type,heat:t.override_heat,cool:t.override_cool,until:t.override_until}:{active:!1,type:null,heat:null,cool:null,until:null}}render(){return this.area?h`
+  `}connectedCallback(){super.connectedCallback(),this._initFromConfig()}disconnectedCallback(){super.disconnectedCallback(),this._saveDebounce&&clearTimeout(this._saveDebounce)}updated(e){let t=this.config?.area_id??this.area?.area_id??null;t===this._prevAreaId?e.has(`config`)&&!this._dirty&&(e.get(`config`)??this._initFromConfig()):(this._initFromConfig(),this._prevAreaId=t),e.has(`config`)&&this._optimisticCoverResume&&!this.config?.live?.cover_auto_paused&&(this._optimisticCoverResume=!1)}_initFromConfig(){this.config?(this._devices=this.config.devices?.length?[...this.config.devices]:[...(this.config.thermostats??[]).map(e=>({entity_id:e,type:`trv`,role:`auto`,heating_system_type:this.config.heating_system_type??``})),...(this.config.acs??[]).map(e=>({entity_id:e,type:`ac`,role:`auto`}))],this._selectedTempSensor=this.config.temperature_sensor,this._selectedHumiditySensor=this.config.humidity_sensor??``,this._selectedOccupancySensors=new Set(this.config.occupancy_sensors??[]),this._selectedWindowSensors=new Set(this.config.window_sensors??[]),this._windowOpenDelay=this.config.window_open_delay??0,this._windowCloseDelay=this.config.window_close_delay??0,this._climateMode=this.config.climate_mode,this._schedules=this.config.schedules??[],this._scheduleSelectorEntity=this.config.schedule_selector_entity??``,this._comfortHeat=this.config.comfort_heat??this.config.comfort_temp??21,this._comfortCool=this.config.comfort_cool??24,this._ecoHeat=this.config.eco_heat??this.config.eco_temp??17,this._ecoCool=this.config.eco_cool??27,this._selectedPresencePersons=this.config.presence_persons??[],this._displayName=this.config.display_name??``,this._selectedCovers=new Set(this.config.covers??[]),this._coversAutoEnabled=this.config.covers_auto_enabled??!1,this._coversDeployThreshold=this.config.covers_deploy_threshold??1.5,this._coversMinPosition=this.config.covers_min_position??0,this._coversOverrideMinutes=this.config.covers_override_minutes??60,this._coverSchedules=this.config.cover_schedules??[],this._coverScheduleSelectorEntity=this.config.cover_schedule_selector_entity??``,this._coversNightClose=this.config.covers_night_close??!1,this._coversNightPosition=this.config.covers_night_position??0,this._coversSnapDeploy=this.config.covers_snap_deploy??!1,this._coverOrientations=this.config.cover_orientations??{},this._coversNightCloseElevation=this.config.covers_night_close_elevation??0,this._coversNightCloseOffsetMinutes=this.config.covers_night_close_offset_minutes??0,this._coversOutdoorMinTemp=this.config.covers_outdoor_min_temp??10,this._coverMinPositions=this.config.cover_min_positions??{},this._ignorePresence=this.config.ignore_presence??!1,this._isOutdoor=this.config.is_outdoor??!1,this._valveProtectionExclude=new Set(this.config.valve_protection_exclude??[]),this._climateControlEnabled=this.config.climate_control_enabled??!0,this._heatSourceOrchestration=this.config.heat_source_orchestration??!1,this._heatSourcePrimaryDelta=this.config.heat_source_primary_delta??1.5,this._heatSourceOutdoorThreshold=this.config.heat_source_outdoor_threshold??5,this._heatSourceAcMinOutdoor=this.config.heat_source_ac_min_outdoor??-15):(this._devices=[],this._selectedTempSensor=``,this._selectedHumiditySensor=``,this._selectedOccupancySensors=new Set,this._selectedWindowSensors=new Set,this._windowOpenDelay=0,this._windowCloseDelay=0,this._climateMode=`auto`,this._schedules=[],this._scheduleSelectorEntity=``,this._comfortHeat=21,this._comfortCool=24,this._ecoHeat=17,this._ecoCool=27,this._selectedPresencePersons=[],this._displayName=``,this._selectedCovers=new Set,this._coversAutoEnabled=!1,this._coversDeployThreshold=1.5,this._coversMinPosition=0,this._coversOverrideMinutes=60,this._coverSchedules=[],this._coverScheduleSelectorEntity=``,this._coversNightClose=!1,this._coversNightPosition=0,this._coversSnapDeploy=!1,this._coverOrientations={},this._coversNightCloseElevation=0,this._coversNightCloseOffsetMinutes=0,this._coversOutdoorMinTemp=10,this._coverMinPositions={},this._ignorePresence=!1,this._isOutdoor=!1,this._valveProtectionExclude=new Set,this._climateControlEnabled=!0,this._heatSourceOrchestration=!1,this._heatSourcePrimaryDelta=1.5,this._heatSourceOutdoorThreshold=5,this._heatSourceAcMinOutdoor=-15),this._dirty=!1,this._devices.length===0&&this._editing===null&&(this._editing=`devices`)}_getEffectiveOverride(){let e=this.shadowRoot?.querySelector(`rme-override-section`);if(e)return e.getEffectiveOverride();let t=this.config?.live;return t?.override_active&&t.override_type?{active:!0,type:t.override_type,heat:t.override_heat,cool:t.override_cool,until:t.override_until}:{active:!1,type:null,heat:null,cool:null,until:null}}render(){return this.area?h`
       <div class="detail-layout">
-        <rs-hero-status
+        <rme-hero-status
           .hass=${this.hass}
           .area=${this.area}
           .config=${this.config}
@@ -4690,44 +4692,44 @@
           .overrideInfo=${this._getEffectiveOverride()}
           .climateControlActive=${this.climateControlActive&&this._climateControlEnabled}
           @display-name-changed=${this._onDisplayNameChanged}
-        ></rs-hero-status>
+        ></rme-hero-status>
 
         <div class="detail-grid">
           ${this._isOutdoor?g:h`
-                  <rs-toggle-card
+                  <rme-toggle-card
                     icon="mdi:power"
                     .label=${C(`room.climate_control_toggle`,this.hass.language)}
                     .hint=${C(`room.climate_control_hint`,this.hass.language)}
                     .checked=${this._climateControlEnabled}
                     @toggle-changed=${this._onClimateControlToggle}
-                  ></rs-toggle-card>
+                  ></rme-toggle-card>
 
-                  <rs-section-card
+                  <rme-section-card
                     icon="mdi:cog"
                     .heading=${C(`room.section.climate_mode`,this.hass.language)}
                   >
-                    <rs-info-icon slot="header-extras">
+                    <rme-info-icon slot="header-extras">
                       <b>${C(`mode.auto`,this.hass.language)}</b> —
                       ${C(`mode.auto_desc`,this.hass.language)}<br />
                       <b>${C(`mode.heat_only`,this.hass.language)}</b> —
                       ${C(`mode.heat_only_desc`,this.hass.language)}<br />
                       <b>${C(`mode.cool_only`,this.hass.language)}</b> —
                       ${C(`mode.cool_only_desc`,this.hass.language)}
-                    </rs-info-icon>
-                    <rs-climate-mode-selector
+                    </rme-info-icon>
+                    <rme-climate-mode-selector
                       .climateMode=${this._climateMode}
                       .language=${this.hass.language}
                       @mode-changed=${this._onModeChanged}
-                    ></rs-climate-mode-selector>
-                  </rs-section-card>
+                    ></rme-climate-mode-selector>
+                  </rme-section-card>
 
-                  <rs-section-card
+                  <rme-section-card
                     icon="mdi:calendar"
                     .heading=${C(`room.section.schedule`,this.hass.language)}
                     editable
                     @edit-click=${this._openEdit(`schedule`)}
                   >
-                    <rs-schedule-settings
+                    <rme-schedule-settings
                       .hass=${this.hass}
                       .schedules=${this._schedules}
                       .scheduleSelectorEntity=${this._scheduleSelectorEntity}
@@ -4745,9 +4747,9 @@
                       @comfort-cool-changed=${this._onComfortCoolChanged}
                       @eco-heat-changed=${this._onEcoHeatChanged}
                       @eco-cool-changed=${this._onEcoCoolChanged}
-                    ></rs-schedule-settings>
+                    ></rme-schedule-settings>
                     ${this.config?h`
-                            <rs-override-section
+                            <rme-override-section
                               .hass=${this.hass}
                               .config=${this.config}
                               .climateMode=${this._climateMode}
@@ -4756,18 +4758,18 @@
                               .ecoHeat=${this._ecoHeat}
                               .ecoCool=${this._ecoCool}
                               .language=${this.hass.language}
-                            ></rs-override-section>
+                            ></rme-override-section>
                           `:g}
-                  </rs-section-card>
+                  </rme-section-card>
                 `}
           ${this._isOutdoor?g:h`
-                  <rs-section-card
+                  <rme-section-card
                     icon="mdi:power-plug"
                     .heading=${C(`room.section.devices`,this.hass.language)}
                     editable
                     @edit-click=${this._openEdit(`devices`)}
                   >
-                    <rs-device-section
+                    <rme-device-section
                       .hass=${this.hass}
                       .area=${this.area}
                       .editing=${!1}
@@ -4781,16 +4783,16 @@
                       .coilDryFanModeGlobal=${this.coilDryFanMode}
                       @device-changed=${this._onDeviceChanged}
                       @valve-protection-exclude-toggle=${this._onValveProtectionExcludeToggle}
-                    ></rs-device-section>
-                  </rs-section-card>
+                    ></rme-device-section>
+                  </rme-section-card>
 
-                  <rs-section-card
+                  <rme-section-card
                     icon="mdi:thermometer"
                     .heading=${C(`room.section.sensors`,this.hass.language)}
                     editable
                     @edit-click=${this._openEdit(`sensors`)}
                   >
-                    <rs-sensor-section
+                    <rme-sensor-section
                       .hass=${this.hass}
                       .area=${this.area}
                       .editing=${!1}
@@ -4803,20 +4805,20 @@
                       .heatingSystemType=${zt(this._devices)}
                       .language=${this.hass.language}
                       @sensor-changed=${this._onSensorChanged}
-                    ></rs-sensor-section>
-                  </rs-section-card>
+                    ></rme-sensor-section>
+                  </rme-section-card>
 
-                  ${this.presenceEnabled&&(this.presencePersons.length>0||this._selectedPresencePersons.length>0)?h`<rs-section-card
+                  ${this.presenceEnabled&&(this.presencePersons.length>0||this._selectedPresencePersons.length>0)?h`<rme-section-card
                           icon="mdi:home-account"
                           .heading=${C(`room.section.presence`,this.hass.language)}
                           editable
                           @edit-click=${this._openEdit(`presence`)}
                         >
-                          <rs-info-icon
+                          <rme-info-icon
                             slot="header-extras"
                             .text=${C(`presence.ignore_hint`,this.hass.language)}
-                          ></rs-info-icon>
-                          <rs-presence-section
+                          ></rme-info-icon>
+                          <rme-presence-section
                             .hass=${this.hass}
                             .presenceEnabled=${this.presenceEnabled}
                             .presencePersons=${this.presencePersons}
@@ -4826,10 +4828,10 @@
                             .language=${this.hass.language}
                             @presence-persons-changed=${this._onPresencePersonsChanged}
                             @ignore-presence-changed=${this._onIgnorePresenceChanged}
-                          ></rs-presence-section>
-                        </rs-section-card>`:g}
+                          ></rme-presence-section>
+                        </rme-section-card>`:g}
                 `}
-          ${this._isOutdoor?g:h`<rs-section-card
+          ${this._isOutdoor?g:h`<rme-section-card
                   icon="mdi:blinds-horizontal"
                   .heading=${C(`room.section.covers`,this.hass.language)}
                   .badge=${C(`badge.beta`,this.hass.language)}
@@ -4837,7 +4839,7 @@
                   editable
                   @edit-click=${this._openEdit(`covers`)}
                 >
-                  <rs-covers-section
+                  <rme-covers-section
                     .hass=${this.hass}
                     .area=${this.area}
                     .editing=${!1}
@@ -4863,15 +4865,15 @@
                     @covers-toggle=${this._onCoversToggle}
                     @setting-changed=${this._onCoverSettingChanged}
                     @cover-resume-auto=${this._onCoverResumeAuto}
-                  ></rs-covers-section>
-                </rs-section-card>`}
-          ${!this._isOutdoor&&this._selectedTempSensor&&this._devices.some(e=>e.type===`trv`)&&this._devices.some(e=>e.type===`ac`)?h`<rs-section-card
+                  ></rme-covers-section>
+                </rme-section-card>`}
+          ${!this._isOutdoor&&this._selectedTempSensor&&this._devices.some(e=>e.type===`trv`)&&this._devices.some(e=>e.type===`ac`)?h`<rme-section-card
                   icon="mdi:swap-horizontal"
                   .heading=${C(`room.section.heat_source`,this.hass.language)}
                   editable
                   @edit-click=${this._openEdit(`heatSource`)}
                 >
-                  <rs-heat-source-section
+                  <rme-heat-source-section
                     .hass=${this.hass}
                     .editing=${!1}
                     .enabled=${this._heatSourceOrchestration}
@@ -4879,26 +4881,26 @@
                     .outdoorThreshold=${this._heatSourceOutdoorThreshold}
                     .acMinOutdoor=${this._heatSourceAcMinOutdoor}
                     @setting-changed=${this._onHeatSourceSettingChanged}
-                  ></rs-heat-source-section>
-                </rs-section-card>`:g}
+                  ></rme-heat-source-section>
+                </rme-section-card>`:g}
 
-          <rs-toggle-card
+          <rme-toggle-card
             icon="mdi:tree"
             .label=${C(`room.outdoor_toggle`,this.hass.language)}
             .hint=${C(`room.outdoor_hint`,this.hass.language)}
             .checked=${this._isOutdoor}
             @toggle-changed=${this._onOutdoorToggle}
-          ></rs-toggle-card>
+          ></rme-toggle-card>
         </div>
         ${this._error?h`<div class="error">${this._error}</div>`:g}
         ${this._renderEditDialog()}
       </div>
-    `:g}_renderEditDialog(){if(this._editing===null)return g;let e=this.hass.language;switch(this._editing){case`schedule`:return h`<rs-edit-dialog
+    `:g}_renderEditDialog(){if(this._editing===null)return g;let e=this.hass.language;switch(this._editing){case`schedule`:return h`<rme-edit-dialog
           open
           icon="mdi:calendar"
           .heading=${C(`room.section.schedule`,e)}
           hasInfo
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
           <div slot="info">
             <p><strong>${C(`schedule.help_temps_title`,e)}</strong></p>
@@ -4945,7 +4947,7 @@
             </p>
             <p>${P(C(`schedule.help_multi`,e))}</p>
           </div>
-          <rs-schedule-settings
+          <rme-schedule-settings
             .hass=${this.hass}
             .schedules=${this._schedules}
             .scheduleSelectorEntity=${this._scheduleSelectorEntity}
@@ -4963,13 +4965,13 @@
             @comfort-cool-changed=${this._onComfortCoolChanged}
             @eco-heat-changed=${this._onEcoHeatChanged}
             @eco-cool-changed=${this._onEcoCoolChanged}
-          ></rs-schedule-settings>
-        </rs-edit-dialog>`;case`devices`:return h`<rs-edit-dialog
+          ></rme-schedule-settings>
+        </rme-edit-dialog>`;case`devices`:return h`<rme-edit-dialog
           open
           icon="mdi:power-plug"
           .heading=${C(`room.section.devices`,e)}
           hasInfo
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
           <div slot="info">
             <b>${C(`devices.info.types_title`,e)}</b><br />
@@ -4988,7 +4990,7 @@
               ${C(`common.learn_more`,e)}
             </a>
           </div>
-          <rs-device-section
+          <rme-device-section
             .hass=${this.hass}
             .area=${this.area}
             .editing=${!0}
@@ -5002,14 +5004,14 @@
             .coilDryFanModeGlobal=${this.coilDryFanMode}
             @device-changed=${this._onDeviceChanged}
             @valve-protection-exclude-toggle=${this._onValveProtectionExcludeToggle}
-          ></rs-device-section>
-        </rs-edit-dialog>`;case`sensors`:return h`<rs-edit-dialog
+          ></rme-device-section>
+        </rme-edit-dialog>`;case`sensors`:return h`<rme-edit-dialog
           open
           icon="mdi:thermometer"
           .heading=${C(`room.section.sensors`,e)}
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
-          <rs-sensor-section
+          <rme-sensor-section
             .hass=${this.hass}
             .area=${this.area}
             .editing=${!0}
@@ -5022,13 +5024,13 @@
             .heatingSystemType=${zt(this._devices)}
             .language=${this.hass.language}
             @sensor-changed=${this._onSensorChanged}
-          ></rs-sensor-section>
-        </rs-edit-dialog>`;case`presence`:return h`<rs-edit-dialog
+          ></rme-sensor-section>
+        </rme-edit-dialog>`;case`presence`:return h`<rme-edit-dialog
           open
           icon="mdi:home-account"
           .heading=${C(`room.section.presence`,e)}
           hasInfo
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
           <div slot="info">
             <b>${C(`presence.room_help_header`,e)}</b><br />
@@ -5037,7 +5039,7 @@
             <b>${C(`presence.help_ignore_title`,e)}</b><br />
             ${C(`presence.help_ignore_body`,e)}
           </div>
-          <rs-presence-section
+          <rme-presence-section
             .hass=${this.hass}
             .presenceEnabled=${this.presenceEnabled}
             .presencePersons=${this.presencePersons}
@@ -5047,13 +5049,13 @@
             .language=${this.hass.language}
             @presence-persons-changed=${this._onPresencePersonsChanged}
             @ignore-presence-changed=${this._onIgnorePresenceChanged}
-          ></rs-presence-section>
-        </rs-edit-dialog>`;case`covers`:return h`<rs-edit-dialog
+          ></rme-presence-section>
+        </rme-edit-dialog>`;case`covers`:return h`<rme-edit-dialog
           open
           icon="mdi:blinds-horizontal"
           .heading=${C(`room.section.covers`,e)}
           hasInfo
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
           <div slot="info">
             <b>${C(`covers.info.selection_title`,e)}</b><br />
@@ -5086,7 +5088,7 @@
             <b>${C(`covers.info.entities_title`,e)}</b><br />
             ${C(`covers.info.entities_body`,e)}
           </div>
-          <rs-covers-section
+          <rme-covers-section
             .hass=${this.hass}
             .area=${this.area}
             .editing=${!0}
@@ -5112,14 +5114,14 @@
             @covers-toggle=${this._onCoversToggle}
             @setting-changed=${this._onCoverSettingChanged}
             @cover-resume-auto=${this._onCoverResumeAuto}
-          ></rs-covers-section>
-        </rs-edit-dialog>`;case`heatSource`:return h`<rs-edit-dialog
+          ></rme-covers-section>
+        </rme-edit-dialog>`;case`heatSource`:return h`<rme-edit-dialog
           open
           icon="mdi:swap-horizontal"
           .heading=${C(`room.section.heat_source`,e)}
-          @rs-dialog-closed=${this._closeEdit}
+          @rme-dialog-closed=${this._closeEdit}
         >
-          <rs-heat-source-section
+          <rme-heat-source-section
             .hass=${this.hass}
             .editing=${!0}
             .enabled=${this._heatSourceOrchestration}
@@ -5127,8 +5129,8 @@
             .outdoorThreshold=${this._heatSourceOutdoorThreshold}
             .acMinOutdoor=${this._heatSourceAcMinOutdoor}
             @setting-changed=${this._onHeatSourceSettingChanged}
-          ></rs-heat-source-section>
-        </rs-edit-dialog>`}}_onModeChanged(e){this._climateMode=e.detail.mode,this._autoSave()}_onSchedulesChanged(e){this._schedules=e.detail.value,this._autoSave()}_onScheduleSelectorChanged(e){this._scheduleSelectorEntity=e.detail.value,this._autoSave()}_onComfortHeatChanged(e){this._comfortHeat=e.detail.value,this._comfortCool<this._comfortHeat&&(this._comfortCool=this._comfortHeat),this._autoSave()}_onComfortCoolChanged(e){this._comfortCool=e.detail.value,this._comfortHeat>this._comfortCool&&(this._comfortHeat=this._comfortCool),this._autoSave()}_onEcoHeatChanged(e){this._ecoHeat=e.detail.value,this._ecoCool<this._ecoHeat&&(this._ecoCool=this._ecoHeat),this._autoSave()}_onEcoCoolChanged(e){this._ecoCool=e.detail.value,this._ecoHeat>this._ecoCool&&(this._ecoHeat=this._ecoCool),this._autoSave()}_onDeviceChanged(e){let t=new Set(this._devices.map(e=>e.entity_id));this._devices=e.detail.devices;let n=new Set(this._devices.map(e=>e.entity_id));for(let e of t)if(!n.has(e)&&this._valveProtectionExclude.has(e)){let t=new Set(this._valveProtectionExclude);t.delete(e),this._valveProtectionExclude=t}for(let e of this._devices)if(e.type!==`trv`&&this._valveProtectionExclude.has(e.entity_id)){let t=new Set(this._valveProtectionExclude);t.delete(e.entity_id),this._valveProtectionExclude=t}this._autoSave()}_onSensorChanged(e){let{key:t,value:n}=e.detail;t===`temperature_sensor`?this._selectedTempSensor=n:t===`humidity_sensor`?this._selectedHumiditySensor=n:t===`occupancy_sensors`?this._selectedOccupancySensors=new Set(n):t===`window_sensors`?this._selectedWindowSensors=new Set(n):t===`window_open_delay`?this._windowOpenDelay=n:t===`window_close_delay`&&(this._windowCloseDelay=n),this._autoSave()}_onValveProtectionExcludeToggle(e){let{entityId:t,excluded:n}=e.detail,r=new Set(this._valveProtectionExclude);n?r.add(t):r.delete(t),this._valveProtectionExclude=r,this._autoSave()}_onPresencePersonsChanged(e){this._selectedPresencePersons=e.detail,this._autoSave()}_onIgnorePresenceChanged(e){this._ignorePresence=e.detail,this._autoSave()}_onCoversToggle(e){let{entityId:t,checked:n}=e.detail,r=new Set(this._selectedCovers);if(n)r.add(t);else{if(r.delete(t),t in this._coverOrientations){let e={...this._coverOrientations};delete e[t],this._coverOrientations=e}if(t in this._coverMinPositions){let e={...this._coverMinPositions};delete e[t],this._coverMinPositions=e}}this._selectedCovers=r,this._autoSave()}_onCoverSettingChanged(e){let{key:t,value:n}=e.detail;e.stopPropagation(),t===`covers_auto_enabled`?this._coversAutoEnabled=n:t===`covers_deploy_threshold`?this._coversDeployThreshold=n:t===`covers_min_position`?this._coversMinPosition=n:t===`covers_override_minutes`?this._coversOverrideMinutes=n:t===`cover_schedules`?this._coverSchedules=n:t===`cover_schedule_selector_entity`?this._coverScheduleSelectorEntity=n:t===`covers_night_close`?this._coversNightClose=n:t===`covers_night_position`?this._coversNightPosition=n:t===`covers_snap_deploy`?this._coversSnapDeploy=n:t===`cover_orientations`?this._coverOrientations=n:t===`covers_night_close_elevation`?this._coversNightCloseElevation=n:t===`covers_night_close_offset_minutes`?this._coversNightCloseOffsetMinutes=n:t===`covers_outdoor_min_temp`?this._coversOutdoorMinTemp=n:t===`cover_min_positions`&&(this._coverMinPositions=n),this._autoSave()}async _onCoverResumeAuto(){this._optimisticCoverResume=!0;try{await this.hass.callWS({type:`roommind_eklabs/covers/clear_override`,area_id:this.area.area_id})}catch{this._optimisticCoverResume=!1}}_onHeatSourceSettingChanged(e){let{key:t,value:n}=e.detail;e.stopPropagation(),t===`heat_source_orchestration`?this._heatSourceOrchestration=n:t===`heat_source_primary_delta`?this._heatSourcePrimaryDelta=n:t===`heat_source_outdoor_threshold`?this._heatSourceOutdoorThreshold=n:t===`heat_source_ac_min_outdoor`&&(this._heatSourceAcMinOutdoor=n),this._autoSave()}_onClimateControlToggle(e){this._climateControlEnabled=e.detail,this._autoSave()}_onOutdoorToggle(e){this._isOutdoor=e.detail,this._autoSave()}_onDisplayNameChanged(e){this._displayName=e.detail.value,this._autoSave()}_autoSave(){this._dirty=!0,this._saveDebounce&&clearTimeout(this._saveDebounce),this._saveDebounce=setTimeout(()=>this._doSave(),500)}async _doSave(){L(this,`saving`),this._error=``;try{await this.hass.callWS({type:`roommind_eklabs/rooms/save`,area_id:this.area.area_id,devices:this._devices,temperature_sensor:this._selectedTempSensor,humidity_sensor:this._selectedHumiditySensor,occupancy_sensors:[...this._selectedOccupancySensors],window_sensors:[...this._selectedWindowSensors],window_open_delay:this._windowOpenDelay,window_close_delay:this._windowCloseDelay,climate_mode:this._climateMode,schedules:this._schedules,schedule_selector_entity:this._scheduleSelectorEntity,comfort_heat:this._comfortHeat,comfort_cool:this._comfortCool,eco_heat:this._ecoHeat,eco_cool:this._ecoCool,presence_persons:this._selectedPresencePersons.filter(e=>e),display_name:this._displayName,covers:[...this._selectedCovers],climate_control_enabled:this._climateControlEnabled,covers_auto_enabled:this._coversAutoEnabled,covers_deploy_threshold:this._coversDeployThreshold,covers_min_position:this._coversMinPosition,covers_override_minutes:this._coversOverrideMinutes,cover_schedules:this._coverSchedules,cover_schedule_selector_entity:this._coverScheduleSelectorEntity,covers_night_close:this._coversNightClose,covers_night_position:this._coversNightPosition,covers_snap_deploy:this._coversSnapDeploy,cover_orientations:this._coverOrientations,covers_night_close_elevation:this._coversNightCloseElevation,covers_night_close_offset_minutes:this._coversNightCloseOffsetMinutes,covers_outdoor_min_temp:this._coversOutdoorMinTemp,cover_min_positions:this._coverMinPositions,ignore_presence:this._ignorePresence,is_outdoor:this._isOutdoor,valve_protection_exclude:[...this._valveProtectionExclude],heat_source_orchestration:this._heatSourceOrchestration,heat_source_primary_delta:this._heatSourcePrimaryDelta,heat_source_outdoor_threshold:this._heatSourceOutdoorThreshold,heat_source_ac_min_outdoor:this._heatSourceAcMinOutdoor}),this._dirty=!1,L(this,`saved`),this.dispatchEvent(new CustomEvent(`room-updated`,{bubbles:!0,composed:!0}))}catch(e){let t=e instanceof Error?e.message:C(`room.error_save_fallback`,this.hass.language);this._error=t,L(this,`error`)}}};j([b({attribute:!1})],G.prototype,`area`,void 0),j([b({attribute:!1})],G.prototype,`config`,void 0),j([b({attribute:!1})],G.prototype,`hass`,void 0),j([b({type:Boolean})],G.prototype,`presenceEnabled`,void 0),j([b({attribute:!1})],G.prototype,`presencePersons`,void 0),j([b({type:Boolean})],G.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],G.prototype,`valveProtectionEnabled`,void 0),j([b({type:Boolean})],G.prototype,`coilDryEnabled`,void 0),j([b({type:Number})],G.prototype,`coilDryMinutes`,void 0),j([b({type:String})],G.prototype,`coilDryMode`,void 0),j([b({type:String})],G.prototype,`coilDryFanMode`,void 0),j([x()],G.prototype,`_devices`,void 0),j([x()],G.prototype,`_selectedTempSensor`,void 0),j([x()],G.prototype,`_selectedHumiditySensor`,void 0),j([x()],G.prototype,`_selectedOccupancySensors`,void 0),j([x()],G.prototype,`_selectedWindowSensors`,void 0),j([x()],G.prototype,`_windowOpenDelay`,void 0),j([x()],G.prototype,`_windowCloseDelay`,void 0),j([x()],G.prototype,`_climateMode`,void 0),j([x()],G.prototype,`_schedules`,void 0),j([x()],G.prototype,`_scheduleSelectorEntity`,void 0),j([x()],G.prototype,`_comfortHeat`,void 0),j([x()],G.prototype,`_comfortCool`,void 0),j([x()],G.prototype,`_ecoHeat`,void 0),j([x()],G.prototype,`_ecoCool`,void 0),j([x()],G.prototype,`_error`,void 0),j([x()],G.prototype,`_dirty`,void 0),j([x()],G.prototype,`_editing`,void 0),j([x()],G.prototype,`_selectedPresencePersons`,void 0),j([x()],G.prototype,`_displayName`,void 0),j([x()],G.prototype,`_selectedCovers`,void 0),j([x()],G.prototype,`_coversAutoEnabled`,void 0),j([x()],G.prototype,`_coversDeployThreshold`,void 0),j([x()],G.prototype,`_coversMinPosition`,void 0),j([x()],G.prototype,`_coversOverrideMinutes`,void 0),j([x()],G.prototype,`_coverSchedules`,void 0),j([x()],G.prototype,`_coverScheduleSelectorEntity`,void 0),j([x()],G.prototype,`_coversNightClose`,void 0),j([x()],G.prototype,`_coversNightPosition`,void 0),j([x()],G.prototype,`_coversSnapDeploy`,void 0),j([x()],G.prototype,`_coverOrientations`,void 0),j([x()],G.prototype,`_coversNightCloseElevation`,void 0),j([x()],G.prototype,`_coversNightCloseOffsetMinutes`,void 0),j([x()],G.prototype,`_coversOutdoorMinTemp`,void 0),j([x()],G.prototype,`_coverMinPositions`,void 0),j([x()],G.prototype,`_ignorePresence`,void 0),j([x()],G.prototype,`_isOutdoor`,void 0),j([x()],G.prototype,`_valveProtectionExclude`,void 0),j([x()],G.prototype,`_climateControlEnabled`,void 0),j([x()],G.prototype,`_heatSourceOrchestration`,void 0),j([x()],G.prototype,`_heatSourcePrimaryDelta`,void 0),j([x()],G.prototype,`_heatSourceOutdoorThreshold`,void 0),j([x()],G.prototype,`_heatSourceAcMinOutdoor`,void 0),j([x()],G.prototype,`_optimisticCoverResume`,void 0),G=j([y(`rs-room-detail`)],G);var rn=n({HaRadioPolyfill:()=>an}),an,on=t((()=>{v(),S(),M(),an=class extends _{constructor(...e){super(...e),this.checked=!1,this.disabled=!1,this.name=``,this.value=``}static{this.shadowRootOptions={mode:`open`,delegatesFocus:!0}}static{this.styles=l`
+          ></rme-heat-source-section>
+        </rme-edit-dialog>`}}_onModeChanged(e){this._climateMode=e.detail.mode,this._autoSave()}_onSchedulesChanged(e){this._schedules=e.detail.value,this._autoSave()}_onScheduleSelectorChanged(e){this._scheduleSelectorEntity=e.detail.value,this._autoSave()}_onComfortHeatChanged(e){this._comfortHeat=e.detail.value,this._comfortCool<this._comfortHeat&&(this._comfortCool=this._comfortHeat),this._autoSave()}_onComfortCoolChanged(e){this._comfortCool=e.detail.value,this._comfortHeat>this._comfortCool&&(this._comfortHeat=this._comfortCool),this._autoSave()}_onEcoHeatChanged(e){this._ecoHeat=e.detail.value,this._ecoCool<this._ecoHeat&&(this._ecoCool=this._ecoHeat),this._autoSave()}_onEcoCoolChanged(e){this._ecoCool=e.detail.value,this._ecoHeat>this._ecoCool&&(this._ecoHeat=this._ecoCool),this._autoSave()}_onDeviceChanged(e){let t=new Set(this._devices.map(e=>e.entity_id));this._devices=e.detail.devices;let n=new Set(this._devices.map(e=>e.entity_id));for(let e of t)if(!n.has(e)&&this._valveProtectionExclude.has(e)){let t=new Set(this._valveProtectionExclude);t.delete(e),this._valveProtectionExclude=t}for(let e of this._devices)if(e.type!==`trv`&&this._valveProtectionExclude.has(e.entity_id)){let t=new Set(this._valveProtectionExclude);t.delete(e.entity_id),this._valveProtectionExclude=t}this._autoSave()}_onSensorChanged(e){let{key:t,value:n}=e.detail;t===`temperature_sensor`?this._selectedTempSensor=n:t===`humidity_sensor`?this._selectedHumiditySensor=n:t===`occupancy_sensors`?this._selectedOccupancySensors=new Set(n):t===`window_sensors`?this._selectedWindowSensors=new Set(n):t===`window_open_delay`?this._windowOpenDelay=n:t===`window_close_delay`&&(this._windowCloseDelay=n),this._autoSave()}_onValveProtectionExcludeToggle(e){let{entityId:t,excluded:n}=e.detail,r=new Set(this._valveProtectionExclude);n?r.add(t):r.delete(t),this._valveProtectionExclude=r,this._autoSave()}_onPresencePersonsChanged(e){this._selectedPresencePersons=e.detail,this._autoSave()}_onIgnorePresenceChanged(e){this._ignorePresence=e.detail,this._autoSave()}_onCoversToggle(e){let{entityId:t,checked:n}=e.detail,r=new Set(this._selectedCovers);if(n)r.add(t);else{if(r.delete(t),t in this._coverOrientations){let e={...this._coverOrientations};delete e[t],this._coverOrientations=e}if(t in this._coverMinPositions){let e={...this._coverMinPositions};delete e[t],this._coverMinPositions=e}}this._selectedCovers=r,this._autoSave()}_onCoverSettingChanged(e){let{key:t,value:n}=e.detail;e.stopPropagation(),t===`covers_auto_enabled`?this._coversAutoEnabled=n:t===`covers_deploy_threshold`?this._coversDeployThreshold=n:t===`covers_min_position`?this._coversMinPosition=n:t===`covers_override_minutes`?this._coversOverrideMinutes=n:t===`cover_schedules`?this._coverSchedules=n:t===`cover_schedule_selector_entity`?this._coverScheduleSelectorEntity=n:t===`covers_night_close`?this._coversNightClose=n:t===`covers_night_position`?this._coversNightPosition=n:t===`covers_snap_deploy`?this._coversSnapDeploy=n:t===`cover_orientations`?this._coverOrientations=n:t===`covers_night_close_elevation`?this._coversNightCloseElevation=n:t===`covers_night_close_offset_minutes`?this._coversNightCloseOffsetMinutes=n:t===`covers_outdoor_min_temp`?this._coversOutdoorMinTemp=n:t===`cover_min_positions`&&(this._coverMinPositions=n),this._autoSave()}async _onCoverResumeAuto(){this._optimisticCoverResume=!0;try{await this.hass.callWS({type:`roommind_eklabs/covers/clear_override`,area_id:this.area.area_id})}catch{this._optimisticCoverResume=!1}}_onHeatSourceSettingChanged(e){let{key:t,value:n}=e.detail;e.stopPropagation(),t===`heat_source_orchestration`?this._heatSourceOrchestration=n:t===`heat_source_primary_delta`?this._heatSourcePrimaryDelta=n:t===`heat_source_outdoor_threshold`?this._heatSourceOutdoorThreshold=n:t===`heat_source_ac_min_outdoor`&&(this._heatSourceAcMinOutdoor=n),this._autoSave()}_onClimateControlToggle(e){this._climateControlEnabled=e.detail,this._autoSave()}_onOutdoorToggle(e){this._isOutdoor=e.detail,this._autoSave()}_onDisplayNameChanged(e){this._displayName=e.detail.value,this._autoSave()}_autoSave(){this._dirty=!0,this._saveDebounce&&clearTimeout(this._saveDebounce),this._saveDebounce=setTimeout(()=>this._doSave(),500)}async _doSave(){L(this,`saving`),this._error=``;try{await this.hass.callWS({type:`roommind_eklabs/rooms/save`,area_id:this.area.area_id,devices:this._devices,temperature_sensor:this._selectedTempSensor,humidity_sensor:this._selectedHumiditySensor,occupancy_sensors:[...this._selectedOccupancySensors],window_sensors:[...this._selectedWindowSensors],window_open_delay:this._windowOpenDelay,window_close_delay:this._windowCloseDelay,climate_mode:this._climateMode,schedules:this._schedules,schedule_selector_entity:this._scheduleSelectorEntity,comfort_heat:this._comfortHeat,comfort_cool:this._comfortCool,eco_heat:this._ecoHeat,eco_cool:this._ecoCool,presence_persons:this._selectedPresencePersons.filter(e=>e),display_name:this._displayName,covers:[...this._selectedCovers],climate_control_enabled:this._climateControlEnabled,covers_auto_enabled:this._coversAutoEnabled,covers_deploy_threshold:this._coversDeployThreshold,covers_min_position:this._coversMinPosition,covers_override_minutes:this._coversOverrideMinutes,cover_schedules:this._coverSchedules,cover_schedule_selector_entity:this._coverScheduleSelectorEntity,covers_night_close:this._coversNightClose,covers_night_position:this._coversNightPosition,covers_snap_deploy:this._coversSnapDeploy,cover_orientations:this._coverOrientations,covers_night_close_elevation:this._coversNightCloseElevation,covers_night_close_offset_minutes:this._coversNightCloseOffsetMinutes,covers_outdoor_min_temp:this._coversOutdoorMinTemp,cover_min_positions:this._coverMinPositions,ignore_presence:this._ignorePresence,is_outdoor:this._isOutdoor,valve_protection_exclude:[...this._valveProtectionExclude],heat_source_orchestration:this._heatSourceOrchestration,heat_source_primary_delta:this._heatSourcePrimaryDelta,heat_source_outdoor_threshold:this._heatSourceOutdoorThreshold,heat_source_ac_min_outdoor:this._heatSourceAcMinOutdoor}),this._dirty=!1,L(this,`saved`),this.dispatchEvent(new CustomEvent(`room-updated`,{bubbles:!0,composed:!0}))}catch(e){let t=e instanceof Error?e.message:C(`room.error_save_fallback`,this.hass.language);this._error=t,L(this,`error`)}}};j([b({attribute:!1})],G.prototype,`area`,void 0),j([b({attribute:!1})],G.prototype,`config`,void 0),j([b({attribute:!1})],G.prototype,`hass`,void 0),j([b({type:Boolean})],G.prototype,`presenceEnabled`,void 0),j([b({attribute:!1})],G.prototype,`presencePersons`,void 0),j([b({type:Boolean})],G.prototype,`climateControlActive`,void 0),j([b({type:Boolean})],G.prototype,`valveProtectionEnabled`,void 0),j([b({type:Boolean})],G.prototype,`coilDryEnabled`,void 0),j([b({type:Number})],G.prototype,`coilDryMinutes`,void 0),j([b({type:String})],G.prototype,`coilDryMode`,void 0),j([b({type:String})],G.prototype,`coilDryFanMode`,void 0),j([x()],G.prototype,`_devices`,void 0),j([x()],G.prototype,`_selectedTempSensor`,void 0),j([x()],G.prototype,`_selectedHumiditySensor`,void 0),j([x()],G.prototype,`_selectedOccupancySensors`,void 0),j([x()],G.prototype,`_selectedWindowSensors`,void 0),j([x()],G.prototype,`_windowOpenDelay`,void 0),j([x()],G.prototype,`_windowCloseDelay`,void 0),j([x()],G.prototype,`_climateMode`,void 0),j([x()],G.prototype,`_schedules`,void 0),j([x()],G.prototype,`_scheduleSelectorEntity`,void 0),j([x()],G.prototype,`_comfortHeat`,void 0),j([x()],G.prototype,`_comfortCool`,void 0),j([x()],G.prototype,`_ecoHeat`,void 0),j([x()],G.prototype,`_ecoCool`,void 0),j([x()],G.prototype,`_error`,void 0),j([x()],G.prototype,`_dirty`,void 0),j([x()],G.prototype,`_editing`,void 0),j([x()],G.prototype,`_selectedPresencePersons`,void 0),j([x()],G.prototype,`_displayName`,void 0),j([x()],G.prototype,`_selectedCovers`,void 0),j([x()],G.prototype,`_coversAutoEnabled`,void 0),j([x()],G.prototype,`_coversDeployThreshold`,void 0),j([x()],G.prototype,`_coversMinPosition`,void 0),j([x()],G.prototype,`_coversOverrideMinutes`,void 0),j([x()],G.prototype,`_coverSchedules`,void 0),j([x()],G.prototype,`_coverScheduleSelectorEntity`,void 0),j([x()],G.prototype,`_coversNightClose`,void 0),j([x()],G.prototype,`_coversNightPosition`,void 0),j([x()],G.prototype,`_coversSnapDeploy`,void 0),j([x()],G.prototype,`_coverOrientations`,void 0),j([x()],G.prototype,`_coversNightCloseElevation`,void 0),j([x()],G.prototype,`_coversNightCloseOffsetMinutes`,void 0),j([x()],G.prototype,`_coversOutdoorMinTemp`,void 0),j([x()],G.prototype,`_coverMinPositions`,void 0),j([x()],G.prototype,`_ignorePresence`,void 0),j([x()],G.prototype,`_isOutdoor`,void 0),j([x()],G.prototype,`_valveProtectionExclude`,void 0),j([x()],G.prototype,`_climateControlEnabled`,void 0),j([x()],G.prototype,`_heatSourceOrchestration`,void 0),j([x()],G.prototype,`_heatSourcePrimaryDelta`,void 0),j([x()],G.prototype,`_heatSourceOutdoorThreshold`,void 0),j([x()],G.prototype,`_heatSourceAcMinOutdoor`,void 0),j([x()],G.prototype,`_optimisticCoverResume`,void 0),G=j([y(`rme-room-detail`)],G);var rn=n({HaRadioPolyfill:()=>an}),an,on=t((()=>{v(),S(),M(),an=class extends _{constructor(...e){super(...e),this.checked=!1,this.disabled=!1,this.name=``,this.value=``}static{this.shadowRootOptions={mode:`open`,delegatesFocus:!0}}static{this.styles=l`
     :host {
       display: inline-flex;
       align-items: center;
@@ -5194,7 +5196,7 @@
         <div slot="header" class="panel-header">
           <ha-icon .icon=${this.icon}></ha-icon>
           <span>${this.heading}</span>
-          ${this.badge?h`<rs-badge .label=${this.badge} .hint=${this.badgeHint}></rs-badge>`:g}
+          ${this.badge?h`<rme-badge .label=${this.badge} .hint=${this.badgeHint}></rme-badge>`:g}
         </div>
         <div class="panel-content">
           ${this.intro?h`<p class="section-intro">${this.intro}</p>`:g}
@@ -5231,7 +5233,7 @@
       padding: 2px 0 2px 12px;
       border-left: 3px solid var(--divider-color);
     }
-  `}};j([b({type:String})],dn.prototype,`icon`,void 0),j([b({type:String})],dn.prototype,`heading`,void 0),j([b({type:String})],dn.prototype,`intro`,void 0),j([b({type:String})],dn.prototype,`badge`,void 0),j([b({type:String})],dn.prototype,`badgeHint`,void 0),dn=j([y(`rs-settings-panel`)],dn),v();var q=class extends _{_fire(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}static{this.settingsBaseStyles=l`
+  `}};j([b({type:String})],dn.prototype,`icon`,void 0),j([b({type:String})],dn.prototype,`heading`,void 0),j([b({type:String})],dn.prototype,`intro`,void 0),j([b({type:String})],dn.prototype,`badge`,void 0),j([b({type:String})],dn.prototype,`badgeHint`,void 0),dn=j([y(`rme-settings-panel`)],dn),v();var q=class extends _{_fire(e,t){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:e,value:t},bubbles:!0,composed:!0}))}static{this.settingsBaseStyles=l`
     :host {
       display: block;
     }
@@ -5339,7 +5341,7 @@
           ></ha-switch>
         </div>
       </div>
-    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],fn.prototype,`hass`,void 0),j([b({type:Boolean})],fn.prototype,`groupByFloor`,void 0),j([b({type:Boolean})],fn.prototype,`climateControlActive`,void 0),fn=j([y(`rs-settings-general`)],fn),v(),S(),M();var pn=class extends q{constructor(...e){super(...e),this.outdoorTempSensor=``,this.outdoorHumiditySensor=``,this.weatherEntity=``,this.outdoorUnavailableNotify=!0,this._filterTemperature=e=>e.attributes?.device_class===`temperature`,this._filterHumidity=e=>e.attributes?.device_class===`humidity`}_getSensorValue(e){let t=this.hass.states[e];if(!t||t.state===`unavailable`||t.state===`unknown`)return null;let n=parseFloat(t.state);return isNaN(n)?null:Math.round(n*10)/10}render(){let e=this.hass.language,t=this.outdoorTempSensor?this._getSensorValue(this.outdoorTempSensor):null,n=this.outdoorHumiditySensor?this._getSensorValue(this.outdoorHumiditySensor):null;return h`
+    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],fn.prototype,`hass`,void 0),j([b({type:Boolean})],fn.prototype,`groupByFloor`,void 0),j([b({type:Boolean})],fn.prototype,`climateControlActive`,void 0),fn=j([y(`rme-settings-general`)],fn),v(),S(),M();var pn=class extends q{constructor(...e){super(...e),this.outdoorTempSensor=``,this.outdoorHumiditySensor=``,this.weatherEntity=``,this.outdoorUnavailableNotify=!0,this._filterTemperature=e=>e.attributes?.device_class===`temperature`,this._filterHumidity=e=>e.attributes?.device_class===`humidity`}_getSensorValue(e){let t=this.hass.states[e];if(!t||t.state===`unavailable`||t.state===`unknown`)return null;let n=parseFloat(t.state);return isNaN(n)?null:Math.round(n*10)/10}render(){let e=this.hass.language,t=this.outdoorTempSensor?this._getSensorValue(this.outdoorTempSensor):null,n=this.outdoorHumiditySensor?this._getSensorValue(this.outdoorHumiditySensor):null;return h`
       <div class="settings-section first">
         <div class="sensor-grid">
           <div class="sensor-field">
@@ -5390,12 +5392,12 @@
       </div>
 
       <div class="settings-section">
-        <rs-toggle-row
+        <rme-toggle-row
           .label=${C(`settings.outdoor_unavailable_notify`,e)}
           .hint=${C(`settings.outdoor_unavailable_notify_hint`,e)}
           .checked=${this.outdoorUnavailableNotify}
           @toggle-changed=${e=>this._fire(`outdoorUnavailableNotify`,e.detail)}
-        ></rs-toggle-row>
+        ></rme-toggle-row>
       </div>
     `}static{this.styles=[q.settingsBaseStyles,l`
       .sensor-grid {
@@ -5417,7 +5419,7 @@
           grid-template-columns: 1fr;
         }
       }
-    `]}};j([b({attribute:!1})],pn.prototype,`hass`,void 0),j([b({type:String})],pn.prototype,`outdoorTempSensor`,void 0),j([b({type:String})],pn.prototype,`outdoorHumiditySensor`,void 0),j([b({type:String})],pn.prototype,`weatherEntity`,void 0),j([b({type:Boolean})],pn.prototype,`outdoorUnavailableNotify`,void 0),pn=j([y(`rs-settings-sensors`)],pn),v(),S(),M();var mn=`https://github.com/snazzybean/roommind/blob/main/docs/control-and-devices.md`,hn=class extends q{constructor(...e){super(...e),this.controlMode=`mpc`,this.comfortWeight=70,this.outdoorCoolingMin=16,this.outdoorHeatingMax=22,this.predictionEnabled=!0,this.scheduleOffAction=`eco`}render(){let e=this.hass.language;return h`
+    `]}};j([b({attribute:!1})],pn.prototype,`hass`,void 0),j([b({type:String})],pn.prototype,`outdoorTempSensor`,void 0),j([b({type:String})],pn.prototype,`outdoorHumiditySensor`,void 0),j([b({type:String})],pn.prototype,`weatherEntity`,void 0),j([b({type:Boolean})],pn.prototype,`outdoorUnavailableNotify`,void 0),pn=j([y(`rme-settings-sensors`)],pn),v(),S(),M();var mn=`https://github.com/snazzybean/roommind/blob/main/docs/control-and-devices.md`,hn=class extends q{constructor(...e){super(...e),this.controlMode=`mpc`,this.comfortWeight=70,this.outdoorCoolingMin=16,this.outdoorHeatingMax=22,this.predictionEnabled=!0,this.scheduleOffAction=`eco`}render(){let e=this.hass.language;return h`
       <div class="settings-section first">
         <p class="hint">${C(`settings.control_mode_hint`,e)}</p>
         <div class="radio-group">
@@ -5562,7 +5564,7 @@
       .helper-link:hover {
         text-decoration: underline;
       }
-    `]}};j([b({attribute:!1})],hn.prototype,`hass`,void 0),j([b({type:String})],hn.prototype,`controlMode`,void 0),j([b({type:Number})],hn.prototype,`comfortWeight`,void 0),j([b({type:Number})],hn.prototype,`outdoorCoolingMin`,void 0),j([b({type:Number})],hn.prototype,`outdoorHeatingMax`,void 0),j([b({type:Boolean})],hn.prototype,`predictionEnabled`,void 0),j([b({type:String})],hn.prototype,`scheduleOffAction`,void 0),hn=j([y(`rs-settings-control`)],hn),v(),S(),M();var gn=class extends q{constructor(...e){super(...e),this.presenceEnabled=!1,this.presencePersons=[],this.presenceAwayAction=`eco`,this.presenceClearsOverride=!1}render(){let e=this.hass.language;return h`
+    `]}};j([b({attribute:!1})],hn.prototype,`hass`,void 0),j([b({type:String})],hn.prototype,`controlMode`,void 0),j([b({type:Number})],hn.prototype,`comfortWeight`,void 0),j([b({type:Number})],hn.prototype,`outdoorCoolingMin`,void 0),j([b({type:Number})],hn.prototype,`outdoorHeatingMax`,void 0),j([b({type:Boolean})],hn.prototype,`predictionEnabled`,void 0),j([b({type:String})],hn.prototype,`scheduleOffAction`,void 0),hn=j([y(`rme-settings-control`)],hn),v(),S(),M();var gn=class extends q{constructor(...e){super(...e),this.presenceEnabled=!1,this.presencePersons=[],this.presenceAwayAction=`eco`,this.presenceClearsOverride=!1}render(){let e=this.hass.language;return h`
       <div class="toggle-row">
         <div class="toggle-text">
           <span class="toggle-label">${C(`presence.title`,e)}</span>
@@ -5657,7 +5659,7 @@
         font-size: 14px;
         font-weight: 500;
       }
-    `]}};j([b({attribute:!1})],gn.prototype,`hass`,void 0),j([b({type:Boolean})],gn.prototype,`presenceEnabled`,void 0),j([b({type:Array})],gn.prototype,`presencePersons`,void 0),j([b({type:String})],gn.prototype,`presenceAwayAction`,void 0),j([b({type:Boolean})],gn.prototype,`presenceClearsOverride`,void 0),gn=j([y(`rs-settings-presence`)],gn),v(),S(),M();var _n=class extends q{constructor(...e){super(...e),this.vacationActive=!1,this.vacationTemp=15,this.vacationUntil=``}render(){let e=this.hass.language;return h`
+    `]}};j([b({attribute:!1})],gn.prototype,`hass`,void 0),j([b({type:Boolean})],gn.prototype,`presenceEnabled`,void 0),j([b({type:Array})],gn.prototype,`presencePersons`,void 0),j([b({type:String})],gn.prototype,`presenceAwayAction`,void 0),j([b({type:Boolean})],gn.prototype,`presenceClearsOverride`,void 0),gn=j([y(`rme-settings-presence`)],gn),v(),S(),M();var _n=class extends q{constructor(...e){super(...e),this.vacationActive=!1,this.vacationTemp=15,this.vacationUntil=``}render(){let e=this.hass.language;return h`
       <div class="toggle-row">
         <div class="toggle-text">
           <span class="toggle-label">${C(`vacation.title`,e)}</span>
@@ -5693,7 +5695,7 @@
                 </div>
               </div>
             `:g}
-    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],_n.prototype,`hass`,void 0),j([b({type:Boolean})],_n.prototype,`vacationActive`,void 0),j([b({type:Number})],_n.prototype,`vacationTemp`,void 0),j([b({type:String})],_n.prototype,`vacationUntil`,void 0),_n=j([y(`rs-settings-vacation`)],_n),v(),S(),M();var vn=class extends q{constructor(...e){super(...e),this.valveProtectionEnabled=!1,this.valveProtectionInterval=7}render(){let e=this.hass.language;return h`
+    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],_n.prototype,`hass`,void 0),j([b({type:Boolean})],_n.prototype,`vacationActive`,void 0),j([b({type:Number})],_n.prototype,`vacationTemp`,void 0),j([b({type:String})],_n.prototype,`vacationUntil`,void 0),_n=j([y(`rme-settings-vacation`)],_n),v(),S(),M();var vn=class extends q{constructor(...e){super(...e),this.valveProtectionEnabled=!1,this.valveProtectionInterval=7}render(){let e=this.hass.language;return h`
       <div class="toggle-row">
         <div class="toggle-text">
           <span class="toggle-label">${C(`valve_protection.title`,e)}</span>
@@ -5722,7 +5724,7 @@
                 </div>
               </div>
             `:g}
-    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],vn.prototype,`hass`,void 0),j([b({type:Boolean})],vn.prototype,`valveProtectionEnabled`,void 0),j([b({type:Number})],vn.prototype,`valveProtectionInterval`,void 0),vn=j([y(`rs-settings-valve`)],vn),v(),S(),M();var yn=class extends _{constructor(...e){super(...e),this.label=``,this.confirmMessage=``,this.disabled=!1,this.destructive=!1}static{this.styles=l`
+    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],vn.prototype,`hass`,void 0),j([b({type:Boolean})],vn.prototype,`valveProtectionEnabled`,void 0),j([b({type:Number})],vn.prototype,`valveProtectionInterval`,void 0),vn=j([y(`rme-settings-valve`)],vn),v(),S(),M();var yn=class extends _{constructor(...e){super(...e),this.label=``,this.confirmMessage=``,this.disabled=!1,this.destructive=!1}static{this.styles=l`
     :host {
       display: block;
     }
@@ -5761,7 +5763,7 @@
       >
         ${this.label}
       </button>
-    `}_onClick(){this.disabled||this.confirmMessage&&!confirm(this.confirmMessage)||this.dispatchEvent(new CustomEvent(`confirmed`,{bubbles:!0,composed:!0}))}};j([b({type:String})],yn.prototype,`label`,void 0),j([b({type:String})],yn.prototype,`confirmMessage`,void 0),j([b({type:Boolean})],yn.prototype,`disabled`,void 0),j([b({type:Boolean})],yn.prototype,`destructive`,void 0),yn=j([y(`rs-confirm-button`)],yn),v(),S(),M();var bn=class extends _{constructor(...e){super(...e),this.compressorGroups=[],this._memberFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`))return!1;for(let e of this.compressorGroups)if(e.members.includes(t)||e.master_entity===t)return!1;return!0},this._masterFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`))return!1;for(let e of this.compressorGroups)if(e.members.includes(t)||e.master_entity===t)return!1;return!0}}static{this.styles=[R,l`
+    `}_onClick(){this.disabled||this.confirmMessage&&!confirm(this.confirmMessage)||this.dispatchEvent(new CustomEvent(`confirmed`,{bubbles:!0,composed:!0}))}};j([b({type:String})],yn.prototype,`label`,void 0),j([b({type:String})],yn.prototype,`confirmMessage`,void 0),j([b({type:Boolean})],yn.prototype,`disabled`,void 0),j([b({type:Boolean})],yn.prototype,`destructive`,void 0),yn=j([y(`rme-confirm-button`)],yn),v(),S(),M();var bn=class extends _{constructor(...e){super(...e),this.compressorGroups=[],this._memberFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`))return!1;for(let e of this.compressorGroups)if(e.members.includes(t)||e.master_entity===t)return!1;return!0},this._masterFilter=e=>{let t=e.entity_id;if(t.substring(t.indexOf(`.`)+1).startsWith(`roommind_`))return!1;for(let e of this.compressorGroups)if(e.members.includes(t)||e.master_entity===t)return!1;return!0}}static{this.styles=[R,l`
       :host {
         display: block;
       }
@@ -5949,12 +5951,12 @@
         </div>
 
         <div class="delete-row">
-          <rs-confirm-button
+          <rme-confirm-button
             .label=${C(`compressor.delete`,n)}
             .confirmMessage=${C(`compressor.delete_confirm`,n).replace(`{name}`,e.name||`#${t+1}`)}
             destructive
             @confirmed=${()=>{this._fire(this.compressorGroups.filter((e,n)=>n!==t))}}
-          ></rs-confirm-button>
+          ></rme-confirm-button>
         </div>
       </div>
     `}_renderMember(e,t){let n=this.hass.states[e],r=!n,i=n?.attributes?.friendly_name||e,a=this.hass.entities[e]?.area_id,o=a?this.hass.areas[a]?.name:void 0;return h`
@@ -5967,7 +5969,7 @@
           @click=${()=>{let n=[...this.compressorGroups];n[t]={...n[t],members:n[t].members.filter(t=>t!==e)},this._fire(n)}}
         ></ha-icon-button>
       </div>
-    `}_updateGroup(e,t,n){let r=[...this.compressorGroups];r[e]={...r[e],[t]:n},this._fire(r)}_addGroup(){this._fire([...this.compressorGroups,{id:self.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`,name:``,members:[],min_run_minutes:15,min_off_minutes:5,master_entity:``,conflict_resolution:`heating_priority`,action_script:``,enforce_uniform_mode:!1}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`compressorGroups`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],bn.prototype,`hass`,void 0),j([b({type:Array})],bn.prototype,`compressorGroups`,void 0),bn=j([y(`rs-settings-compressor`)],bn),v(),S(),M();var xn=class extends _{constructor(...e){super(...e),this.rooms={},this.sharedHeatSources=[]}static{this.styles=[R,l`
+    `}_updateGroup(e,t,n){let r=[...this.compressorGroups];r[e]={...r[e],[t]:n},this._fire(r)}_addGroup(){this._fire([...this.compressorGroups,{id:self.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`,name:``,members:[],min_run_minutes:15,min_off_minutes:5,master_entity:``,conflict_resolution:`heating_priority`,action_script:``,enforce_uniform_mode:!1}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`compressorGroups`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],bn.prototype,`hass`,void 0),j([b({type:Array})],bn.prototype,`compressorGroups`,void 0),bn=j([y(`rme-settings-compressor`)],bn),v(),S(),M();var xn=class extends _{constructor(...e){super(...e),this.rooms={},this.sharedHeatSources=[]}static{this.styles=[R,l`
       .source {
         border: 1px solid var(--divider-color);
         border-radius: 8px;
@@ -6073,18 +6075,18 @@
       <div class="hint">Rooms heated by this device</div>
       <div class="rooms">
         ${Object.entries(this.rooms).map(([n,r])=>h` <ha-formfield .label=${r.name||n}>
-            <ha-checkbox
-              .checked=${e.rooms.includes(n)}
-              @change=${e=>this._room(t,n,e.target.checked)}
-            ></ha-checkbox>
-          </ha-formfield>`)}
+              <ha-checkbox
+                .checked=${e.rooms.includes(n)}
+                @change=${e=>this._room(t,n,e.target.checked)}
+              ></ha-checkbox>
+            </ha-formfield>`)}
       </div>
       <div class="actions">
         <ha-button @click=${()=>this._fire(this.sharedHeatSources.filter((e,n)=>n!==t))}
           >Remove</ha-button
         >
       </div>
-    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rs-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
+    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rme-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
       <div class="threshold-field">
         <ha-textfield
           .value=${String(t)}
@@ -6159,7 +6161,7 @@
       .field-hint.warning {
         color: var(--warning-color);
       }
-    `]}};j([b({attribute:!1})],J.prototype,`hass`,void 0),j([b({type:Boolean})],J.prototype,`coilDryEnabled`,void 0),j([b({type:Number})],J.prototype,`coilDryMinutes`,void 0),j([b({type:String})],J.prototype,`coilDryMode`,void 0),j([b({type:String})],J.prototype,`coilDryFanMode`,void 0),j([b({type:Number})],J.prototype,`coilDryMinCoolingMinutes`,void 0),j([b({type:Number})],J.prototype,`coilDryDrainMinutes`,void 0),j([b({attribute:!1})],J.prototype,`availableFanModes`,void 0),J=j([y(`rs-settings-coil-dry`)],J),v(),S(),M();var Cn=class extends q{constructor(...e){super(...e),this.moldDetectionEnabled=!1,this.moldHumidityThreshold=70,this.moldSustainedMinutes=30,this.moldPreventionEnabled=!1,this.moldPreventionIntensity=`medium`}render(){let e=this.hass.language;return h`
+    `]}};j([b({attribute:!1})],J.prototype,`hass`,void 0),j([b({type:Boolean})],J.prototype,`coilDryEnabled`,void 0),j([b({type:Number})],J.prototype,`coilDryMinutes`,void 0),j([b({type:String})],J.prototype,`coilDryMode`,void 0),j([b({type:String})],J.prototype,`coilDryFanMode`,void 0),j([b({type:Number})],J.prototype,`coilDryMinCoolingMinutes`,void 0),j([b({type:Number})],J.prototype,`coilDryDrainMinutes`,void 0),j([b({attribute:!1})],J.prototype,`availableFanModes`,void 0),J=j([y(`rme-settings-coil-dry`)],J),v(),S(),M();var Cn=class extends q{constructor(...e){super(...e),this.moldDetectionEnabled=!1,this.moldHumidityThreshold=70,this.moldSustainedMinutes=30,this.moldPreventionEnabled=!1,this.moldPreventionIntensity=`medium`}render(){let e=this.hass.language;return h`
       <!-- Detection section -->
       <div class="settings-section first">
         <div class="toggle-row">
@@ -6253,7 +6255,7 @@
                 </div>
               `:g}
       </div>
-    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],Cn.prototype,`hass`,void 0),j([b({type:Boolean})],Cn.prototype,`moldDetectionEnabled`,void 0),j([b({type:Number})],Cn.prototype,`moldHumidityThreshold`,void 0),j([b({type:Number})],Cn.prototype,`moldSustainedMinutes`,void 0),j([b({type:Boolean})],Cn.prototype,`moldPreventionEnabled`,void 0),j([b({type:String})],Cn.prototype,`moldPreventionIntensity`,void 0),Cn=j([y(`rs-settings-mold`)],Cn),v(),S(),M();var wn=class extends q{constructor(...e){super(...e),this.notificationsEnabled=!0,this.notificationTargets=[],this.notificationCooldown=60,this.moldPreventionEnabled=!1,this.moldPreventionNotify=!1}render(){let e=this.hass.language;return h`
+    `}static{this.styles=[q.settingsBaseStyles]}};j([b({attribute:!1})],Cn.prototype,`hass`,void 0),j([b({type:Boolean})],Cn.prototype,`moldDetectionEnabled`,void 0),j([b({type:Number})],Cn.prototype,`moldHumidityThreshold`,void 0),j([b({type:Number})],Cn.prototype,`moldSustainedMinutes`,void 0),j([b({type:Boolean})],Cn.prototype,`moldPreventionEnabled`,void 0),j([b({type:String})],Cn.prototype,`moldPreventionIntensity`,void 0),Cn=j([y(`rme-settings-mold`)],Cn),v(),S(),M();var wn=class extends q{constructor(...e){super(...e),this.notificationsEnabled=!0,this.notificationTargets=[],this.notificationCooldown=60,this.moldPreventionEnabled=!1,this.moldPreventionNotify=!1}render(){let e=this.hass.language;return h`
       <div class="toggle-row">
         <div class="toggle-text">
           <span class="toggle-label">${C(`notifications.enabled`,e)}</span>
@@ -6414,7 +6416,7 @@
           padding-left: 0;
         }
       }
-    `]}};j([b({attribute:!1})],wn.prototype,`hass`,void 0),j([b({type:Boolean})],wn.prototype,`notificationsEnabled`,void 0),j([b({type:Array})],wn.prototype,`notificationTargets`,void 0),j([b({type:Number})],wn.prototype,`notificationCooldown`,void 0),j([b({type:Boolean})],wn.prototype,`moldPreventionEnabled`,void 0),j([b({type:Boolean})],wn.prototype,`moldPreventionNotify`,void 0),wn=j([y(`rs-settings-notifications`)],wn),v(),S(),M();var Tn=250,En=class extends q{constructor(...e){super(...e),this.rooms={},this.learningDisabledRooms=[],this.boostAppliedAt={},this.roomsLive={},this._showLearningExceptions=!1,this._boostSelectedRoom=``}render(){let e=this.hass.language,t=Object.entries(this.rooms).map(([e])=>({areaId:e,name:this.hass.areas?.[e]?.name??e})).sort((e,t)=>e.name.localeCompare(t.name)),n=Object.keys(this.rooms),r=n.length===0||this.learningDisabledRooms.length<n.length,i=this.learningDisabledRooms.filter(e=>n.includes(e)).length;return h`
+    `]}};j([b({attribute:!1})],wn.prototype,`hass`,void 0),j([b({type:Boolean})],wn.prototype,`notificationsEnabled`,void 0),j([b({type:Array})],wn.prototype,`notificationTargets`,void 0),j([b({type:Number})],wn.prototype,`notificationCooldown`,void 0),j([b({type:Boolean})],wn.prototype,`moldPreventionEnabled`,void 0),j([b({type:Boolean})],wn.prototype,`moldPreventionNotify`,void 0),wn=j([y(`rme-settings-notifications`)],wn),v(),S(),M();var Tn=250,En=class extends q{constructor(...e){super(...e),this.rooms={},this.learningDisabledRooms=[],this.boostAppliedAt={},this.roomsLive={},this._showLearningExceptions=!1,this._boostSelectedRoom=``}render(){let e=this.hass.language,t=Object.entries(this.rooms).map(([e])=>({areaId:e,name:this.hass.areas?.[e]?.name??e})).sort((e,t)=>e.name.localeCompare(t.name)),n=Object.keys(this.rooms),r=n.length===0||this.learningDisabledRooms.length<n.length,i=this.learningDisabledRooms.filter(e=>n.includes(e)).length;return h`
       <!-- Learning toggle -->
       <div class="settings-section first">
         <div class="toggle-row">
@@ -6578,7 +6580,7 @@
         --mdc-icon-size: 16px;
         white-space: nowrap;
       }
-    `]}};j([b({attribute:!1})],En.prototype,`hass`,void 0),j([b({attribute:!1})],En.prototype,`rooms`,void 0),j([b({type:Array})],En.prototype,`learningDisabledRooms`,void 0),j([b({attribute:!1})],En.prototype,`boostAppliedAt`,void 0),j([b({attribute:!1})],En.prototype,`roomsLive`,void 0),j([x()],En.prototype,`_showLearningExceptions`,void 0),j([x()],En.prototype,`_boostSelectedRoom`,void 0),En=j([y(`rs-settings-learning`)],En),v(),S(),M();var Dn=class extends q{constructor(...e){super(...e),this.rooms={},this._resetSelectedRoom=``}render(){let e=this.hass.language,t=Object.entries(this.rooms).map(([e])=>({areaId:e,name:this.hass.areas?.[e]?.name??e})).sort((e,t)=>e.name.localeCompare(t.name));return h`
+    `]}};j([b({attribute:!1})],En.prototype,`hass`,void 0),j([b({attribute:!1})],En.prototype,`rooms`,void 0),j([b({type:Array})],En.prototype,`learningDisabledRooms`,void 0),j([b({attribute:!1})],En.prototype,`boostAppliedAt`,void 0),j([b({attribute:!1})],En.prototype,`roomsLive`,void 0),j([x()],En.prototype,`_showLearningExceptions`,void 0),j([x()],En.prototype,`_boostSelectedRoom`,void 0),En=j([y(`rme-settings-learning`)],En),v(),S(),M();var Dn=class extends q{constructor(...e){super(...e),this.rooms={},this._resetSelectedRoom=``}render(){let e=this.hass.language,t=Object.entries(this.rooms).map(([e])=>({areaId:e,name:this.hass.areas?.[e]?.name??e})).sort((e,t)=>e.name.localeCompare(t.name));return h`
       <div class="settings-section first">
         <div class="reset-row">
           <div class="reset-text">
@@ -6687,41 +6689,41 @@
           gap: 12px;
         }
       }
-    `]}};j([b({attribute:!1})],Dn.prototype,`hass`,void 0),j([b({attribute:!1})],Dn.prototype,`rooms`,void 0),j([x()],Dn.prototype,`_resetSelectedRoom`,void 0),Dn=j([y(`rs-settings-reset`)],Dn),v(),S(),M();var Y=class extends _{constructor(...e){super(...e),this.rooms={},this._groupByFloor=!1,this._climateControlActive=!0,this._learningDisabledRooms=[],this._outdoorTempSensor=``,this._outdoorHumiditySensor=``,this._outdoorCoolingMin=16,this._outdoorHeatingMax=22,this._controlMode=`mpc`,this._comfortWeight=70,this._weatherEntity=``,this._outdoorUnavailableNotify=!0,this._predictionEnabled=!0,this._vacationActive=!1,this._vacationTemp=15,this._vacationUntil=``,this._presenceEnabled=!1,this._presencePersons=[],this._presenceAwayAction=`eco`,this._presenceClearsOverride=!1,this._scheduleOffAction=`eco`,this._valveProtectionEnabled=!1,this._valveProtectionInterval=7,this._moldDetectionEnabled=!1,this._moldHumidityThreshold=70,this._moldSustainedMinutes=30,this._moldNotificationCooldown=60,this._moldNotificationsEnabled=!0,this._moldNotificationTargets=[],this._moldPreventionEnabled=!1,this._moldPreventionIntensity=`medium`,this._moldPreventionNotify=!1,this._compressorGroups=[],this._sharedHeatSources=[],this._coilDryEnabled=!1,this._coilDryMinutes=20,this._coilDryMode=`fan_only`,this._coilDryFanMode=`low`,this._coilDryMinCoolingMinutes=10,this._coilDryDrainMinutes=0,this._boostAppliedAt={},this._loaded=!1}connectedCallback(){super.connectedCallback(),this._loadSettings()}disconnectedCallback(){super.disconnectedCallback(),this._saveDebounce&&clearTimeout(this._saveDebounce)}async _loadSettings(){try{let e=(await this.hass.callWS({type:`roommind_eklabs/settings/get`})).settings;this._groupByFloor=e.group_by_floor??!1,this._climateControlActive=e.climate_control_active??!0,this._learningDisabledRooms=e.learning_disabled_rooms??[],this._outdoorTempSensor=e.outdoor_temp_sensor??``,this._outdoorHumiditySensor=e.outdoor_humidity_sensor??``,this._outdoorCoolingMin=e.outdoor_cooling_min??16,this._outdoorHeatingMax=e.outdoor_heating_max??22,this._controlMode=e.control_mode??`mpc`,this._comfortWeight=e.comfort_weight??70,this._weatherEntity=e.weather_entity??``,this._outdoorUnavailableNotify=e.outdoor_unavailable_notify??!0,this._predictionEnabled=e.prediction_enabled??!0;let t=e.vacation_until;this._vacationActive=!!(t&&t>Date.now()/1e3),this._vacationTemp=e.vacation_temp??15,this._vacationUntil=t&&t>Date.now()/1e3&&t<3250368e4?this._tsToDatetimeLocal(t):``,this._presenceEnabled=e.presence_enabled??!1,this._presencePersons=e.presence_persons??[],this._presenceAwayAction=e.presence_away_action??`eco`,this._presenceClearsOverride=e.presence_clears_override??!1,this._scheduleOffAction=e.schedule_off_action??`eco`,this._valveProtectionEnabled=e.valve_protection_enabled??!1,this._valveProtectionInterval=e.valve_protection_interval_days??7,this._moldDetectionEnabled=e.mold_detection_enabled??!1,this._moldHumidityThreshold=e.mold_humidity_threshold??70,this._moldSustainedMinutes=e.mold_sustained_minutes??30,this._moldNotificationCooldown=e.mold_notification_cooldown??60,this._moldNotificationsEnabled=e.mold_notifications_enabled??!0,this._moldNotificationTargets=e.mold_notification_targets??[],this._moldPreventionEnabled=e.mold_prevention_enabled??!1,this._moldPreventionIntensity=e.mold_prevention_intensity??`medium`,this._moldPreventionNotify=e.mold_prevention_notify_enabled??!1,this._compressorGroups=e.compressor_groups??[],this._sharedHeatSources=e.shared_heat_sources??[],this._coilDryEnabled=e.coil_dry_enabled??!1,this._coilDryMinutes=e.coil_dry_minutes??20,this._coilDryMode=e.coil_dry_mode??`fan_only`,this._coilDryFanMode=e.coil_dry_fan_mode??`low`,this._coilDryMinCoolingMinutes=e.coil_dry_min_cooling_minutes??10,this._coilDryDrainMinutes=e.coil_dry_drain_minutes??0,this._boostAppliedAt=e.boost_applied_at??{}}catch(e){console.debug(`[RoomMind] loadSettings:`,e)}finally{this._loaded=!0}}render(){if(!this._loaded)return h`<div class="loading">${C(`panel.loading`,this.hass.language)}</div>`;let e=this.hass.language;return h`
-      <rs-settings-panel
+    `]}};j([b({attribute:!1})],Dn.prototype,`hass`,void 0),j([b({attribute:!1})],Dn.prototype,`rooms`,void 0),j([x()],Dn.prototype,`_resetSelectedRoom`,void 0),Dn=j([y(`rme-settings-reset`)],Dn),v(),S(),M();var Y=class extends _{constructor(...e){super(...e),this.rooms={},this._groupByFloor=!1,this._climateControlActive=!0,this._learningDisabledRooms=[],this._outdoorTempSensor=``,this._outdoorHumiditySensor=``,this._outdoorCoolingMin=16,this._outdoorHeatingMax=22,this._controlMode=`mpc`,this._comfortWeight=70,this._weatherEntity=``,this._outdoorUnavailableNotify=!0,this._predictionEnabled=!0,this._vacationActive=!1,this._vacationTemp=15,this._vacationUntil=``,this._presenceEnabled=!1,this._presencePersons=[],this._presenceAwayAction=`eco`,this._presenceClearsOverride=!1,this._scheduleOffAction=`eco`,this._valveProtectionEnabled=!1,this._valveProtectionInterval=7,this._moldDetectionEnabled=!1,this._moldHumidityThreshold=70,this._moldSustainedMinutes=30,this._moldNotificationCooldown=60,this._moldNotificationsEnabled=!0,this._moldNotificationTargets=[],this._moldPreventionEnabled=!1,this._moldPreventionIntensity=`medium`,this._moldPreventionNotify=!1,this._compressorGroups=[],this._sharedHeatSources=[],this._coilDryEnabled=!1,this._coilDryMinutes=20,this._coilDryMode=`fan_only`,this._coilDryFanMode=`low`,this._coilDryMinCoolingMinutes=10,this._coilDryDrainMinutes=0,this._boostAppliedAt={},this._loaded=!1}connectedCallback(){super.connectedCallback(),this._loadSettings()}disconnectedCallback(){super.disconnectedCallback(),this._saveDebounce&&clearTimeout(this._saveDebounce)}async _loadSettings(){try{let e=(await this.hass.callWS({type:`roommind_eklabs/settings/get`})).settings;this._groupByFloor=e.group_by_floor??!1,this._climateControlActive=e.climate_control_active??!0,this._learningDisabledRooms=e.learning_disabled_rooms??[],this._outdoorTempSensor=e.outdoor_temp_sensor??``,this._outdoorHumiditySensor=e.outdoor_humidity_sensor??``,this._outdoorCoolingMin=e.outdoor_cooling_min??16,this._outdoorHeatingMax=e.outdoor_heating_max??22,this._controlMode=e.control_mode??`mpc`,this._comfortWeight=e.comfort_weight??70,this._weatherEntity=e.weather_entity??``,this._outdoorUnavailableNotify=e.outdoor_unavailable_notify??!0,this._predictionEnabled=e.prediction_enabled??!0;let t=e.vacation_until;this._vacationActive=!!(t&&t>Date.now()/1e3),this._vacationTemp=e.vacation_temp??15,this._vacationUntil=t&&t>Date.now()/1e3&&t<3250368e4?this._tsToDatetimeLocal(t):``,this._presenceEnabled=e.presence_enabled??!1,this._presencePersons=e.presence_persons??[],this._presenceAwayAction=e.presence_away_action??`eco`,this._presenceClearsOverride=e.presence_clears_override??!1,this._scheduleOffAction=e.schedule_off_action??`eco`,this._valveProtectionEnabled=e.valve_protection_enabled??!1,this._valveProtectionInterval=e.valve_protection_interval_days??7,this._moldDetectionEnabled=e.mold_detection_enabled??!1,this._moldHumidityThreshold=e.mold_humidity_threshold??70,this._moldSustainedMinutes=e.mold_sustained_minutes??30,this._moldNotificationCooldown=e.mold_notification_cooldown??60,this._moldNotificationsEnabled=e.mold_notifications_enabled??!0,this._moldNotificationTargets=e.mold_notification_targets??[],this._moldPreventionEnabled=e.mold_prevention_enabled??!1,this._moldPreventionIntensity=e.mold_prevention_intensity??`medium`,this._moldPreventionNotify=e.mold_prevention_notify_enabled??!1,this._compressorGroups=e.compressor_groups??[],this._sharedHeatSources=e.shared_heat_sources??[],this._coilDryEnabled=e.coil_dry_enabled??!1,this._coilDryMinutes=e.coil_dry_minutes??20,this._coilDryMode=e.coil_dry_mode??`fan_only`,this._coilDryFanMode=e.coil_dry_fan_mode??`low`,this._coilDryMinCoolingMinutes=e.coil_dry_min_cooling_minutes??10,this._coilDryDrainMinutes=e.coil_dry_drain_minutes??0,this._boostAppliedAt=e.boost_applied_at??{}}catch(e){console.debug(`[RoomMind] loadSettings:`,e)}finally{this._loaded=!0}}render(){if(!this._loaded)return h`<div class="loading">${C(`panel.loading`,this.hass.language)}</div>`;let e=this.hass.language;return h`
+      <rme-settings-panel
         icon="mdi:power"
         .heading=${C(`settings.general_title`,e)}
         .intro=${C(`settings.intro.general`,e)}
       >
-        <rs-settings-general
+        <rme-settings-general
           .hass=${this.hass}
           .groupByFloor=${this._groupByFloor}
           .climateControlActive=${this._climateControlActive}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-general>
-      </rs-settings-panel>
+        ></rme-settings-general>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:thermometer"
         .heading=${C(`settings.sensors_title`,e)}
         .intro=${C(`settings.intro.sensors`,e)}
       >
-        <rs-settings-sensors
+        <rme-settings-sensors
           .hass=${this.hass}
           .outdoorTempSensor=${this._outdoorTempSensor}
           .outdoorHumiditySensor=${this._outdoorHumiditySensor}
           .weatherEntity=${this._weatherEntity}
           .outdoorUnavailableNotify=${this._outdoorUnavailableNotify}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-sensors>
-      </rs-settings-panel>
+        ></rme-settings-sensors>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:tune-variant"
         .heading=${C(`settings.control_title`,e)}
         .intro=${C(`settings.intro.control`,e)}
       >
-        <rs-settings-control
+        <rme-settings-control
           .hass=${this.hass}
           .controlMode=${this._controlMode}
           .comfortWeight=${this._comfortWeight}
@@ -6730,78 +6732,78 @@
           .predictionEnabled=${this._predictionEnabled}
           .scheduleOffAction=${this._scheduleOffAction}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-control>
-      </rs-settings-panel>
+        ></rme-settings-control>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:home-account"
         .heading=${C(`presence.title`,e)}
         .intro=${C(`settings.intro.presence`,e)}
       >
-        <rs-settings-presence
+        <rme-settings-presence
           .hass=${this.hass}
           .presenceEnabled=${this._presenceEnabled}
           .presencePersons=${this._presencePersons}
           .presenceAwayAction=${this._presenceAwayAction}
           .presenceClearsOverride=${this._presenceClearsOverride}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-presence>
-      </rs-settings-panel>
+        ></rme-settings-presence>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:airplane"
         .heading=${C(`vacation.title`,e)}
         .intro=${C(`settings.intro.vacation`,e)}
       >
-        <rs-settings-vacation
+        <rme-settings-vacation
           .hass=${this.hass}
           .vacationActive=${this._vacationActive}
           .vacationTemp=${this._vacationTemp}
           .vacationUntil=${this._vacationUntil}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-vacation>
-      </rs-settings-panel>
+        ></rme-settings-vacation>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:shield-refresh"
         .heading=${C(`valve_protection.title`,e)}
         .intro=${C(`settings.intro.valve`,e)}
       >
-        <rs-settings-valve
+        <rme-settings-valve
           .hass=${this.hass}
           .valveProtectionEnabled=${this._valveProtectionEnabled}
           .valveProtectionInterval=${this._valveProtectionInterval}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-valve>
-      </rs-settings-panel>
+        ></rme-settings-valve>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:heat-pump-outline"
         .heading=${C(`compressor.title`,e)}
         .intro=${C(`settings.intro.compressor`,e)}
       >
-        <rs-settings-compressor
+        <rme-settings-compressor
           .hass=${this.hass}
           .compressorGroups=${this._compressorGroups}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-compressor>
-      </rs-settings-panel>
+        ></rme-settings-compressor>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:radiator"
         heading="Whole-house heating"
         intro="Use central gas heat for broad demand, then let room heaters trim rooms that remain cold."
       >
-        <rs-settings-shared-heat
+        <rme-settings-shared-heat
           .hass=${this.hass}
           .rooms=${this.rooms}
           .sharedHeatSources=${this._sharedHeatSources}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-shared-heat>
-      </rs-settings-panel>
+        ></rme-settings-shared-heat>
+      </rme-settings-panel>
 
-      <rs-settings-panel .heading=${C(`coil_dry.title`,e)} icon="mdi:air-filter">
-        <rs-settings-coil-dry
+      <rme-settings-panel .heading=${C(`coil_dry.title`,e)} icon="mdi:air-filter">
+        <rme-settings-coil-dry
           .hass=${this.hass}
           .coilDryEnabled=${this._coilDryEnabled}
           .coilDryMinutes=${this._coilDryMinutes}
@@ -6811,15 +6813,15 @@
           .coilDryDrainMinutes=${this._coilDryDrainMinutes}
           .availableFanModes=${this._availableAcFanModes()}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-coil-dry>
-      </rs-settings-panel>
+        ></rme-settings-coil-dry>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:water-alert"
         .heading=${C(`mold.title`,e)}
         .intro=${C(`settings.intro.mold`,e)}
       >
-        <rs-settings-mold
+        <rme-settings-mold
           .hass=${this.hass}
           .moldDetectionEnabled=${this._moldDetectionEnabled}
           .moldHumidityThreshold=${this._moldHumidityThreshold}
@@ -6827,17 +6829,17 @@
           .moldPreventionEnabled=${this._moldPreventionEnabled}
           .moldPreventionIntensity=${this._moldPreventionIntensity}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-mold>
-      </rs-settings-panel>
+        ></rme-settings-mold>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:bell-outline"
         .heading=${C(`notifications.title`,e)}
         .intro=${C(`settings.intro.notifications`,e)}
         .badge=${C(`badge.beta`,e)}
         .badgeHint=${C(`badge.beta_hint`,e)}
       >
-        <rs-settings-notifications
+        <rme-settings-notifications
           .hass=${this.hass}
           .notificationsEnabled=${this._moldNotificationsEnabled}
           .notificationTargets=${this._moldNotificationTargets}
@@ -6845,15 +6847,15 @@
           .moldPreventionEnabled=${this._moldPreventionEnabled}
           .moldPreventionNotify=${this._moldPreventionNotify}
           @setting-changed=${this._onSettingChanged}
-        ></rs-settings-notifications>
-      </rs-settings-panel>
+        ></rme-settings-notifications>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:brain"
         .heading=${C(`settings.learning_title`,e)}
         .intro=${C(`settings.intro.learning`,e)}
       >
-        <rs-settings-learning
+        <rme-settings-learning
           .hass=${this.hass}
           .rooms=${this.rooms}
           .learningDisabledRooms=${this._learningDisabledRooms}
@@ -6861,16 +6863,16 @@
           .roomsLive=${Object.fromEntries(Object.entries(this.rooms).map(([e,t])=>[e,t.live??{}]))}
           @setting-changed=${this._onSettingChanged}
           @boost-applied=${this._onBoostApplied}
-        ></rs-settings-learning>
-      </rs-settings-panel>
+        ></rme-settings-learning>
+      </rme-settings-panel>
 
-      <rs-settings-panel
+      <rme-settings-panel
         icon="mdi:restart"
         .heading=${C(`settings.reset_title`,e)}
         .intro=${C(`settings.intro.reset`,e)}
       >
-        <rs-settings-reset .hass=${this.hass} .rooms=${this.rooms}></rs-settings-reset>
-      </rs-settings-panel>
+        <rme-settings-reset .hass=${this.hass} .rooms=${this.rooms}></rme-settings-reset>
+      </rme-settings-panel>
     `}_onBoostApplied(e){let{area_id:t,n_observations:n}=e.detail;this._boostAppliedAt={...this._boostAppliedAt,[t]:n}}_onSettingChanged(e){let{key:t,value:n}=e.detail;this[`_${t}`]=n,this._autoSave()}_availableAcFanModes(){let e=new Set;for(let t of Object.values(this.rooms??{}))for(let n of t.devices??[]){if(n.type!==`ac`)continue;let t=this.hass?.states?.[n.entity_id];for(let n of t?.attributes?.fan_modes??[])e.add(n)}return[...e].sort()}_tsToDatetimeLocal(e){let t=new Date(e*1e3),n=e=>String(e).padStart(2,`0`);return`${t.getFullYear()}-${n(t.getMonth()+1)}-${n(t.getDate())}T${n(t.getHours())}:${n(t.getMinutes())}`}_autoSave(){this._saveDebounce&&clearTimeout(this._saveDebounce),this._saveDebounce=setTimeout(()=>this._doSave(),500)}async _doSave(){L(this,`saving`);try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,group_by_floor:this._groupByFloor,climate_control_active:this._climateControlActive,learning_disabled_rooms:this._learningDisabledRooms,outdoor_temp_sensor:this._outdoorTempSensor,outdoor_humidity_sensor:this._outdoorHumiditySensor,outdoor_cooling_min:this._outdoorCoolingMin,outdoor_heating_max:this._outdoorHeatingMax,control_mode:this._controlMode,comfort_weight:this._comfortWeight,weather_entity:this._weatherEntity,outdoor_unavailable_notify:this._outdoorUnavailableNotify,prediction_enabled:this._predictionEnabled,vacation_temp:this._vacationTemp,vacation_until:this._vacationActive?this._vacationUntil?new Date(this._vacationUntil).getTime()/1e3:un:null,presence_enabled:this._presenceEnabled,presence_persons:this._presencePersons.filter(e=>e),presence_away_action:this._presenceAwayAction,presence_clears_override:this._presenceClearsOverride,schedule_off_action:this._scheduleOffAction,valve_protection_enabled:this._valveProtectionEnabled,valve_protection_interval_days:this._valveProtectionInterval,compressor_groups:this._compressorGroups.filter(e=>e.members.length>0),shared_heat_sources:this._sharedHeatSources.filter(e=>e.entity_id&&e.rooms.length>0),coil_dry_enabled:this._coilDryEnabled,coil_dry_minutes:this._coilDryMinutes,coil_dry_mode:this._coilDryMode,coil_dry_fan_mode:this._coilDryFanMode,coil_dry_min_cooling_minutes:this._coilDryMinCoolingMinutes,coil_dry_drain_minutes:this._coilDryDrainMinutes,mold_detection_enabled:this._moldDetectionEnabled,mold_humidity_threshold:this._moldHumidityThreshold,mold_sustained_minutes:this._moldSustainedMinutes,mold_notification_cooldown:this._moldNotificationCooldown,mold_notifications_enabled:this._moldNotificationsEnabled,mold_notification_targets:this._moldNotificationTargets.filter(e=>e.entity_id),mold_prevention_enabled:this._moldPreventionEnabled,mold_prevention_intensity:this._moldPreventionIntensity,mold_prevention_notify_enabled:this._moldPreventionNotify,mold_prevention_notify_targets:this._moldPreventionNotify?this._moldNotificationTargets.filter(e=>e.entity_id):[]}),L(this,`saved`)}catch{L(this,`error`)}}static{this.styles=l`
     :host {
       display: flex;
@@ -6884,7 +6886,7 @@
       text-align: center;
       color: var(--secondary-text-color);
     }
-  `}};j([b({attribute:!1})],Y.prototype,`hass`,void 0),j([b({attribute:!1})],Y.prototype,`rooms`,void 0),j([x()],Y.prototype,`_groupByFloor`,void 0),j([x()],Y.prototype,`_climateControlActive`,void 0),j([x()],Y.prototype,`_learningDisabledRooms`,void 0),j([x()],Y.prototype,`_outdoorTempSensor`,void 0),j([x()],Y.prototype,`_outdoorHumiditySensor`,void 0),j([x()],Y.prototype,`_outdoorCoolingMin`,void 0),j([x()],Y.prototype,`_outdoorHeatingMax`,void 0),j([x()],Y.prototype,`_controlMode`,void 0),j([x()],Y.prototype,`_comfortWeight`,void 0),j([x()],Y.prototype,`_weatherEntity`,void 0),j([x()],Y.prototype,`_outdoorUnavailableNotify`,void 0),j([x()],Y.prototype,`_predictionEnabled`,void 0),j([x()],Y.prototype,`_vacationActive`,void 0),j([x()],Y.prototype,`_vacationTemp`,void 0),j([x()],Y.prototype,`_vacationUntil`,void 0),j([x()],Y.prototype,`_presenceEnabled`,void 0),j([x()],Y.prototype,`_presencePersons`,void 0),j([x()],Y.prototype,`_presenceAwayAction`,void 0),j([x()],Y.prototype,`_presenceClearsOverride`,void 0),j([x()],Y.prototype,`_scheduleOffAction`,void 0),j([x()],Y.prototype,`_valveProtectionEnabled`,void 0),j([x()],Y.prototype,`_valveProtectionInterval`,void 0),j([x()],Y.prototype,`_moldDetectionEnabled`,void 0),j([x()],Y.prototype,`_moldHumidityThreshold`,void 0),j([x()],Y.prototype,`_moldSustainedMinutes`,void 0),j([x()],Y.prototype,`_moldNotificationCooldown`,void 0),j([x()],Y.prototype,`_moldNotificationsEnabled`,void 0),j([x()],Y.prototype,`_moldNotificationTargets`,void 0),j([x()],Y.prototype,`_moldPreventionEnabled`,void 0),j([x()],Y.prototype,`_moldPreventionIntensity`,void 0),j([x()],Y.prototype,`_moldPreventionNotify`,void 0),j([x()],Y.prototype,`_compressorGroups`,void 0),j([x()],Y.prototype,`_sharedHeatSources`,void 0),j([x()],Y.prototype,`_coilDryEnabled`,void 0),j([x()],Y.prototype,`_coilDryMinutes`,void 0),j([x()],Y.prototype,`_coilDryMode`,void 0),j([x()],Y.prototype,`_coilDryFanMode`,void 0),j([x()],Y.prototype,`_coilDryMinCoolingMinutes`,void 0),j([x()],Y.prototype,`_coilDryDrainMinutes`,void 0),j([x()],Y.prototype,`_boostAppliedAt`,void 0),j([x()],Y.prototype,`_loaded`,void 0),Y=j([y(`rs-settings`)],Y);function On(e){let t=[...e.history,...e.detail];return t.length===0?null:[`timestamp,datetime,room_temp,outdoor_temp,target_temp,mode,predicted_temp,window_open,heating_power,solar_irradiance,blind_position,cover_reason,device_setpoint`,...t.map(e=>{let t=new Date(e.ts*1e3).toISOString(),n=e.room_temp??``,r=e.outdoor_temp??``,i=e.target_temp??``,a=e.predicted_temp??``,o=e.heating_power??``,s=e.solar_irradiance??``,c=e.blind_position??``,l=e.cover_reason??``,u=e.device_setpoint??``;return`${e.ts},${t},${n},${r},${i},${e.mode},${a},${e.window_open},${o},${s},${c},${l},${u}`})].join(`
+  `}};j([b({attribute:!1})],Y.prototype,`hass`,void 0),j([b({attribute:!1})],Y.prototype,`rooms`,void 0),j([x()],Y.prototype,`_groupByFloor`,void 0),j([x()],Y.prototype,`_climateControlActive`,void 0),j([x()],Y.prototype,`_learningDisabledRooms`,void 0),j([x()],Y.prototype,`_outdoorTempSensor`,void 0),j([x()],Y.prototype,`_outdoorHumiditySensor`,void 0),j([x()],Y.prototype,`_outdoorCoolingMin`,void 0),j([x()],Y.prototype,`_outdoorHeatingMax`,void 0),j([x()],Y.prototype,`_controlMode`,void 0),j([x()],Y.prototype,`_comfortWeight`,void 0),j([x()],Y.prototype,`_weatherEntity`,void 0),j([x()],Y.prototype,`_outdoorUnavailableNotify`,void 0),j([x()],Y.prototype,`_predictionEnabled`,void 0),j([x()],Y.prototype,`_vacationActive`,void 0),j([x()],Y.prototype,`_vacationTemp`,void 0),j([x()],Y.prototype,`_vacationUntil`,void 0),j([x()],Y.prototype,`_presenceEnabled`,void 0),j([x()],Y.prototype,`_presencePersons`,void 0),j([x()],Y.prototype,`_presenceAwayAction`,void 0),j([x()],Y.prototype,`_presenceClearsOverride`,void 0),j([x()],Y.prototype,`_scheduleOffAction`,void 0),j([x()],Y.prototype,`_valveProtectionEnabled`,void 0),j([x()],Y.prototype,`_valveProtectionInterval`,void 0),j([x()],Y.prototype,`_moldDetectionEnabled`,void 0),j([x()],Y.prototype,`_moldHumidityThreshold`,void 0),j([x()],Y.prototype,`_moldSustainedMinutes`,void 0),j([x()],Y.prototype,`_moldNotificationCooldown`,void 0),j([x()],Y.prototype,`_moldNotificationsEnabled`,void 0),j([x()],Y.prototype,`_moldNotificationTargets`,void 0),j([x()],Y.prototype,`_moldPreventionEnabled`,void 0),j([x()],Y.prototype,`_moldPreventionIntensity`,void 0),j([x()],Y.prototype,`_moldPreventionNotify`,void 0),j([x()],Y.prototype,`_compressorGroups`,void 0),j([x()],Y.prototype,`_sharedHeatSources`,void 0),j([x()],Y.prototype,`_coilDryEnabled`,void 0),j([x()],Y.prototype,`_coilDryMinutes`,void 0),j([x()],Y.prototype,`_coilDryMode`,void 0),j([x()],Y.prototype,`_coilDryFanMode`,void 0),j([x()],Y.prototype,`_coilDryMinCoolingMinutes`,void 0),j([x()],Y.prototype,`_coilDryDrainMinutes`,void 0),j([x()],Y.prototype,`_boostAppliedAt`,void 0),j([x()],Y.prototype,`_loaded`,void 0),Y=j([y(`rme-settings`)],Y);function On(e){let t=[...e.history,...e.detail];return t.length===0?null:[`timestamp,datetime,room_temp,outdoor_temp,target_temp,mode,predicted_temp,window_open,heating_power,solar_irradiance,blind_position,cover_reason,device_setpoint`,...t.map(e=>{let t=new Date(e.ts*1e3).toISOString(),n=e.room_temp??``,r=e.outdoor_temp??``,i=e.target_temp??``,a=e.predicted_temp??``,o=e.heating_power??``,s=e.solar_irradiance??``,c=e.blind_position??``,l=e.cover_reason??``,u=e.device_setpoint??``;return`${e.ts},${t},${n},${r},${i},${e.mode},${a},${e.window_open},${o},${s},${c},${l},${u}`})].join(`
 `)}function kn(e,t,n){let r=new Blob([e],{type:`${n};charset=utf-8`}),i=URL.createObjectURL(r),a=document.createElement(`a`);a.href=i,a.download=t,a.click(),URL.revokeObjectURL(i)}function An(e,t,n,r,i,a,o){let s=e?.areas?.[n],c=(t[n]?.display_name||s?.name||n).replace(/\s+/g,`_`).toLowerCase();return a?`roommind_${a}_${c}.${o}`:`roommind_${c}_${new Date(r).toISOString().slice(0,10)}_${new Date(i).toISOString().slice(0,10)}.${o}`}function jn(e){return navigator.clipboard?.writeText?(navigator.clipboard.writeText(e).catch(()=>{Mn(e)}),!0):Mn(e)}function Mn(e){let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select();let n=!1;try{n=document.execCommand(`copy`)}catch(e){console.debug(`[RoomMind] clipboard fallback:`,e)}return document.body.removeChild(t),n}v(),S(),M();var X=class extends _{constructor(...e){super(...e),this.rooms={},this.selectedRoom=``,this.rangeStart=0,this.rangeEnd=0,this.activeQuick=`24h`,this.data=null,this.language=`en`,this._openDropdown=null,this._diagLoading=!1,this._boundCloseDropdowns=this._closeDropdowns.bind(this)}connectedCallback(){super.connectedCallback(),document.addEventListener(`click`,this._boundCloseDropdowns)}disconnectedCallback(){super.disconnectedCallback(),document.removeEventListener(`click`,this._boundCloseDropdowns)}updated(e){(e.has(`rooms`)||e.has(`selectedRoom`))&&this.selectedRoom&&this.updateComplete.then(()=>{let e=this.renderRoot?.querySelector(`ha-select`);e&&e.value!==this.selectedRoom&&(e.value=this.selectedRoom)})}render(){let e=this.language,t=this._getConfiguredRooms();return h`
       ${this._renderRoomSelector(t,e)}
       ${this.selectedRoom?this._renderRangeButtons(e):g}
@@ -7171,7 +7173,7 @@
           font-size: 11px;
         }
       }
-    `]}};j([b({attribute:!1})],X.prototype,`hass`,void 0),j([b({attribute:!1})],X.prototype,`rooms`,void 0),j([b({type:String})],X.prototype,`selectedRoom`,void 0),j([b({type:Number})],X.prototype,`rangeStart`,void 0),j([b({type:Number})],X.prototype,`rangeEnd`,void 0),j([b({type:String})],X.prototype,`activeQuick`,void 0),j([b({attribute:!1})],X.prototype,`data`,void 0),j([b({type:String})],X.prototype,`language`,void 0),j([x()],X.prototype,`_openDropdown`,void 0),j([x()],X.prototype,`_diagLoading`,void 0),X=j([y(`rs-analytics-toolbar`)],X),v();var Nn=l`
+    `]}};j([b({attribute:!1})],X.prototype,`hass`,void 0),j([b({attribute:!1})],X.prototype,`rooms`,void 0),j([b({type:String})],X.prototype,`selectedRoom`,void 0),j([b({type:Number})],X.prototype,`rangeStart`,void 0),j([b({type:Number})],X.prototype,`rangeEnd`,void 0),j([b({type:String})],X.prototype,`activeQuick`,void 0),j([b({attribute:!1})],X.prototype,`data`,void 0),j([b({type:String})],X.prototype,`language`,void 0),j([x()],X.prototype,`_openDropdown`,void 0),j([x()],X.prototype,`_diagLoading`,void 0),X=j([y(`rme-analytics-toolbar`)],X),v();var Nn=l`
   .info-icon {
     --mdc-icon-size: 16px;
     color: var(--secondary-text-color);
@@ -7364,7 +7366,7 @@
         --mdc-icon-size: 40px;
         font-size: 13px;
       }
-    `]}};j([b({attribute:!1})],Z.prototype,`hass`,void 0),j([b({attribute:!1})],Z.prototype,`data`,void 0),j([b({type:Number})],Z.prototype,`rangeStart`,void 0),j([b({type:Number})],Z.prototype,`rangeEnd`,void 0),j([b({type:Number})],Z.prototype,`chartAnchor`,void 0),j([b({type:String})],Z.prototype,`language`,void 0),j([b({type:Boolean})],Z.prototype,`isOutdoor`,void 0),j([x()],Z.prototype,`_hiddenSeries`,void 0),j([x()],Z.prototype,`_chartInfoExpanded`,void 0),Z=j([y(`rs-analytics-chart`)],Z),v(),S(),M();var Ln=class extends _{constructor(...e){super(...e),this.data=null,this.language=`en`,this._expandedStat=null}render(){let e=this.language,t=!!this.data?.model?.model,n=this.data?.model,r=n?.model,i=n?.confidence??0,a=n?.n_samples??0,o=n?.n_heating??0,s=n?.n_cooling??0,c=n?.applicable_modes??[],l=n?.prediction_std_idle,u=n?.prediction_std_heating,d=n?.mpc_active??!1,ee=Math.round(i*100),f=new Set(c),te=f.has(`heating`),ne=f.has(`cooling`),re=o>=10,ie=s>=10,ae=a-o-s>=10,oe=n?.n_observations??a,se=[],p=(t,n,r,i,a)=>{se.push({id:t,labelKey:r,infoKey:a});let o=this._expandedStat===t;return h`
+    `]}};j([b({attribute:!1})],Z.prototype,`hass`,void 0),j([b({attribute:!1})],Z.prototype,`data`,void 0),j([b({type:Number})],Z.prototype,`rangeStart`,void 0),j([b({type:Number})],Z.prototype,`rangeEnd`,void 0),j([b({type:Number})],Z.prototype,`chartAnchor`,void 0),j([b({type:String})],Z.prototype,`language`,void 0),j([b({type:Boolean})],Z.prototype,`isOutdoor`,void 0),j([x()],Z.prototype,`_hiddenSeries`,void 0),j([x()],Z.prototype,`_chartInfoExpanded`,void 0),Z=j([y(`rme-analytics-chart`)],Z),v(),S(),M();var Ln=class extends _{constructor(...e){super(...e),this.data=null,this.language=`en`,this._expandedStat=null}render(){let e=this.language,t=!!this.data?.model?.model,n=this.data?.model,r=n?.model,i=n?.confidence??0,a=n?.n_samples??0,o=n?.n_heating??0,s=n?.n_cooling??0,c=n?.applicable_modes??[],l=n?.prediction_std_idle,u=n?.prediction_std_heating,d=n?.mpc_active??!1,ee=Math.round(i*100),f=new Set(c),te=f.has(`heating`),ne=f.has(`cooling`),re=o>=10,ie=s>=10,ae=a-o-s>=10,oe=n?.n_observations??a,se=[],p=(t,n,r,i,a)=>{se.push({id:t,labelKey:r,infoKey:a});let o=this._expandedStat===t;return h`
         <div class="model-stat ${o?`active`:``}" @click=${()=>this._toggleStat(t)}>
           <div class="stat-content">
             <span class="model-value ${n===`—`?`pending`:``}">${n}</span>
@@ -7595,8 +7597,8 @@
           gap: 8px;
         }
       }
-    `]}};j([b({attribute:!1})],Ln.prototype,`hass`,void 0),j([b({attribute:!1})],Ln.prototype,`data`,void 0),j([b({type:String})],Ln.prototype,`language`,void 0),j([x()],Ln.prototype,`_expandedStat`,void 0),Ln=j([y(`rs-analytics-model`)],Ln),v(),S(),M();var Q=class extends _{constructor(...e){super(...e),this.rooms={},this.initialRoom=``,this.controlMode=`bangbang`,this._selectedRoom=``,this._rangeStart=new Date(new Date().setHours(0,0,0,0)).getTime(),this._rangeEnd=Date.now(),this._data=null,this._chartAnchor=Date.now(),this._loading=!1,this._activeQuick=`24h`}connectedCallback(){super.connectedCallback(),this._refreshInterval=setInterval(()=>this._silentRefresh(),6e4)}disconnectedCallback(){super.disconnectedCallback(),this._refreshInterval&&=(clearInterval(this._refreshInterval),void 0)}willUpdate(e){e.has(`initialRoom`)&&this.initialRoom&&(this._selectedRoom=this.initialRoom);let t=!1;if(e.has(`rooms`)&&!this._selectedRoom){let e=Object.keys(this.rooms);e.length>0&&(this._selectedRoom=e[0],t=!0,this.dispatchEvent(new CustomEvent(`room-selected`,{detail:{areaId:e[0]},bubbles:!0,composed:!0})))}(t||e.has(`_selectedRoom`)||e.has(`_rangeStart`)||e.has(`_rangeEnd`))&&this._selectedRoom&&this._fetchData()}render(){let e=this.hass.language;return h`
-      <rs-analytics-toolbar
+    `]}};j([b({attribute:!1})],Ln.prototype,`hass`,void 0),j([b({attribute:!1})],Ln.prototype,`data`,void 0),j([b({type:String})],Ln.prototype,`language`,void 0),j([x()],Ln.prototype,`_expandedStat`,void 0),Ln=j([y(`rme-analytics-model`)],Ln),v(),S(),M();var Q=class extends _{constructor(...e){super(...e),this.rooms={},this.initialRoom=``,this.controlMode=`bangbang`,this._selectedRoom=``,this._rangeStart=new Date(new Date().setHours(0,0,0,0)).getTime(),this._rangeEnd=Date.now(),this._data=null,this._chartAnchor=Date.now(),this._loading=!1,this._activeQuick=`24h`}connectedCallback(){super.connectedCallback(),this._refreshInterval=setInterval(()=>this._silentRefresh(),6e4)}disconnectedCallback(){super.disconnectedCallback(),this._refreshInterval&&=(clearInterval(this._refreshInterval),void 0)}willUpdate(e){e.has(`initialRoom`)&&this.initialRoom&&(this._selectedRoom=this.initialRoom);let t=!1;if(e.has(`rooms`)&&!this._selectedRoom){let e=Object.keys(this.rooms);e.length>0&&(this._selectedRoom=e[0],t=!0,this.dispatchEvent(new CustomEvent(`room-selected`,{detail:{areaId:e[0]},bubbles:!0,composed:!0})))}(t||e.has(`_selectedRoom`)||e.has(`_rangeStart`)||e.has(`_rangeEnd`))&&this._selectedRoom&&this._fetchData()}render(){let e=this.hass.language;return h`
+      <rme-analytics-toolbar
         .hass=${this.hass}
         .rooms=${this.rooms}
         .selectedRoom=${this._selectedRoom}
@@ -7607,9 +7609,9 @@
         .language=${e}
         @room-selected=${this._onRoomSelected}
         @range-changed=${this._onRangeChanged}
-      ></rs-analytics-toolbar>
+      ></rme-analytics-toolbar>
       ${this._selectedRoom?this._loading?h`<div class="loading">${C(`panel.loading`,e)}</div>`:h`
-                <rs-analytics-chart
+                <rme-analytics-chart
                   .hass=${this.hass}
                   .data=${this._data}
                   .rangeStart=${this._rangeStart}
@@ -7617,12 +7619,12 @@
                   .chartAnchor=${this._chartAnchor}
                   .language=${e}
                   .isOutdoor=${this.rooms[this._selectedRoom]?.is_outdoor??!1}
-                ></rs-analytics-chart>
-                ${this.rooms[this._selectedRoom]?.is_outdoor?g:h` <rs-analytics-model
+                ></rme-analytics-chart>
+                ${this.rooms[this._selectedRoom]?.is_outdoor?g:h` <rme-analytics-model
                         .hass=${this.hass}
                         .data=${this._data}
                         .language=${e}
-                      ></rs-analytics-model>`}
+                      ></rme-analytics-model>`}
               `:h`
               <div class="no-data">
                 <ha-icon
@@ -7662,7 +7664,7 @@
       color: var(--secondary-text-color);
       font-size: 14px;
     }
-  `}};j([b({attribute:!1})],Q.prototype,`hass`,void 0),j([b({type:Object})],Q.prototype,`rooms`,void 0),j([b()],Q.prototype,`initialRoom`,void 0),j([b()],Q.prototype,`controlMode`,void 0),j([x()],Q.prototype,`_selectedRoom`,void 0),j([x()],Q.prototype,`_rangeStart`,void 0),j([x()],Q.prototype,`_rangeEnd`,void 0),j([x()],Q.prototype,`_data`,void 0),j([x()],Q.prototype,`_chartAnchor`,void 0),j([x()],Q.prototype,`_loading`,void 0),j([x()],Q.prototype,`_activeQuick`,void 0),Q=j([y(`rs-analytics`)],Q),v(),S(),M();var Rn=`M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z`,zn=`M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z`,Bn=`M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z`,Vn=`M15 13V5A3 3 0 0 0 9 5V13A5 5 0 1 0 15 13M12 4A1 1 0 0 1 13 5V8H11V5A1 1 0 0 1 12 4Z`,$=class extends _{constructor(...e){super(...e),this.narrow=!1,this.route={path:``},this.panel={},this._activeTab=`areas`,this._rooms={},this._roomsLoaded=!1,this._selectedAreaId=null,this._analyticsRoom=``,this._vacationActive=!1,this._vacationTemp=null,this._vacationUntil=null,this._hiddenRooms=[],this._showHiddenRooms=!1,this._controlMode=`bangbang`,this._climateControlActive=!0,this._presenceEnabled=!1,this._valveProtectionEnabled=!1,this._coilDryEnabled=!1,this._coilDryMinutes=20,this._coilDryMode=`fan_only`,this._coilDryFanMode=`low`,this._anyoneHome=!0,this._presencePersons=[],this._presenceAwayAction=`eco`,this._saveStatus=`idle`,this._roomOrder=[],this._groupByFloor=!1,this._reorderMode=!1,this._elementsLoaded=!1,this._routeApplied=!1,this._areaInfosCache=[],this._onSaveStatus=e=>{e.stopPropagation(),this._saveStatusTimeout&&clearTimeout(this._saveStatusTimeout),this._saveStatus=e.detail.status,e.detail.status===`saved`&&(this._saveStatusTimeout=setTimeout(()=>{this._saveStatus=`idle`},2e3))}}static{this.styles=l`
+  `}};j([b({attribute:!1})],Q.prototype,`hass`,void 0),j([b({type:Object})],Q.prototype,`rooms`,void 0),j([b()],Q.prototype,`initialRoom`,void 0),j([b()],Q.prototype,`controlMode`,void 0),j([x()],Q.prototype,`_selectedRoom`,void 0),j([x()],Q.prototype,`_rangeStart`,void 0),j([x()],Q.prototype,`_rangeEnd`,void 0),j([x()],Q.prototype,`_data`,void 0),j([x()],Q.prototype,`_chartAnchor`,void 0),j([x()],Q.prototype,`_loading`,void 0),j([x()],Q.prototype,`_activeQuick`,void 0),Q=j([y(`rme-analytics`)],Q),v(),S(),M();var Rn=`M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z`,zn=`M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z`,Bn=`M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z`,Vn=`M15 13V5A3 3 0 0 0 9 5V13A5 5 0 1 0 15 13M12 4A1 1 0 0 1 13 5V8H11V5A1 1 0 0 1 12 4Z`,$=class extends _{constructor(...e){super(...e),this.narrow=!1,this.route={path:``},this.panel={},this._activeTab=`areas`,this._rooms={},this._roomsLoaded=!1,this._selectedAreaId=null,this._analyticsRoom=``,this._vacationActive=!1,this._vacationTemp=null,this._vacationUntil=null,this._hiddenRooms=[],this._showHiddenRooms=!1,this._controlMode=`bangbang`,this._climateControlActive=!0,this._presenceEnabled=!1,this._valveProtectionEnabled=!1,this._coilDryEnabled=!1,this._coilDryMinutes=20,this._coilDryMode=`fan_only`,this._coilDryFanMode=`low`,this._anyoneHome=!0,this._presencePersons=[],this._presenceAwayAction=`eco`,this._saveStatus=`idle`,this._roomOrder=[],this._groupByFloor=!1,this._reorderMode=!1,this._elementsLoaded=!1,this._routeApplied=!1,this._areaInfosCache=[],this._onSaveStatus=e=>{e.stopPropagation(),this._saveStatusTimeout&&clearTimeout(this._saveStatusTimeout),this._saveStatus=e.detail.status,e.detail.status===`saved`&&(this._saveStatusTimeout=setTimeout(()=>{this._saveStatus=`idle`},2e3))}}static{this.styles=l`
     :host {
       display: block;
       font-family: var(--primary-font-family, Roboto, sans-serif);
@@ -7960,14 +7962,14 @@
             `}
 
       <div class="content">${this._renderTab()}</div>
-    `}_renderTab(){switch(this._activeTab){case`areas`:return this._renderAreas();case`analytics`:return h`<rs-analytics
+    `}_renderTab(){switch(this._activeTab){case`areas`:return this._renderAreas();case`analytics`:return h`<rme-analytics
           .hass=${this.hass}
           .rooms=${this._rooms}
           .initialRoom=${this._analyticsRoom}
           .controlMode=${this._controlMode}
           @room-selected=${this._onAnalyticsRoomSelected}
-        ></rs-analytics>`;case`settings`:return this._renderSettings();default:return g}}_renderAreas(){if(!this._roomsLoaded)return h`<div class="loading">${C(`panel.loading`,this.hass.language)}</div>`;if(this._selectedAreaId){let e=this.hass?.areas?.[this._selectedAreaId];if(e){let t=this._rooms[this._selectedAreaId]??null;return h`
-          <rs-room-detail
+        ></rme-analytics>`;case`settings`:return this._renderSettings();default:return g}}_renderAreas(){if(!this._roomsLoaded)return h`<div class="loading">${C(`panel.loading`,this.hass.language)}</div>`;if(this._selectedAreaId){let e=this.hass?.areas?.[this._selectedAreaId];if(e){let t=this._rooms[this._selectedAreaId]??null;return h`
+          <rme-room-detail
             .area=${e}
             .config=${t}
             .hass=${this.hass}
@@ -7981,7 +7983,7 @@
             .coilDryFanMode=${this._coilDryFanMode}
             @back-clicked=${this._onBackFromDetail}
             @room-updated=${this._onRoomUpdated}
-          ></rs-room-detail>
+          ></rme-room-detail>
         `}this._selectedAreaId=null}let e=this._areaInfosCache,t=e.filter(e=>!this._hiddenRooms.includes(e.area.area_id)),n=e.filter(e=>this._hiddenRooms.includes(e.area.area_id));if(e.length===0)return h`
         <div class="placeholder">
           <ha-icon icon="mdi:home" style="--mdc-icon-size: 56px; opacity: 0.4"></ha-icon>
@@ -8071,7 +8073,7 @@
           ${e.name?h`<h4 class="floor-heading">${e.name}</h4>`:g}
           <div class="area-grid">
             ${e.items.map((t,n)=>h`
-                <rs-area-card
+                <rme-area-card
                   .area=${t.area}
                   .config=${t.config}
                   .climateEntityCount=${t.climateEntityCount}
@@ -8086,11 +8088,11 @@
                   @hide-room=${this._onHideRoom}
                   @move-room-up=${this._onMoveRoomUp}
                   @move-room-down=${this._onMoveRoomDown}
-                ></rs-area-card>
+                ></rme-area-card>
               `)}
           </div>
         `)}
-    `}_renderSettings(){return h`<rs-settings .hass=${this.hass} .rooms=${this._rooms}></rs-settings>`}_computeAreaInfos(){if(!this.hass?.areas)return[];let e=Object.values(this.hass.areas).map(e=>{let t=yt(e.area_id,this.hass.entities,this.hass.devices).filter(e=>!e.entity_id.substring(e.entity_id.indexOf(`.`)+1).startsWith(`roommind_`)),n=t.filter(e=>e.entity_id.startsWith(`climate.`)).length,r=t.filter(e=>e.entity_id.startsWith(`sensor.`)&&this.hass.states[e.entity_id]?.attributes?.device_class===`temperature`).length;return{area:e,config:this._rooms[e.area_id]??null,climateEntityCount:n,tempSensorCount:r}}),t=new Map(this._roomOrder.map((e,t)=>[e,t]));return e.sort((e,n)=>{let r=t.get(e.area.area_id),i=t.get(n.area.area_id);if(r!==void 0&&i!==void 0)return r-i;if(r!==void 0)return-1;if(i!==void 0)return 1;let a=e.config?2:+(e.climateEntityCount>0),o=n.config?2:+(n.climateEntityCount>0);return a===o?e.area.name.localeCompare(n.area.name):o-a}),e}_getFloorGroups(e){if(!this._groupByFloor||!this.hass.floors)return[{name:``,items:e}];let t=this.hass.floors,n=this.hass.language,r=new Map,i=[];for(let t of e){let e=t.area.floor_id??null;r.has(e)||(r.set(e,[]),i.push(e)),r.get(e).push(t)}return i.sort((e,n)=>{if(e===null)return 1;if(n===null)return-1;let r=t[e],i=t[n];return r?.level!=null&&i?.level!=null?i.level-r.level:r?.level==null?i?.level==null?(r?.name??``).localeCompare(i?.name??``):1:-1}),i.map(e=>({name:e===null?C(`panel.floor_other`,n):t[e]?.name??C(`panel.floor_other`,n),items:r.get(e)}))}async _loadRooms(){if(this.hass)try{let e=await this.hass.callWS({type:`roommind_eklabs/rooms/list`});this._rooms=e.rooms,this._vacationActive=e.vacation_active??!1,this._vacationTemp=e.vacation_temp??null,this._vacationUntil=e.vacation_until??null,this._hiddenRooms=e.hidden_rooms??[],this._roomOrder=e.room_order??[],this._groupByFloor=e.group_by_floor??!1,this._controlMode=e.control_mode??`bangbang`,this._climateControlActive=e.climate_control_active??!0,this._presenceEnabled=e.presence_enabled??!1,this._valveProtectionEnabled=e.valve_protection_enabled??!1,this._coilDryEnabled=e.coil_dry_enabled??!1,this._coilDryMinutes=e.coil_dry_minutes??20,this._coilDryMode=e.coil_dry_mode??`fan_only`,this._coilDryFanMode=e.coil_dry_fan_mode??`low`,this._anyoneHome=e.anyone_home??!0,this._presencePersons=e.presence_persons??[],this._presenceAwayAction=e.presence_away_action??`eco`}catch(e){console.debug(`[RoomMind] loadRooms:`,e)}finally{this._roomsLoaded=!0}}_onBackFromDetail(){this._selectedAreaId=null,this._navigate(``)}async _onDeleteRoom(){if(!this._selectedAreaId)return;let e=this.hass?.areas?.[this._selectedAreaId];if(e&&confirm(C(`room.confirm_delete`,this.hass.language,{name:e.name})))try{await this.hass.callWS({type:`roommind_eklabs/rooms/delete`,area_id:this._selectedAreaId}),this._selectedAreaId=null,this._navigate(``),this._loadRooms()}catch(e){console.debug(`[RoomMind] deleteRoom:`,e)}}_onTabClicked(e){this._activeTab=e,this._selectedAreaId=null,e===`areas`?this._navigate(``):this._navigate(`/${e}`)}_onAreaSelected(e){this._selectedAreaId=e.detail.areaId,this._navigate(`/room/${e.detail.areaId}`)}async _onHideRoom(e){let t=[...new Set([...this._hiddenRooms,e.detail.areaId])];this._hiddenRooms=t;try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,hidden_rooms:t})}catch(e){console.debug(`[RoomMind] hideRoom:`,e)}}async _unhideRoom(e){let t=this._hiddenRooms.filter(t=>t!==e);this._hiddenRooms=t,t.length===0&&(this._showHiddenRooms=!1);try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,hidden_rooms:t})}catch(e){console.debug(`[RoomMind] unhideRoom:`,e)}}_onGoToAnalytics(){this._selectedAreaId&&(this._analyticsRoom=this._selectedAreaId,this._selectedAreaId=null,this._activeTab=`analytics`,this._navigate(`/analytics/${this._analyticsRoom}`))}_onGoToRoomFromAnalytics(){this._analyticsRoom&&(this._selectedAreaId=this._analyticsRoom,this._activeTab=`areas`,this._navigate(`/room/${this._analyticsRoom}`))}_onAnalyticsRoomSelected(e){this._analyticsRoom=e.detail.areaId,this._navigate(`/analytics/${e.detail.areaId}`)}async _onMoveRoomUp(e){this._moveRoom(e.detail.areaId,-1)}async _onMoveRoomDown(e){this._moveRoom(e.detail.areaId,1)}async _moveRoom(e,t){let n=this._areaInfosCache.filter(e=>!this._hiddenRooms.includes(e.area.area_id));if(this._groupByFloor&&this.hass.floors){let r=this._getFloorGroups(n);for(let n of r){let i=n.items.map(e=>e.area.area_id),a=i.indexOf(e);if(a===-1)continue;let o=a+t;if(o<0||o>=i.length)return;[i[a],i[o]]=[i[o],i[a]];let s=r.flatMap(e=>e===n?i:e.items.map(e=>e.area.area_id));await this._saveRoomOrder(s);return}}else{let r=n.map(e=>e.area.area_id),i=r.indexOf(e);if(i===-1)return;let a=i+t;if(a<0||a>=r.length)return;[r[i],r[a]]=[r[a],r[i]],await this._saveRoomOrder(r)}}async _saveRoomOrder(e){this._roomOrder=e,this._areaInfosCache=this._computeAreaInfos();try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,room_order:e})}catch(e){console.debug(`[RoomMind] saveRoomOrder:`,e)}}_onReorderDone(){this._reorderMode=!1}_onRoomUpdated(){this._loadRooms()}_renderSaveIndicator(){if(this._saveStatus===`idle`)return g;let e=this.hass.language,t=this._saveStatus===`saving`?`mdi:content-save-outline`:this._saveStatus===`saved`?`mdi:check`:`mdi:alert-circle-outline`,n=this._saveStatus===`saving`?C(`settings.saving`,e):this._saveStatus===`saved`?C(`settings.saved`,e):C(`settings.error`,e);return h`
+    `}_renderSettings(){return h`<rme-settings .hass=${this.hass} .rooms=${this._rooms}></rme-settings>`}_computeAreaInfos(){if(!this.hass?.areas)return[];let e=Object.values(this.hass.areas).map(e=>{let t=yt(e.area_id,this.hass.entities,this.hass.devices).filter(e=>!e.entity_id.substring(e.entity_id.indexOf(`.`)+1).startsWith(`roommind_`)),n=t.filter(e=>e.entity_id.startsWith(`climate.`)).length,r=t.filter(e=>e.entity_id.startsWith(`sensor.`)&&this.hass.states[e.entity_id]?.attributes?.device_class===`temperature`).length;return{area:e,config:this._rooms[e.area_id]??null,climateEntityCount:n,tempSensorCount:r}}),t=new Map(this._roomOrder.map((e,t)=>[e,t]));return e.sort((e,n)=>{let r=t.get(e.area.area_id),i=t.get(n.area.area_id);if(r!==void 0&&i!==void 0)return r-i;if(r!==void 0)return-1;if(i!==void 0)return 1;let a=e.config?2:+(e.climateEntityCount>0),o=n.config?2:+(n.climateEntityCount>0);return a===o?e.area.name.localeCompare(n.area.name):o-a}),e}_getFloorGroups(e){if(!this._groupByFloor||!this.hass.floors)return[{name:``,items:e}];let t=this.hass.floors,n=this.hass.language,r=new Map,i=[];for(let t of e){let e=t.area.floor_id??null;r.has(e)||(r.set(e,[]),i.push(e)),r.get(e).push(t)}return i.sort((e,n)=>{if(e===null)return 1;if(n===null)return-1;let r=t[e],i=t[n];return r?.level!=null&&i?.level!=null?i.level-r.level:r?.level==null?i?.level==null?(r?.name??``).localeCompare(i?.name??``):1:-1}),i.map(e=>({name:e===null?C(`panel.floor_other`,n):t[e]?.name??C(`panel.floor_other`,n),items:r.get(e)}))}async _loadRooms(){if(this.hass)try{let e=await this.hass.callWS({type:`roommind_eklabs/rooms/list`});this._rooms=e.rooms,this._vacationActive=e.vacation_active??!1,this._vacationTemp=e.vacation_temp??null,this._vacationUntil=e.vacation_until??null,this._hiddenRooms=e.hidden_rooms??[],this._roomOrder=e.room_order??[],this._groupByFloor=e.group_by_floor??!1,this._controlMode=e.control_mode??`bangbang`,this._climateControlActive=e.climate_control_active??!0,this._presenceEnabled=e.presence_enabled??!1,this._valveProtectionEnabled=e.valve_protection_enabled??!1,this._coilDryEnabled=e.coil_dry_enabled??!1,this._coilDryMinutes=e.coil_dry_minutes??20,this._coilDryMode=e.coil_dry_mode??`fan_only`,this._coilDryFanMode=e.coil_dry_fan_mode??`low`,this._anyoneHome=e.anyone_home??!0,this._presencePersons=e.presence_persons??[],this._presenceAwayAction=e.presence_away_action??`eco`}catch(e){console.debug(`[RoomMind] loadRooms:`,e)}finally{this._roomsLoaded=!0}}_onBackFromDetail(){this._selectedAreaId=null,this._navigate(``)}async _onDeleteRoom(){if(!this._selectedAreaId)return;let e=this.hass?.areas?.[this._selectedAreaId];if(e&&confirm(C(`room.confirm_delete`,this.hass.language,{name:e.name})))try{await this.hass.callWS({type:`roommind_eklabs/rooms/delete`,area_id:this._selectedAreaId}),this._selectedAreaId=null,this._navigate(``),this._loadRooms()}catch(e){console.debug(`[RoomMind] deleteRoom:`,e)}}_onTabClicked(e){this._activeTab=e,this._selectedAreaId=null,e===`areas`?this._navigate(``):this._navigate(`/${e}`)}_onAreaSelected(e){this._selectedAreaId=e.detail.areaId,this._navigate(`/room/${e.detail.areaId}`)}async _onHideRoom(e){let t=[...new Set([...this._hiddenRooms,e.detail.areaId])];this._hiddenRooms=t;try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,hidden_rooms:t})}catch(e){console.debug(`[RoomMind] hideRoom:`,e)}}async _unhideRoom(e){let t=this._hiddenRooms.filter(t=>t!==e);this._hiddenRooms=t,t.length===0&&(this._showHiddenRooms=!1);try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,hidden_rooms:t})}catch(e){console.debug(`[RoomMind] unhideRoom:`,e)}}_onGoToAnalytics(){this._selectedAreaId&&(this._analyticsRoom=this._selectedAreaId,this._selectedAreaId=null,this._activeTab=`analytics`,this._navigate(`/analytics/${this._analyticsRoom}`))}_onGoToRoomFromAnalytics(){this._analyticsRoom&&(this._selectedAreaId=this._analyticsRoom,this._activeTab=`areas`,this._navigate(`/room/${this._analyticsRoom}`))}_onAnalyticsRoomSelected(e){this._analyticsRoom=e.detail.areaId,this._navigate(`/analytics/${e.detail.areaId}`)}async _onMoveRoomUp(e){this._moveRoom(e.detail.areaId,-1)}async _onMoveRoomDown(e){this._moveRoom(e.detail.areaId,1)}async _moveRoom(e,t){let n=this._areaInfosCache.filter(e=>!this._hiddenRooms.includes(e.area.area_id));if(this._groupByFloor&&this.hass.floors){let r=this._getFloorGroups(n);for(let n of r){let i=n.items.map(e=>e.area.area_id),a=i.indexOf(e);if(a===-1)continue;let o=a+t;if(o<0||o>=i.length)return;[i[a],i[o]]=[i[o],i[a]];let s=r.flatMap(e=>e===n?i:e.items.map(e=>e.area.area_id));await this._saveRoomOrder(s);return}}else{let r=n.map(e=>e.area.area_id),i=r.indexOf(e);if(i===-1)return;let a=i+t;if(a<0||a>=r.length)return;[r[i],r[a]]=[r[a],r[i]],await this._saveRoomOrder(r)}}async _saveRoomOrder(e){this._roomOrder=e,this._areaInfosCache=this._computeAreaInfos();try{await this.hass.callWS({type:`roommind_eklabs/settings/save`,room_order:e})}catch(e){console.debug(`[RoomMind] saveRoomOrder:`,e)}}_onReorderDone(){this._reorderMode=!1}_onRoomUpdated(){this._loadRooms()}_renderSaveIndicator(){if(this._saveStatus===`idle`)return g;let e=this.hass.language,t=this._saveStatus===`saving`?`mdi:content-save-outline`:this._saveStatus===`saved`?`mdi:check`:`mdi:alert-circle-outline`,n=this._saveStatus===`saving`?C(`settings.saving`,e):this._saveStatus===`saved`?C(`settings.saved`,e):C(`settings.error`,e);return h`
       <span class="save-indicator ${this._saveStatus}">
         <ha-icon .icon=${t}></ha-icon>
         ${n}

@@ -5,8 +5,8 @@ import { getEntitiesForArea } from "./utils/room-state";
 import { loadHaElements } from "./load-ha-elements";
 import { localize } from "./utils/localize";
 import { mdiEyeOff } from "./utils/icons";
-import "./components/rs-settings";
-import "./components/rs-analytics";
+import "./components/rme-settings";
+import "./components/rme-analytics";
 
 const BACK_PATH = "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z";
 
@@ -459,13 +459,13 @@ export class RoomMindPanel extends LitElement {
       case "areas":
         return this._renderAreas();
       case "analytics":
-        return html`<rs-analytics
+        return html`<rme-analytics
           .hass=${this.hass}
           .rooms=${this._rooms}
           .initialRoom=${this._analyticsRoom}
           .controlMode=${this._controlMode}
           @room-selected=${this._onAnalyticsRoomSelected}
-        ></rs-analytics>`;
+        ></rme-analytics>`;
       case "settings":
         return this._renderSettings();
       default:
@@ -483,7 +483,7 @@ export class RoomMindPanel extends LitElement {
       if (area) {
         const config = this._rooms[this._selectedAreaId] ?? null;
         return html`
-          <rs-room-detail
+          <rme-room-detail
             .area=${area}
             .config=${config}
             .hass=${this.hass}
@@ -497,7 +497,7 @@ export class RoomMindPanel extends LitElement {
             .coilDryFanMode=${this._coilDryFanMode}
             @back-clicked=${this._onBackFromDetail}
             @room-updated=${this._onRoomUpdated}
-          ></rs-room-detail>
+          ></rme-room-detail>
         `;
       }
       this._selectedAreaId = null;
@@ -655,7 +655,7 @@ export class RoomMindPanel extends LitElement {
           <div class="area-grid">
             ${group.items.map(
               (info, idx) => html`
-                <rs-area-card
+                <rme-area-card
                   .area=${info.area}
                   .config=${info.config}
                   .climateEntityCount=${info.climateEntityCount}
@@ -670,7 +670,7 @@ export class RoomMindPanel extends LitElement {
                   @hide-room=${this._onHideRoom}
                   @move-room-up=${this._onMoveRoomUp}
                   @move-room-down=${this._onMoveRoomDown}
-                ></rs-area-card>
+                ></rme-area-card>
               `,
             )}
           </div>
@@ -680,7 +680,7 @@ export class RoomMindPanel extends LitElement {
   }
 
   private _renderSettings() {
-    return html`<rs-settings .hass=${this.hass} .rooms=${this._rooms}></rs-settings>`;
+    return html`<rme-settings .hass=${this.hass} .rooms=${this._rooms}></rme-settings>`;
   }
 
   private _computeAreaInfos(): AreaInfo[] {

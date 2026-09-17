@@ -2,7 +2,7 @@ import { css } from "lit";
 
 /**
  * Shared CSS for mode-pill and mode-dot styles used by
- * rs-area-card and rs-room-detail (hero section).
+ * rme-area-card and rme-room-detail (hero section).
  */
 export const modeStyles = css`
   .mode-pill {

@@ -1,8 +1,8 @@
 import { css } from "lit";
 
 /**
- * Shared styles for the master-detail edit pattern used by rs-device-section,
- * rs-covers-section, etc. Provides classes for:
+ * Shared styles for the master-detail edit pattern used by rme-device-section,
+ * rme-covers-section, etc. Provides classes for:
  *   - .master / .master-list — left list container
  *   - .master-row + states (focused, in-room) — clickable list row
  *   - .master-info / .master-name-row / .master-name / .master-meta — row content
@@ -194,7 +194,7 @@ export const masterDetailStyles = css`
     min-width: 0;
   }
 
-  .detail-field.with-info rs-info-icon {
+  .detail-field.with-info rme-info-icon {
     flex-shrink: 0;
   }
 
