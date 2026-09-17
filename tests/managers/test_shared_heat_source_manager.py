@@ -21,6 +21,7 @@ def _source(**overrides):
         "local_grace_minutes": 15,
         "min_run_minutes": 15,
         "min_off_minutes": 10,
+        "comfort_temperature": 20.0,
     }
     source.update(overrides)
     return source
@@ -43,18 +44,17 @@ def test_starts_for_two_requesting_rooms():
     assert plan.local_heat_allowed == frozenset()
 
 
-def test_single_mild_room_uses_local_heat_only():
+def test_single_room_below_whole_house_target_starts_gas():
     manager = SharedHeatSourceManager()
     manager.load_sources([_source()])
 
     plan = manager.evaluate("gas", [_demand("isaac", temp=19.2, target=20.0, power=0.5)], now=1000)
 
-    assert plan.active is False
-    assert plan.local_heat_allowed == frozenset({"isaac"})
-    assert plan.reason == "demand below shared-source threshold"
+    assert plan.active is True
+    assert plan.local_heat_allowed == frozenset()
 
 
-def test_single_large_demand_can_cross_aggregate_threshold():
+def test_single_room_starts_without_power_or_room_count_thresholds():
     manager = SharedHeatSourceManager()
     manager.load_sources([_source(aggregate_power_threshold=0.8)])
 
@@ -108,7 +108,7 @@ def test_minimum_off_blocks_restart_and_keeps_local_heat_available():
     assert restarted.transition == "start"
 
 
-def test_unknown_and_disabled_rooms_do_not_contribute():
+def test_whole_house_temperature_can_start_without_local_room_demand():
     manager = SharedHeatSourceManager()
     manager.load_sources([_source()])
 
@@ -116,13 +116,12 @@ def test_unknown_and_disabled_rooms_do_not_contribute():
         "gas",
         [
             _demand("isaac", enabled=False),
-            _demand("unknown"),
             _demand("jacob", temp=None),
         ],
         now=1000,
     )
 
-    assert plan.active is False
+    assert plan.active is True
     assert plan.requesting_rooms == ()
 
 
@@ -198,7 +197,7 @@ def test_occupancy_loss_allows_local_heat_during_minimum_gas_run():
 
 def test_whole_house_target_drives_shared_heat_independently_of_room_targets():
     manager = SharedHeatSourceManager()
-    manager.load_sources([_source(target_temperature=18.0, min_run_minutes=0)])
+    manager.load_sources([_source(comfort_temperature=18.0, min_run_minutes=0)])
     room_demands = [_demand("isaac", temp=19.0, target=21.0), _demand("jacob", temp=19.0, target=21.0)]
 
     started = manager.evaluate("gas", room_demands, now=1000, shared_current_temp=17.0)
@@ -208,6 +207,32 @@ def test_whole_house_target_drives_shared_heat_independently_of_room_targets():
     assert started.max_delta == 1.0
     assert stopped.active is False
     assert stopped.reason == "whole-house target satisfied"
+
+
+def test_eco_mode_uses_eco_temperature():
+    manager = SharedHeatSourceManager()
+    manager.load_sources(
+        [_source(comfort_temperature=20.0, eco_temperature=16.0, preset_mode="eco")]
+    )
+
+    plan = manager.evaluate("gas", [_demand("isaac")], now=1000, shared_current_temp=17.0)
+
+    assert plan.active is False
+    assert plan.max_delta == 0.0
+
+
+def test_active_furnace_marks_every_observed_room_as_shared_heat():
+    manager = SharedHeatSourceManager()
+    manager.load_sources([_source(rooms=["living"])])
+
+    plan = manager.evaluate(
+        "gas",
+        [_demand("living"), _demand("isaac"), _demand("jacob")],
+        now=1000,
+        shared_current_temp=17.0,
+    )
+
+    assert plan.shared_heat_rooms == frozenset({"living", "isaac", "jacob"})
 
 
 def test_disabled_whole_house_thermostat_leaves_local_rooms_available():

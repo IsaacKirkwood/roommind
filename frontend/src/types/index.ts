@@ -122,11 +122,24 @@ export interface SharedHeatSource {
   media_player_entities: string[];
   occupancy_hold_minutes: number;
   target_temperature: number;
+  comfort_temperature?: number;
+  eco_temperature?: number;
+  preset_mode?: "comfort" | "eco";
   thermostat_enabled: boolean;
   temperature_sensors: string[];
   temperature_offsets: Record<string, number>;
   require_home_presence: boolean;
   home_presence_entities: string[];
+  live?: SharedHeatSourceLive;
+}
+
+export interface SharedHeatSourceLive {
+  active: boolean;
+  reason: string;
+  current_temperature: number | null;
+  target_temperature: number;
+  occupancy_eligible: boolean;
+  home_occupied: boolean;
 }
 
 export interface RoomConfig {

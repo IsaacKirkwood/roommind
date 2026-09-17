@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import type { HomeAssistant, HassArea, RoomConfig } from "./types";
+import type { HomeAssistant, HassArea, RoomConfig, SharedHeatSource } from "./types";
 import { getEntitiesForArea } from "./utils/room-state";
 import { loadHaElements } from "./load-ha-elements";
 import { localize } from "./utils/localize";
@@ -61,6 +61,7 @@ export class RoomMindPanel extends LitElement {
   @state() private _groupByFloor = false;
   @state() private _reorderMode = false;
   @state() private _elementsLoaded = false;
+  @state() private _sharedHeatSources: SharedHeatSource[] = [];
 
   private _refreshInterval?: ReturnType<typeof setInterval>;
   private _routeApplied = false;
@@ -318,6 +319,10 @@ export class RoomMindPanel extends LitElement {
       margin-top: 0;
     }
 
+    .whole-house {
+      margin-bottom: 16px;
+    }
+
     .reorder-btn {
       --mdc-icon-button-size: 36px;
       --mdc-icon-size: 20px;
@@ -534,6 +539,16 @@ export class RoomMindPanel extends LitElement {
     const l = this.hass.language;
 
     return html`
+      ${this._sharedHeatSources.map(
+        (source) => html`
+          <rme-whole-house-card
+            class="whole-house"
+            .hass=${this.hass}
+            .source=${source}
+            @whole-house-changed=${this._onWholeHouseChanged}
+          ></rme-whole-house-card>
+        `,
+      )}
       ${
         configuredCount > 0 || hiddenAreaInfos.length > 0
           ? html`
@@ -797,6 +812,7 @@ export class RoomMindPanel extends LitElement {
         coil_dry_minutes: number;
         coil_dry_mode: string;
         coil_dry_fan_mode: string;
+        shared_heat_sources: SharedHeatSource[];
       }>({
         type: "roommind_eklabs/rooms/list",
       });
@@ -818,11 +834,32 @@ export class RoomMindPanel extends LitElement {
       this._anyoneHome = result.anyone_home ?? true;
       this._presencePersons = result.presence_persons ?? [];
       this._presenceAwayAction = result.presence_away_action ?? "eco";
+      this._sharedHeatSources = result.shared_heat_sources ?? [];
     } catch (err) {
       // eslint-disable-next-line no-console
       console.debug("[RoomMind] loadRooms:", err);
     } finally {
       this._roomsLoaded = true;
+    }
+  }
+
+  private async _onWholeHouseChanged(event: CustomEvent<{ source: SharedHeatSource }>) {
+    const source = event.detail.source;
+    this._sharedHeatSources = this._sharedHeatSources.map((item) =>
+      item.id === source.id ? source : item,
+    );
+    const persisted = this._sharedHeatSources.map(({ live: _live, ...item }) => item);
+    try {
+      await this.hass.callWS({
+        type: "roommind_eklabs/settings/save",
+        shared_heat_sources: persisted,
+      });
+      this._onSaveStatus(new CustomEvent("save-status", { detail: { status: "saved" } }));
+      await this._loadRooms();
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.debug("[RoomMind] save whole house:", err);
+      this._onSaveStatus(new CustomEvent("save-status", { detail: { status: "error" } }));
     }
   }
 

@@ -23,12 +23,6 @@ export class RsSettingsSharedHeat extends LitElement {
         gap: 12px;
         margin-top: 12px;
       }
-      .rooms {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 8px;
-        margin-top: 8px;
-      }
       .hint {
         color: var(--secondary-text-color);
         font-size: 12px;
@@ -100,26 +94,20 @@ export class RsSettingsSharedHeat extends LitElement {
           min="5"
           max="30"
           step="0.5"
-          label="Whole-house target"
+          label="Comfort temperature"
           suffix="°C"
-          .value=${String(source.target_temperature ?? 18)}
-          @change=${(e: Event) => this._number(index, "target_temperature", e)}
+          .value=${String(source.comfort_temperature ?? source.target_temperature ?? 18)}
+          @change=${(e: Event) => this._number(index, "comfort_temperature", e)}
         ></ha-textfield>
         <ha-textfield
           type="number"
-          min="1"
-          step="1"
-          label="Rooms needed to start"
-          .value=${String(source.min_requesting_rooms)}
-          @change=${(e: Event) => this._number(index, "min_requesting_rooms", e)}
-        ></ha-textfield>
-        <ha-textfield
-          type="number"
-          min="0"
-          step="0.1"
-          label="Combined demand to start"
-          .value=${String(source.aggregate_power_threshold)}
-          @change=${(e: Event) => this._number(index, "aggregate_power_threshold", e)}
+          min="5"
+          max="30"
+          step="0.5"
+          label="Eco temperature"
+          suffix="°C"
+          .value=${String(source.eco_temperature ?? 16)}
+          @change=${(e: Event) => this._number(index, "eco_temperature", e)}
         ></ha-textfield>
         <ha-textfield
           type="number"
@@ -149,17 +137,9 @@ export class RsSettingsSharedHeat extends LitElement {
           @change=${(e: Event) => this._number(index, "min_run_minutes", e)}
         ></ha-textfield>
       </div>
-      <div class="hint">Rooms heated by this device</div>
-      <div class="rooms">
-        ${Object.entries(this.rooms).map(
-          ([id, room]) =>
-            html` <ha-formfield .label=${(room as RoomConfig & { name?: string }).name || id}>
-              <ha-checkbox
-                .checked=${source.rooms.includes(id)}
-                @change=${(e: Event) => this._room(index, id, (e.target as HTMLInputElement).checked)}
-              ></ha-checkbox>
-            </ha-formfield>`,
-        )}
+      <div class="hint">
+        This heater affects all ${Object.keys(this.rooms).length} configured rooms. Downstairs
+        presence decides when gas may run; local room heaters can trim individual rooms.
       </div>
       <div class="grid">
         <div>
@@ -173,7 +153,9 @@ export class RsSettingsSharedHeat extends LitElement {
           ${this._renderTemperatureSensors(source, index)}
         </div>
         <div>
-          <div class="hint">Temperature inputs are averaged. Add a correction for sensors that read high or low.</div>
+          <div class="hint">
+            Temperature inputs are averaged. Add a correction for sensors that read high or low.
+          </div>
         </div>
       </div>
       <div class="grid">
@@ -236,7 +218,8 @@ export class RsSettingsSharedHeat extends LitElement {
         </div>
       </div>
       <div class="hint">
-        Presence or an active media player enables whole-house gas heating. Bedroom heating remains available when downstairs is clear.
+        Presence or an active media player enables whole-house gas heating. Bedroom heating remains
+        available when downstairs is clear.
       </div>
       <div class="actions">
         <ha-button @click=${() => this._fire(this.sharedHeatSources.filter((_, i) => i !== index))}
@@ -259,12 +242,6 @@ export class RsSettingsSharedHeat extends LitElement {
     const value = Number((event.target as HTMLInputElement).value);
     if (Number.isFinite(value)) this._set(index, field, value);
   }
-  private _room(index: number, roomId: string, checked: boolean) {
-    const rooms = checked
-      ? [...new Set([...this.sharedHeatSources[index].rooms, roomId])]
-      : this.sharedHeatSources[index].rooms.filter((id) => id !== roomId);
-    this._set(index, "rooms", rooms);
-  }
   private _addEntity(
     index: number,
     field: "occupancy_entities" | "media_player_entities" | "home_presence_entities",
@@ -280,14 +257,20 @@ export class RsSettingsSharedHeat extends LitElement {
     entities: string[],
   ) {
     return entities.map(
-      (entityId) => html`<div class="entity-row">
-        ${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}
-        <ha-icon-button
-          label="Remove"
-          .path=${"M19,13H5V11H19V13Z"}
-          @click=${() => this._set(index, field, entities.filter((id) => id !== entityId))}
-        ></ha-icon-button>
-      </div>`,
+      (entityId) =>
+        html`<div class="entity-row">
+          ${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}
+          <ha-icon-button
+            label="Remove"
+            .path=${"M19,13H5V11H19V13Z"}
+            @click=${() =>
+              this._set(
+                index,
+                field,
+                entities.filter((id) => id !== entityId),
+              )}
+          ></ha-icon-button>
+        </div>`,
     );
   }
   private _addTemperatureSensor(index: number, entityId?: string) {
@@ -298,7 +281,10 @@ export class RsSettingsSharedHeat extends LitElement {
     updated[index] = {
       ...source,
       temperature_sensors: sensors,
-      temperature_offsets: { ...(source.temperature_offsets ?? {}), [entityId]: source.temperature_offsets?.[entityId] ?? 0 },
+      temperature_offsets: {
+        ...(source.temperature_offsets ?? {}),
+        [entityId]: source.temperature_offsets?.[entityId] ?? 0,
+      },
     };
     this._fire(updated);
   }
@@ -325,25 +311,34 @@ export class RsSettingsSharedHeat extends LitElement {
   }
   private _renderTemperatureSensors(source: SharedHeatSource, index: number) {
     return (source.temperature_sensors ?? []).map(
-      (entityId) => html`<div class="entity-row temperature-row">
-        <span>${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}</span>
-        <ha-textfield
-          type="number"
-          min="-20"
-          max="20"
-          step="0.1"
-          label="Correction"
-          suffix="°C"
-          .value=${String(source.temperature_offsets?.[entityId] ?? 0)}
-          @change=${(e: Event) => this._setTemperatureOffset(index, entityId, e)}
-        ></ha-textfield>
-        <ha-icon-button
-          label="Remove"
-          .path=${"M19,13H5V11H19V13Z"}
-          @click=${() => this._removeTemperatureSensor(index, entityId)}
-        ></ha-icon-button>
-      </div>`,
+      (entityId) =>
+        html`<div class="entity-row temperature-row">
+          <span>${this._temperatureLabel(source, entityId)}</span>
+          <ha-textfield
+            type="number"
+            min="-20"
+            max="20"
+            step="0.1"
+            label="Correction"
+            suffix="°C"
+            .value=${String(source.temperature_offsets?.[entityId] ?? 0)}
+            @change=${(e: Event) => this._setTemperatureOffset(index, entityId, e)}
+          ></ha-textfield>
+          <ha-icon-button
+            label="Remove"
+            .path=${"M19,13H5V11H19V13Z"}
+            @click=${() => this._removeTemperatureSensor(index, entityId)}
+          ></ha-icon-button>
+        </div>`,
     );
+  }
+  private _temperatureLabel(source: SharedHeatSource, entityId: string) {
+    const state = this.hass.states[entityId];
+    const name = state?.attributes?.friendly_name ?? entityId;
+    const raw = Number(state?.state);
+    if (!Number.isFinite(raw)) return `${name} · unavailable`;
+    const corrected = raw + (source.temperature_offsets?.[entityId] ?? 0);
+    return `${name} · ${raw.toFixed(1)} °C → ${corrected.toFixed(1)} °C`;
   }
   private _add() {
     this._fire([
@@ -352,7 +347,7 @@ export class RsSettingsSharedHeat extends LitElement {
         id: self.crypto?.randomUUID?.() ?? String(Date.now()),
         name: "Whole house gas heating",
         entity_id: "",
-        rooms: [],
+        rooms: Object.keys(this.rooms),
         enabled: true,
         min_requesting_rooms: 2,
         aggregate_power_threshold: 1.2,
@@ -362,15 +357,18 @@ export class RsSettingsSharedHeat extends LitElement {
         local_grace_minutes: 15,
         min_run_minutes: 15,
         min_off_minutes: 10,
-        require_occupancy: false,
+        require_occupancy: true,
         occupancy_entities: [],
         media_player_entities: [],
         occupancy_hold_minutes: 20,
         target_temperature: 18,
+        comfort_temperature: 18,
+        eco_temperature: 16,
+        preset_mode: "comfort",
         thermostat_enabled: true,
         temperature_sensors: [],
         temperature_offsets: {},
-        require_home_presence: false,
+        require_home_presence: true,
         home_presence_entities: [],
       },
     ]);

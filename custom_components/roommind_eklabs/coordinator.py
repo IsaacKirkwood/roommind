@@ -474,7 +474,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 source_id,
                 demands,
                 occupied_now=occupied_now,
-                shared_current_temp=(shared_current_temp if config.target_temperature is not None else None),
+                shared_current_temp=shared_current_temp,
                 home_occupied=home_occupied,
             )
             shared_rooms.update(plan.shared_heat_rooms)
@@ -491,7 +491,12 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                     "max_delta": plan.max_delta,
                     "occupancy_eligible": plan.occupancy_eligible,
                     "current_temperature": shared_current_temp,
-                    "target_temperature": config.target_temperature,
+                    "target_temperature": (
+                        config.eco_temperature
+                        if config.preset_mode == "eco"
+                        else config.comfort_temperature
+                    ),
+                    "preset_mode": config.preset_mode,
                     "thermostat_enabled": config.thermostat_enabled,
                     "home_occupied": home_occupied,
                 }

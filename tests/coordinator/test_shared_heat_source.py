@@ -23,6 +23,7 @@ def _source(entity_id: str = "switch.gas_heating") -> dict:
         "local_trim_delta": 1.0,
         "min_run_minutes": 15,
         "min_off_minutes": 10,
+        "comfort_temperature": 20.0,
     }
 
 
@@ -82,6 +83,7 @@ async def test_shared_heat_averages_calibrated_temperature_sensors(hass, mock_co
     source.update(
         {
             "target_temperature": 18.0,
+            "comfort_temperature": 18.0,
             "temperature_sensors": ["sensor.office", "sensor.bedroom"],
             "temperature_offsets": {"sensor.office": -5.0},
             "min_run_minutes": 0,

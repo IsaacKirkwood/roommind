@@ -71,6 +71,9 @@ class SharedHeatSourceConfig:
     media_player_entities: tuple[str, ...] = ()
     occupancy_hold_seconds: float = DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES * 60
     target_temperature: float | None = None
+    comfort_temperature: float = 18.0
+    eco_temperature: float = 16.0
+    preset_mode: str = "comfort"
     thermostat_enabled: bool = True
     temperature_sensors: tuple[str, ...] = ()
     temperature_offsets: dict[str, float] | None = None
@@ -122,6 +125,11 @@ class SharedHeatSourceConfig:
             target_temperature=(
                 float(raw["target_temperature"]) if "target_temperature" in raw else None
             ),
+            comfort_temperature=float(
+                raw.get("comfort_temperature", raw.get("target_temperature", 18.0))
+            ),
+            eco_temperature=float(raw.get("eco_temperature", 16.0)),
+            preset_mode=str(raw.get("preset_mode", "comfort")),
             thermostat_enabled=bool(raw.get("thermostat_enabled", True)),
             temperature_sensors=tuple(str(entity_id) for entity_id in raw.get("temperature_sensors", [])),
             temperature_offsets={
@@ -202,29 +210,38 @@ class SharedHeatSourceManager:
             and timestamp - state.last_occupied <= config.occupancy_hold_seconds
         ))
         demand_by_room = {d.area_id: d for d in demands}
-        participating = [demand_by_room[area_id] for area_id in config.rooms if area_id in demand_by_room]
+        # A central furnace changes the thermal input of every configured room,
+        # even when only the downstairs occupancy gate is calling for heat.
+        participating = list(demand_by_room.values())
         requesting = [d for d in participating if d.requesting]
         aggregate_power = sum(min(1.0, max(0.0, d.power_fraction)) for d in requesting)
         max_delta = max((d.delta for d in requesting), default=0.0)
 
-        if shared_current_temp is not None and config.target_temperature is not None:
-            max_delta = max(0.0, config.target_temperature - shared_current_temp)
+        if shared_current_temp is None:
+            available_temperatures = [
+                d.current_temp for d in participating if d.current_temp is not None
+            ]
+            if available_temperatures:
+                shared_current_temp = sum(available_temperatures) / len(available_temperatures)
+
+        effective_target = (
+            config.eco_temperature if config.preset_mode == "eco" else config.comfort_temperature
+        )
+        if shared_current_temp is not None:
+            max_delta = max(0.0, effective_target - shared_current_temp)
             start_requested = (
                 config.thermostat_enabled and occupancy_eligible and max_delta >= config.start_delta
             )
             stop_requested = (
                 not config.thermostat_enabled
                 or not occupancy_eligible
-                or shared_current_temp >= config.target_temperature - config.stop_delta
+                or shared_current_temp >= effective_target - config.stop_delta
             )
         else:
-            enough_rooms = len(requesting) >= config.min_requesting_rooms
-            enough_power = aggregate_power >= config.aggregate_power_threshold
-            enough_delta = max_delta >= config.start_delta
-            start_requested = occupancy_eligible and bool(requesting) and enough_delta and (enough_rooms or enough_power)
-            stop_requested = not occupancy_eligible or not requesting or all(
-                d.delta <= config.stop_delta for d in requesting
-            )
+            # Never guess from a count of room requests. A whole-house source
+            # needs a valid representative temperature to operate safely.
+            start_requested = False
+            stop_requested = True
 
         transition = "none"
         reason = "no aggregate demand"
@@ -259,7 +276,7 @@ class SharedHeatSourceManager:
             elif stop_requested:
                 reason = "minimum run time"
             else:
-                reason = f"serving {len(requesting)} room request(s)"
+                reason = f"heating occupied downstairs to {effective_target:.1f} °C"
         elif start_requested:
             off_elapsed = timestamp - state.off_since if state.off_since is not None else config.min_off_seconds
             if off_elapsed >= config.min_off_seconds:
@@ -267,11 +284,11 @@ class SharedHeatSourceManager:
                 state.on_since = timestamp
                 state.off_since = None
                 transition = "start"
-                reason = f"aggregate demand from {len(requesting)} room(s)"
+                reason = f"heating occupied downstairs to {effective_target:.1f} °C"
             else:
                 reason = "minimum off time"
-        elif requesting:
-            reason = "demand below shared-source threshold"
+        elif shared_current_temp is None:
+            reason = "waiting for whole-house temperature"
 
         local_allowed: set[str] = set()
         if home_eligible and (not state.active or not occupancy_eligible):
@@ -289,7 +306,7 @@ class SharedHeatSourceManager:
             reason=reason,
             requesting_rooms=tuple(d.area_id for d in requesting),
             local_heat_allowed=frozenset(local_allowed),
-            shared_heat_rooms=frozenset(config.rooms) if state.active else frozenset(),
+            shared_heat_rooms=frozenset(demand_by_room) if state.active else frozenset(),
             aggregate_power=round(aggregate_power, 3),
             max_delta=round(max_delta, 3),
             occupancy_eligible=occupancy_eligible,

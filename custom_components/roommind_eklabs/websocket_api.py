@@ -312,6 +312,15 @@ async def websocket_list_rooms(
     vacation_until = settings.get("vacation_until")
     vacation_active = bool(vacation_until and time.time() < vacation_until)
 
+    shared_plans = {
+        plan.get("id"): plan
+        for plan in ((coordinator.data or {}).get("shared_heat_sources", []) if coordinator else [])
+    }
+    shared_sources = [
+        {**source, "live": shared_plans.get(source.get("id"), {})}
+        for source in settings.get("shared_heat_sources", [])
+    ]
+
     connection.send_result(
         msg["id"],
         {
@@ -342,7 +351,7 @@ async def websocket_list_rooms(
             ),
             "coil_dry_drain_minutes": settings.get("coil_dry_drain_minutes", DEFAULT_COIL_DRY_DRAIN_MINUTES),
             "compressor_groups": settings.get("compressor_groups", []),
-            "shared_heat_sources": settings.get("shared_heat_sources", []),
+            "shared_heat_sources": shared_sources,
         },
     )
 
@@ -758,6 +767,13 @@ async def websocket_get_settings(
                 vol.Optional("target_temperature", default=18.0): vol.All(
                     vol.Coerce(float), vol.Range(min=5, max=30)
                 ),
+                vol.Optional("comfort_temperature", default=18.0): vol.All(
+                    vol.Coerce(float), vol.Range(min=5, max=30)
+                ),
+                vol.Optional("eco_temperature", default=16.0): vol.All(
+                    vol.Coerce(float), vol.Range(min=5, max=30)
+                ),
+                vol.Optional("preset_mode", default="comfort"): vol.In(["comfort", "eco"]),
                 vol.Optional("thermostat_enabled", default=True): bool,
                 vol.Optional("temperature_sensors", default=[]): [str],
                 vol.Optional("temperature_offsets", default={}): {

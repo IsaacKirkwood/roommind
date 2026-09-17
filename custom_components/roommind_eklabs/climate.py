@@ -237,6 +237,7 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
     _attr_min_temp = 5
     _attr_max_temp = 30
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
+    _attr_preset_modes = ["comfort", "eco"]
     _attr_supported_features = (
         ClimateEntityFeature.TARGET_TEMPERATURE
         | ClimateEntityFeature.TURN_ON
@@ -271,7 +272,13 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
 
     @property
     def target_temperature(self) -> float:
-        return float(self._source().get("target_temperature", 18.0))
+        source = self._source()
+        key = "eco_temperature" if source.get("preset_mode") == "eco" else "comfort_temperature"
+        return float(source.get(key, source.get("target_temperature", 18.0)))
+
+    @property
+    def preset_mode(self) -> str:
+        return str(self._source().get("preset_mode", "comfort"))
 
     @property
     def hvac_mode(self) -> HVACMode:
@@ -292,6 +299,10 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
             "occupancy_eligible": plan.get("occupancy_eligible", False),
             "control_reason": plan.get("reason", ""),
             "home_occupied": plan.get("home_occupied", True),
+            "comfort_temperature": source.get(
+                "comfort_temperature", source.get("target_temperature", 18.0)
+            ),
+            "eco_temperature": source.get("eco_temperature", 16.0),
         }
 
     async def _async_update_source(self, **changes: Any) -> None:
@@ -306,7 +317,15 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
     async def async_set_temperature(self, **kwargs: Any) -> None:
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature is not None:
-            await self._async_update_source(target_temperature=float(temperature))
+            key = "eco_temperature" if self.preset_mode == "eco" else "comfort_temperature"
+            changes = {key: float(temperature)}
+            if key == "comfort_temperature":
+                changes["target_temperature"] = float(temperature)
+            await self._async_update_source(**changes)
+
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
+        if preset_mode in self.preset_modes:
+            await self._async_update_source(preset_mode=preset_mode)
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         await self._async_update_source(thermostat_enabled=hvac_mode != HVACMode.OFF)

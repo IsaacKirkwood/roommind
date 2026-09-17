@@ -5,5 +5,6 @@
  * roommind-panel.js and served by Home Assistant.
  */
 import "./components/rme-area-card";
+import "./components/rme-whole-house-card";
 import "./components/rme-room-detail";
 import "./roommind-panel";
