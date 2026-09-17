@@ -184,7 +184,7 @@ async def _async_register_panel(hass: HomeAssistant) -> None:
                     "name": "roommind-eklabs-panel",
                     "embed_iframe": False,
                     "trust_external": False,
-                    "js_url": "/roommind_eklabs/roommind-panel.js",
+                    "js_url": f"/roommind_eklabs/roommind-panel.js?v={VERSION}",
                 }
             },
         )
