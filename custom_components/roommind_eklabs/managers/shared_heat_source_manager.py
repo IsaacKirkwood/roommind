@@ -19,6 +19,7 @@ from ..const import (
     DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES,
     DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS,
     DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES,
+    DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES,
     DEFAULT_SHARED_HEAT_START_DELTA,
     DEFAULT_SHARED_HEAT_STOP_DELTA,
     MODE_HEATING,
@@ -65,6 +66,10 @@ class SharedHeatSourceConfig:
     local_grace_seconds: float = DEFAULT_SHARED_HEAT_LOCAL_GRACE_MINUTES * 60
     min_run_seconds: float = DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES * 60
     min_off_seconds: float = DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES * 60
+    require_occupancy: bool = False
+    occupancy_entities: tuple[str, ...] = ()
+    media_player_entities: tuple[str, ...] = ()
+    occupancy_hold_seconds: float = DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES * 60
     enabled: bool = True
 
     @classmethod
@@ -101,6 +106,13 @@ class SharedHeatSourceConfig:
                 0.0,
                 float(raw.get("min_off_minutes", DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES)) * 60,
             ),
+            require_occupancy=bool(raw.get("require_occupancy", False)),
+            occupancy_entities=tuple(str(entity_id) for entity_id in raw.get("occupancy_entities", [])),
+            media_player_entities=tuple(str(entity_id) for entity_id in raw.get("media_player_entities", [])),
+            occupancy_hold_seconds=max(
+                0.0,
+                float(raw.get("occupancy_hold_minutes", DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES)) * 60,
+            ),
             enabled=bool(raw.get("enabled", True)),
         )
 
@@ -112,6 +124,7 @@ class SharedHeatSourceState:
     active: bool = False
     on_since: float | None = None
     off_since: float | None = None
+    last_occupied: float | None = None
 
 
 @dataclass(frozen=True)
@@ -128,6 +141,7 @@ class SharedHeatSourcePlan:
     shared_heat_rooms: frozenset[str]
     aggregate_power: float
     max_delta: float
+    occupancy_eligible: bool
 
 
 class SharedHeatSourceManager:
@@ -153,11 +167,18 @@ class SharedHeatSourceManager:
         demands: list[RoomHeatDemand],
         *,
         now: float | None = None,
+        occupied_now: bool = False,
     ) -> SharedHeatSourcePlan:
         """Return and record the next plan for one source."""
         timestamp = monotonic() if now is None else now
         config = self._configs[source_id]
         state = self._states[source_id]
+        if occupied_now:
+            state.last_occupied = timestamp
+        occupancy_eligible = not config.require_occupancy or (
+            state.last_occupied is not None
+            and timestamp - state.last_occupied <= config.occupancy_hold_seconds
+        )
         demand_by_room = {d.area_id: d for d in demands}
         participating = [demand_by_room[area_id] for area_id in config.rooms if area_id in demand_by_room]
         requesting = [d for d in participating if d.requesting]
@@ -167,8 +188,10 @@ class SharedHeatSourceManager:
         enough_rooms = len(requesting) >= config.min_requesting_rooms
         enough_power = aggregate_power >= config.aggregate_power_threshold
         enough_delta = max_delta >= config.start_delta
-        start_requested = bool(requesting) and enough_delta and (enough_rooms or enough_power)
-        stop_requested = not requesting or all(d.delta <= config.stop_delta for d in requesting)
+        start_requested = occupancy_eligible and bool(requesting) and enough_delta and (enough_rooms or enough_power)
+        stop_requested = not occupancy_eligible or not requesting or all(
+            d.delta <= config.stop_delta for d in requesting
+        )
 
         transition = "none"
         reason = "no aggregate demand"
@@ -186,7 +209,7 @@ class SharedHeatSourceManager:
                 state.on_since = None
                 state.off_since = timestamp
                 transition = "stop"
-                reason = "all participating rooms satisfied"
+                reason = "occupancy gate clear" if not occupancy_eligible else "all participating rooms satisfied"
             elif stop_requested:
                 reason = "minimum run time"
             else:
@@ -205,7 +228,7 @@ class SharedHeatSourceManager:
             reason = "demand below shared-source threshold"
 
         local_allowed: set[str] = set()
-        if not state.active:
+        if not state.active or not occupancy_eligible:
             local_allowed.update(d.area_id for d in requesting)
         else:
             active_elapsed = timestamp - state.on_since if state.on_since is not None else 0.0
@@ -223,6 +246,7 @@ class SharedHeatSourceManager:
             shared_heat_rooms=frozenset(config.rooms) if state.active else frozenset(),
             aggregate_power=round(aggregate_power, 3),
             max_delta=round(max_delta, 3),
+            occupancy_eligible=occupancy_eligible,
         )
 
     def get_configs(self) -> dict[str, SharedHeatSourceConfig]:

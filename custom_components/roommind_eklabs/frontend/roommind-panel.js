@@ -6081,12 +6081,60 @@
               ></ha-checkbox>
             </ha-formfield>`)}
       </div>
+      <div class="grid">
+        <ha-formfield label="Only use gas when downstairs is occupied">
+          <ha-checkbox
+            .checked=${e.require_occupancy??!1}
+            @change=${e=>this._set(t,`require_occupancy`,e.target.checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          max="240"
+          step="1"
+          label="Occupancy hold"
+          suffix="min"
+          .value=${String(e.occupancy_hold_minutes??20)}
+          @change=${e=>this._number(t,`occupancy_hold_minutes`,e)}
+        ></ha-textfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${``}
+            .includeDomains=${[`binary_sensor`]}
+            label="Add presence sensor"
+            @value-changed=${e=>this._addEntity(t,`occupancy_entities`,e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(t,`occupancy_entities`,e.occupancy_entities??[])}
+        </div>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${``}
+            .includeDomains=${[`media_player`]}
+            label="Add Apple TV"
+            @value-changed=${e=>this._addEntity(t,`media_player_entities`,e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(t,`media_player_entities`,e.media_player_entities??[])}
+        </div>
+      </div>
+      <div class="hint">
+        Presence or an active media player enables whole-house gas heating. Bedroom heating remains available when downstairs is clear.
+      </div>
       <div class="actions">
         <ha-button @click=${()=>this._fire(this.sharedHeatSources.filter((e,n)=>n!==t))}
           >Remove</ha-button
         >
       </div>
-    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rme-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
+    </div>`}_set(e,t,n){let r=[...this.sharedHeatSources];r[e]={...r[e],[t]:n},this._fire(r)}_number(e,t,n){let r=Number(n.target.value);Number.isFinite(r)&&this._set(e,t,r)}_room(e,t,n){let r=n?[...new Set([...this.sharedHeatSources[e].rooms,t])]:this.sharedHeatSources[e].rooms.filter(e=>e!==t);this._set(e,`rooms`,r)}_addEntity(e,t,n){if(!n)return;let r=[...new Set([...this.sharedHeatSources[e][t]??[],n])];this._set(e,t,r)}_renderEntities(e,t,n){return n.map(r=>h`<div>
+        ${this.hass.states[r]?.attributes?.friendly_name??r}
+        <ha-icon-button
+          label="Remove"
+          .path=${`M19,13H5V11H19V13Z`}
+          @click=${()=>this._set(e,t,n.filter(e=>e!==r))}
+        ></ha-icon-button>
+      </div>`)}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:[],enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10,require_occupancy:!1,occupancy_entities:[],media_player_entities:[],occupancy_hold_minutes:20}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],xn.prototype,`hass`,void 0),j([b({attribute:!1})],xn.prototype,`rooms`,void 0),j([b({type:Array})],xn.prototype,`sharedHeatSources`,void 0),xn=j([y(`rme-settings-shared-heat`)],xn),v(),S(),M();var Sn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
       <div class="threshold-field">
         <ha-textfield
           .value=${String(t)}

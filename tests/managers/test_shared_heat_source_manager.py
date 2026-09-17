@@ -158,3 +158,39 @@ def test_removed_source_drops_runtime_state():
 
     assert manager.get_configs() == {}
     assert manager.get_state("gas") is None
+
+
+def test_occupancy_gate_uses_hold_then_falls_back_to_local_heat():
+    manager = SharedHeatSourceManager()
+    manager.load_sources(
+        [_source(require_occupancy=True, occupancy_hold_minutes=20, min_run_minutes=0)]
+    )
+    demands = [_demand("isaac"), _demand("jacob")]
+
+    blocked = manager.evaluate("gas", demands, now=1000, occupied_now=False)
+    started = manager.evaluate("gas", demands, now=1010, occupied_now=True)
+    held = manager.evaluate("gas", demands, now=1010 + 19 * 60, occupied_now=False)
+    stopped = manager.evaluate("gas", demands, now=1010 + 21 * 60, occupied_now=False)
+
+    assert blocked.active is False
+    assert blocked.local_heat_allowed == frozenset({"isaac", "jacob"})
+    assert started.active is True
+    assert started.occupancy_eligible is True
+    assert held.active is True
+    assert stopped.active is False
+    assert stopped.reason == "occupancy gate clear"
+    assert stopped.local_heat_allowed == frozenset({"isaac", "jacob"})
+
+
+def test_occupancy_loss_allows_local_heat_during_minimum_gas_run():
+    manager = SharedHeatSourceManager()
+    manager.load_sources([_source(require_occupancy=True, occupancy_hold_minutes=0)])
+    demands = [_demand("isaac"), _demand("jacob")]
+    manager.evaluate("gas", demands, now=1000, occupied_now=True)
+
+    held = manager.evaluate("gas", demands, now=1010, occupied_now=False)
+
+    assert held.active is True
+    assert held.reason == "minimum run time"
+    assert held.occupancy_eligible is False
+    assert held.local_heat_allowed == frozenset({"isaac", "jacob"})

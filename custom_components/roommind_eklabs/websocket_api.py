@@ -26,6 +26,7 @@ from .const import (
     DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES,
     DEFAULT_SHARED_HEAT_MIN_REQUESTING_ROOMS,
     DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES,
+    DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES,
     DEFAULT_SHARED_HEAT_START_DELTA,
     DEFAULT_SHARED_HEAT_STOP_DELTA,
     DOMAIN,
@@ -745,6 +746,14 @@ async def websocket_get_settings(
                 ),
                 vol.Optional("min_off_minutes", default=DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES): vol.All(
                     vol.Coerce(int), vol.Range(min=0, max=120)
+                ),
+                vol.Optional("require_occupancy", default=False): bool,
+                vol.Optional("occupancy_entities", default=[]): [str],
+                vol.Optional("media_player_entities", default=[]): [str],
+                vol.Optional(
+                    "occupancy_hold_minutes", default=DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES
+                ): vol.All(
+                    vol.Coerce(int), vol.Range(min=0, max=240)
                 ),
             }
         ],

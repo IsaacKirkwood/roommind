@@ -134,6 +134,50 @@ export class RsSettingsSharedHeat extends LitElement {
             </ha-formfield>`,
         )}
       </div>
+      <div class="grid">
+        <ha-formfield label="Only use gas when downstairs is occupied">
+          <ha-checkbox
+            .checked=${source.require_occupancy ?? false}
+            @change=${(e: Event) =>
+              this._set(index, "require_occupancy", (e.target as HTMLInputElement).checked)}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-textfield
+          type="number"
+          min="0"
+          max="240"
+          step="1"
+          label="Occupancy hold"
+          suffix="min"
+          .value=${String(source.occupancy_hold_minutes ?? 20)}
+          @change=${(e: Event) => this._number(index, "occupancy_hold_minutes", e)}
+        ></ha-textfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${""}
+            .includeDomains=${["binary_sensor"]}
+            label="Add presence sensor"
+            @value-changed=${(e: CustomEvent) =>
+              this._addEntity(index, "occupancy_entities", e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(index, "occupancy_entities", source.occupancy_entities ?? [])}
+        </div>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${""}
+            .includeDomains=${["media_player"]}
+            label="Add Apple TV"
+            @value-changed=${(e: CustomEvent) =>
+              this._addEntity(index, "media_player_entities", e.detail?.value)}
+          ></ha-entity-picker>
+          ${this._renderEntities(index, "media_player_entities", source.media_player_entities ?? [])}
+        </div>
+      </div>
+      <div class="hint">
+        Presence or an active media player enables whole-house gas heating. Bedroom heating remains available when downstairs is clear.
+      </div>
       <div class="actions">
         <ha-button @click=${() => this._fire(this.sharedHeatSources.filter((_, i) => i !== index))}
           >Remove</ha-button
@@ -161,6 +205,31 @@ export class RsSettingsSharedHeat extends LitElement {
       : this.sharedHeatSources[index].rooms.filter((id) => id !== roomId);
     this._set(index, "rooms", rooms);
   }
+  private _addEntity(
+    index: number,
+    field: "occupancy_entities" | "media_player_entities",
+    entityId?: string,
+  ) {
+    if (!entityId) return;
+    const entities = [...new Set([...(this.sharedHeatSources[index][field] ?? []), entityId])];
+    this._set(index, field, entities);
+  }
+  private _renderEntities(
+    index: number,
+    field: "occupancy_entities" | "media_player_entities",
+    entities: string[],
+  ) {
+    return entities.map(
+      (entityId) => html`<div>
+        ${this.hass.states[entityId]?.attributes?.friendly_name ?? entityId}
+        <ha-icon-button
+          label="Remove"
+          .path=${"M19,13H5V11H19V13Z"}
+          @click=${() => this._set(index, field, entities.filter((id) => id !== entityId))}
+        ></ha-icon-button>
+      </div>`,
+    );
+  }
   private _add() {
     this._fire([
       ...this.sharedHeatSources,
@@ -178,6 +247,10 @@ export class RsSettingsSharedHeat extends LitElement {
         local_grace_minutes: 15,
         min_run_minutes: 15,
         min_off_minutes: 10,
+        require_occupancy: false,
+        occupancy_entities: [],
+        media_player_entities: [],
+        occupancy_hold_minutes: 20,
       },
     ]);
   }

@@ -433,7 +433,17 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         live_plans: list[dict[str, Any]] = []
 
         for source_id in self._shared_heat_manager.get_configs():
-            plan = self._shared_heat_manager.evaluate(source_id, demands)
+            config = self._shared_heat_manager.get_configs()[source_id]
+            occupied_now = any(
+                self.hass.states.get(entity_id) is not None
+                and self.hass.states[entity_id].state == "on"
+                for entity_id in config.occupancy_entities
+            ) or any(
+                self.hass.states.get(entity_id) is not None
+                and self.hass.states[entity_id].state not in {"off", "standby", "unavailable", "unknown"}
+                for entity_id in config.media_player_entities
+            )
+            plan = self._shared_heat_manager.evaluate(source_id, demands, occupied_now=occupied_now)
             shared_rooms.update(plan.shared_heat_rooms)
             local_allowed.update(plan.local_heat_allowed)
             live_plans.append(
@@ -446,6 +456,7 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                     "local_heat_allowed": sorted(plan.local_heat_allowed),
                     "aggregate_power": plan.aggregate_power,
                     "max_delta": plan.max_delta,
+                    "occupancy_eligible": plan.occupancy_eligible,
                 }
             )
             if plan.transition != "none":

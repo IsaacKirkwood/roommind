@@ -7,7 +7,7 @@ from homeassistant.const import Platform
 from homeassistant.core import Context
 
 DOMAIN = "roommind_eklabs"
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 # Platforms
 PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.BINARY_SENSOR, Platform.CLIMATE]
@@ -184,6 +184,7 @@ DEFAULT_SHARED_HEAT_LOCAL_TRIM_DELTA = 1.0
 DEFAULT_SHARED_HEAT_LOCAL_GRACE_MINUTES = 15
 DEFAULT_SHARED_HEAT_MIN_RUN_MINUTES = 15
 DEFAULT_SHARED_HEAT_MIN_OFF_MINUTES = 10
+DEFAULT_SHARED_HEAT_OCCUPANCY_HOLD_MINUTES = 20
 
 # Compressor group master device — conflict resolution strategies
 CONFLICT_RESOLUTION_HEATING_PRIORITY = "heating_priority"

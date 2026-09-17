@@ -117,6 +117,10 @@ export interface SharedHeatSource {
   local_grace_minutes: number;
   min_run_minutes: number;
   min_off_minutes: number;
+  require_occupancy: boolean;
+  occupancy_entities: string[];
+  media_player_entities: string[];
+  occupancy_hold_minutes: number;
 }
 
 export interface RoomConfig {
