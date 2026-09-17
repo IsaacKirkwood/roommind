@@ -774,6 +774,7 @@ async def websocket_get_settings(
                     vol.Coerce(float), vol.Range(min=5, max=30)
                 ),
                 vol.Optional("preset_mode", default="comfort"): vol.In(["comfort", "eco"]),
+                vol.Optional("schedule_entity", default=""): str,
                 vol.Optional("thermostat_enabled", default=True): bool,
                 vol.Optional("temperature_sensors", default=[]): [str],
                 vol.Optional("temperature_offsets", default={}): {
@@ -897,6 +898,14 @@ async def websocket_save_settings(
                     msg["id"],
                     "invalid_shared_source_entity",
                     f"Shared heat source '{entity_id}' must be a climate or switch entity",
+                )
+                return
+            schedule_entity = source.get("schedule_entity", "")
+            if schedule_entity and not schedule_entity.startswith("schedule."):
+                connection.send_error(
+                    msg["id"],
+                    "invalid_shared_source_schedule",
+                    f"Whole-house schedule '{schedule_entity}' must be a schedule entity",
                 )
                 return
             rooms = source.get("rooms", [])

@@ -470,12 +470,20 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                 and state.state == "home"
                 for entity_id in config.home_presence_entities
             )
+            schedule_active: bool | None = None
+            scheduled_preset: str | None = None
+            if config.schedule_entity:
+                schedule_state = self.hass.states.get(config.schedule_entity)
+                if schedule_state is not None and schedule_state.state in {"on", "off"}:
+                    schedule_active = schedule_state.state == "on"
+                    scheduled_preset = "comfort" if schedule_active else "eco"
             plan = self._shared_heat_manager.evaluate(
                 source_id,
                 demands,
                 occupied_now=occupied_now,
                 shared_current_temp=shared_current_temp,
                 home_occupied=home_occupied,
+                scheduled_preset=scheduled_preset,
             )
             shared_rooms.update(plan.shared_heat_rooms)
             local_allowed.update(plan.local_heat_allowed)
@@ -493,10 +501,11 @@ class RoomMindCoordinator(DataUpdateCoordinator):
                     "current_temperature": shared_current_temp,
                     "target_temperature": (
                         config.eco_temperature
-                        if config.preset_mode == "eco"
+                        if (scheduled_preset or config.preset_mode) == "eco"
                         else config.comfort_temperature
                     ),
-                    "preset_mode": config.preset_mode,
+                    "preset_mode": scheduled_preset or config.preset_mode,
+                    "schedule_active": schedule_active,
                     "thermostat_enabled": config.thermostat_enabled,
                     "home_occupied": home_occupied,
                 }

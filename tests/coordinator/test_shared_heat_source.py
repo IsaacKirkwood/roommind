@@ -105,3 +105,30 @@ async def test_shared_heat_averages_calibrated_temperature_sensors(hass, mock_co
     assert plan["current_temperature"] == 17.0
     assert plan["target_temperature"] == 18.0
     assert plan["active"] is True
+
+
+@pytest.mark.asyncio
+async def test_shared_heat_schedule_selects_comfort_when_on(hass, mock_config_entry):
+    coordinator = _create_coordinator(hass, mock_config_entry)
+    source = _source()
+    source.update(
+        {
+            "schedule_entity": "schedule.whole_house_comfort",
+            "comfort_temperature": 20.0,
+            "eco_temperature": 16.0,
+        }
+    )
+    coordinator._shared_heat_manager.load_sources([source])
+    hass.states.get.side_effect = {
+        "schedule.whole_house_comfort": State("schedule.whole_house_comfort", "on"),
+    }.get
+    hass.services.async_call = AsyncMock()
+
+    await coordinator._async_control_shared_heat_sources(
+        {"isaac": _room_state("isaac"), "jacob": _room_state("jacob")}
+    )
+
+    plan = coordinator._shared_heat_plans[0]
+    assert plan["preset_mode"] == "comfort"
+    assert plan["schedule_active"] is True
+    assert plan["target_temperature"] == 20.0

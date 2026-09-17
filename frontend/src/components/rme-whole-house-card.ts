@@ -108,6 +108,8 @@ export class RmeWholeHouseCard extends LitElement {
     const live = this.source.live;
     const current = live?.current_temperature;
     const enabled = this.source.thermostat_enabled ?? true;
+    const scheduled = Boolean(this.source.schedule_entity);
+    const effectivePreset = live?.preset_mode ?? this.source.preset_mode ?? "comfort";
     return html`
       <ha-card class=${enabled ? "" : "off"}>
         <div class="top">
@@ -115,7 +117,10 @@ export class RmeWholeHouseCard extends LitElement {
             <ha-icon icon="mdi:home-thermometer"></ha-icon>
             <div>
               <h3>${this.source.name || "Whole House"}</h3>
-              <div class="status">${enabled ? live?.reason || "Ready" : "Heating off"}</div>
+              <div class="status">
+                ${enabled ? live?.reason || "Ready" : "Heating off"}
+                ${scheduled ? ` · Schedule ${effectivePreset === "eco" ? "Eco" : "Comfort"}` : ""}
+              </div>
             </div>
           </div>
           <div class="current">
@@ -125,13 +130,15 @@ export class RmeWholeHouseCard extends LitElement {
         <div class="body">
           <div class="mode">
             <button
-              ?active=${enabled && this.source.preset_mode !== "eco"}
+              ?active=${enabled && effectivePreset !== "eco"}
+              ?disabled=${scheduled}
               @click=${() => this._mode("comfort")}
             >
               Comfort
             </button>
             <button
-              ?active=${enabled && this.source.preset_mode === "eco"}
+              ?active=${enabled && effectivePreset === "eco"}
+              ?disabled=${scheduled}
               @click=${() => this._mode("eco")}
             >
               Eco

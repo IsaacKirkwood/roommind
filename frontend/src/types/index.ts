@@ -125,6 +125,7 @@ export interface SharedHeatSource {
   comfort_temperature?: number;
   eco_temperature?: number;
   preset_mode?: "comfort" | "eco";
+  schedule_entity?: string;
   thermostat_enabled: boolean;
   temperature_sensors: string[];
   temperature_offsets: Record<string, number>;
@@ -140,6 +141,8 @@ export interface SharedHeatSourceLive {
   target_temperature: number;
   occupancy_eligible: boolean;
   home_occupied: boolean;
+  preset_mode?: "comfort" | "eco";
+  schedule_active?: boolean | null;
 }
 
 export interface RoomConfig {

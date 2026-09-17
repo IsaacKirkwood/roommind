@@ -221,6 +221,62 @@ def test_eco_mode_uses_eco_temperature():
     assert plan.max_delta == 0.0
 
 
+def test_schedule_selects_comfort_or_eco_without_bypassing_occupancy():
+    manager = SharedHeatSourceManager()
+    manager.load_sources(
+        [
+            _source(
+                comfort_temperature=20.0,
+                eco_temperature=16.0,
+                require_occupancy=True,
+                occupancy_hold_minutes=0,
+            )
+        ]
+    )
+    demands = [_demand("living")]
+
+    comfort = manager.evaluate(
+        "gas",
+        demands,
+        now=1000,
+        occupied_now=True,
+        shared_current_temp=17.0,
+        scheduled_preset="comfort",
+    )
+    manager.load_sources(
+        [
+            _source(
+                comfort_temperature=20.0,
+                eco_temperature=16.0,
+                require_occupancy=True,
+                occupancy_hold_minutes=0,
+                min_run_minutes=0,
+            )
+        ]
+    )
+    eco = manager.evaluate(
+        "gas",
+        demands,
+        now=1010,
+        occupied_now=True,
+        shared_current_temp=17.0,
+        scheduled_preset="eco",
+    )
+    clear = manager.evaluate(
+        "gas",
+        demands,
+        now=1020,
+        occupied_now=False,
+        shared_current_temp=15.0,
+        scheduled_preset="comfort",
+    )
+
+    assert comfort.active is True
+    assert eco.active is False
+    assert clear.active is False
+    assert clear.occupancy_eligible is False
+
+
 def test_active_furnace_marks_every_observed_room_as_shared_heat():
     manager = SharedHeatSourceManager()
     manager.load_sources([_source(rooms=["living"])])

@@ -7,7 +7,7 @@ from homeassistant.const import Platform
 from homeassistant.core import Context
 
 DOMAIN = "roommind_eklabs"
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 
 # Platforms
 PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.BINARY_SENSOR, Platform.CLIMATE]

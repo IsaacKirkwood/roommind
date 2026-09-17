@@ -272,13 +272,16 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
 
     @property
     def target_temperature(self) -> float:
+        plan_target = self._plan().get("target_temperature")
+        if isinstance(plan_target, (int, float)):
+            return float(plan_target)
         source = self._source()
         key = "eco_temperature" if source.get("preset_mode") == "eco" else "comfort_temperature"
         return float(source.get(key, source.get("target_temperature", 18.0)))
 
     @property
     def preset_mode(self) -> str:
-        return str(self._source().get("preset_mode", "comfort"))
+        return str(self._plan().get("preset_mode", self._source().get("preset_mode", "comfort")))
 
     @property
     def hvac_mode(self) -> HVACMode:
@@ -303,6 +306,8 @@ class RoomMindWholeHouseClimate(CoordinatorEntity, ClimateEntity):
                 "comfort_temperature", source.get("target_temperature", 18.0)
             ),
             "eco_temperature": source.get("eco_temperature", 16.0),
+            "schedule_entity": source.get("schedule_entity", ""),
+            "schedule_active": plan.get("schedule_active"),
         }
 
     async def _async_update_source(self, **changes: Any) -> None:

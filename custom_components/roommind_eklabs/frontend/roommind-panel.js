@@ -640,14 +640,17 @@
           align-items: stretch;
         }
       }
-    `]}render(){if(!this.source)return g;let e=this.source.live,t=e?.current_temperature,n=this.source.thermostat_enabled??!0;return h`
+    `]}render(){if(!this.source)return g;let e=this.source.live,t=e?.current_temperature,n=this.source.thermostat_enabled??!0,r=!!this.source.schedule_entity,i=e?.preset_mode??this.source.preset_mode??`comfort`;return h`
       <ha-card class=${n?``:`off`}>
         <div class="top">
           <div class="identity">
             <ha-icon icon="mdi:home-thermometer"></ha-icon>
             <div>
               <h3>${this.source.name||`Whole House`}</h3>
-              <div class="status">${n?e?.reason||`Ready`:`Heating off`}</div>
+              <div class="status">
+                ${n?e?.reason||`Ready`:`Heating off`}
+                ${r?` · Schedule ${i===`eco`?`Eco`:`Comfort`}`:``}
+              </div>
             </div>
           </div>
           <div class="current">
@@ -657,13 +660,15 @@
         <div class="body">
           <div class="mode">
             <button
-              ?active=${n&&this.source.preset_mode!==`eco`}
+              ?active=${n&&i!==`eco`}
+              ?disabled=${r}
               @click=${()=>this._mode(`comfort`)}
             >
               Comfort
             </button>
             <button
-              ?active=${n&&this.source.preset_mode===`eco`}
+              ?active=${n&&i===`eco`}
+              ?disabled=${r}
               @click=${()=>this._mode(`eco`)}
             >
               Eco
@@ -6206,6 +6211,17 @@
           .value=${String(e.eco_temperature??16)}
           @change=${e=>this._number(t,`eco_temperature`,e)}
         ></ha-textfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${e.schedule_entity??``}
+            .includeDomains=${[`schedule`]}
+            label="Comfort schedule"
+            allow-custom-entity
+            @value-changed=${e=>this._set(t,`schedule_entity`,e.detail?.value??``)}
+          ></ha-entity-picker>
+          <div class="hint">Schedule on uses Comfort. Schedule off uses Eco.</div>
+        </div>
         <ha-textfield
           type="number"
           min="0"
@@ -6342,7 +6358,7 @@
             .path=${`M19,13H5V11H19V13Z`}
             @click=${()=>this._removeTemperatureSensor(t,n)}
           ></ha-icon-button>
-        </div>`)}_temperatureLabel(e,t){let n=this.hass.states[t],r=n?.attributes?.friendly_name??t,i=Number(n?.state);if(!Number.isFinite(i))return`${r} · unavailable`;let a=i+(e.temperature_offsets?.[t]??0);return`${r} · ${i.toFixed(1)} °C → ${a.toFixed(1)} °C`}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:Object.keys(this.rooms),enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10,require_occupancy:!0,occupancy_entities:[],media_player_entities:[],occupancy_hold_minutes:20,target_temperature:18,comfort_temperature:18,eco_temperature:16,preset_mode:`comfort`,thermostat_enabled:!0,temperature_sensors:[],temperature_offsets:{},require_home_presence:!0,home_presence_entities:[]}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Sn.prototype,`hass`,void 0),j([b({attribute:!1})],Sn.prototype,`rooms`,void 0),j([b({type:Array})],Sn.prototype,`sharedHeatSources`,void 0),Sn=j([y(`rme-settings-shared-heat`)],Sn),v(),S(),M();var Cn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
+        </div>`)}_temperatureLabel(e,t){let n=this.hass.states[t],r=n?.attributes?.friendly_name??t,i=Number(n?.state);if(!Number.isFinite(i))return`${r} · unavailable`;let a=i+(e.temperature_offsets?.[t]??0);return`${r} · ${i.toFixed(1)} °C → ${a.toFixed(1)} °C`}_add(){this._fire([...this.sharedHeatSources,{id:self.crypto?.randomUUID?.()??String(Date.now()),name:`Whole house gas heating`,entity_id:``,rooms:Object.keys(this.rooms),enabled:!0,min_requesting_rooms:2,aggregate_power_threshold:1.2,start_delta:.5,stop_delta:.2,local_trim_delta:1,local_grace_minutes:15,min_run_minutes:15,min_off_minutes:10,require_occupancy:!0,occupancy_entities:[],media_player_entities:[],occupancy_hold_minutes:20,target_temperature:18,comfort_temperature:18,eco_temperature:16,preset_mode:`comfort`,schedule_entity:``,thermostat_enabled:!0,temperature_sensors:[],temperature_offsets:{},require_home_presence:!0,home_presence_entities:[]}])}_fire(e){this.dispatchEvent(new CustomEvent(`setting-changed`,{detail:{key:`sharedHeatSources`,value:e},bubbles:!0,composed:!0}))}};j([b({attribute:!1})],Sn.prototype,`hass`,void 0),j([b({attribute:!1})],Sn.prototype,`rooms`,void 0),j([b({type:Array})],Sn.prototype,`sharedHeatSources`,void 0),Sn=j([y(`rme-settings-shared-heat`)],Sn),v(),S(),M();var Cn=`__keep__`,J=class extends q{constructor(...e){super(...e),this.coilDryEnabled=!1,this.coilDryMinutes=20,this.coilDryMode=`fan_only`,this.coilDryFanMode=`low`,this.coilDryMinCoolingMinutes=10,this.coilDryDrainMinutes=0,this.availableFanModes=[]}_numberField(e,t,n,r,i,a,o){let s=this.hass.language;return h`
       <div class="threshold-field">
         <ha-textfield
           .value=${String(t)}

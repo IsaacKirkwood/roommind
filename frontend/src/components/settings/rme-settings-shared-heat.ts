@@ -109,6 +109,18 @@ export class RsSettingsSharedHeat extends LitElement {
           .value=${String(source.eco_temperature ?? 16)}
           @change=${(e: Event) => this._number(index, "eco_temperature", e)}
         ></ha-textfield>
+        <div>
+          <ha-entity-picker
+            .hass=${this.hass}
+            .value=${source.schedule_entity ?? ""}
+            .includeDomains=${["schedule"]}
+            label="Comfort schedule"
+            allow-custom-entity
+            @value-changed=${(e: CustomEvent) =>
+              this._set(index, "schedule_entity", e.detail?.value ?? "")}
+          ></ha-entity-picker>
+          <div class="hint">Schedule on uses Comfort. Schedule off uses Eco.</div>
+        </div>
         <ha-textfield
           type="number"
           min="0"
@@ -365,6 +377,7 @@ export class RsSettingsSharedHeat extends LitElement {
         comfort_temperature: 18,
         eco_temperature: 16,
         preset_mode: "comfort",
+        schedule_entity: "",
         thermostat_enabled: true,
         temperature_sensors: [],
         temperature_offsets: {},

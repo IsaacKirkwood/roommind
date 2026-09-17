@@ -74,6 +74,7 @@ class SharedHeatSourceConfig:
     comfort_temperature: float = 18.0
     eco_temperature: float = 16.0
     preset_mode: str = "comfort"
+    schedule_entity: str = ""
     thermostat_enabled: bool = True
     temperature_sensors: tuple[str, ...] = ()
     temperature_offsets: dict[str, float] | None = None
@@ -130,6 +131,7 @@ class SharedHeatSourceConfig:
             ),
             eco_temperature=float(raw.get("eco_temperature", 16.0)),
             preset_mode=str(raw.get("preset_mode", "comfort")),
+            schedule_entity=str(raw.get("schedule_entity", "")),
             thermostat_enabled=bool(raw.get("thermostat_enabled", True)),
             temperature_sensors=tuple(str(entity_id) for entity_id in raw.get("temperature_sensors", [])),
             temperature_offsets={
@@ -197,6 +199,7 @@ class SharedHeatSourceManager:
         occupied_now: bool = False,
         shared_current_temp: float | None = None,
         home_occupied: bool = True,
+        scheduled_preset: str | None = None,
     ) -> SharedHeatSourcePlan:
         """Return and record the next plan for one source."""
         timestamp = monotonic() if now is None else now
@@ -224,8 +227,9 @@ class SharedHeatSourceManager:
             if available_temperatures:
                 shared_current_temp = sum(available_temperatures) / len(available_temperatures)
 
+        effective_preset = scheduled_preset or config.preset_mode
         effective_target = (
-            config.eco_temperature if config.preset_mode == "eco" else config.comfort_temperature
+            config.eco_temperature if effective_preset == "eco" else config.comfort_temperature
         )
         if shared_current_temp is not None:
             max_delta = max(0.0, effective_target - shared_current_temp)
