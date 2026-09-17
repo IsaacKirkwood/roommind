@@ -60,19 +60,31 @@ async def test_shared_heat_starts_switch_from_aggregate_demand(hass, mock_config
 async def test_shared_heat_climate_uses_hvac_mode(hass, mock_config_entry):
     coordinator = _create_coordinator(hass, mock_config_entry)
     coordinator._shared_heat_manager.load_sources([_source("climate.gas_heating")])
+    hass.states.get.return_value = State(
+        "climate.gas_heating", "off", {"max_temp": 30.0}
+    )
     hass.services.async_call = AsyncMock()
 
     await coordinator._async_control_shared_heat_sources(
         {"isaac": _room_state("isaac"), "jacob": _room_state("jacob")}
     )
 
-    assert hass.services.async_call.await_args == call(
-        "climate",
-        "set_hvac_mode",
-        {"entity_id": "climate.gas_heating", "hvac_mode": "heat"},
-        blocking=True,
-        context=ANY,
-    )
+    assert hass.services.async_call.await_args_list == [
+        call(
+            "climate",
+            "set_temperature",
+            {"entity_id": "climate.gas_heating", "temperature": 30.0},
+            blocking=True,
+            context=ANY,
+        ),
+        call(
+            "climate",
+            "set_hvac_mode",
+            {"entity_id": "climate.gas_heating", "hvac_mode": "heat"},
+            blocking=True,
+            context=ANY,
+        ),
+    ]
 
 
 @pytest.mark.asyncio

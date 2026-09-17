@@ -640,7 +640,7 @@
           align-items: stretch;
         }
       }
-    `]}render(){if(!this.source)return g;let e=this.source.live,t=e?.current_temperature,n=this.source.thermostat_enabled??!0,r=!!this.source.schedule_entity,i=e?.preset_mode??this.source.preset_mode??`comfort`;return h`
+    `]}render(){if(!this.source)return g;let e=this.source.live,t=e?.current_temperature,n=this.source.thermostat_enabled??!0,r=!!this.source.schedule_entity,i=r&&e?.schedule_active!=null,a=e?.preset_mode??this.source.preset_mode??`comfort`;return h`
       <ha-card class=${n?``:`off`}>
         <div class="top">
           <div class="identity">
@@ -649,7 +649,7 @@
               <h3>${this.source.name||`Whole House`}</h3>
               <div class="status">
                 ${n?e?.reason||`Ready`:`Heating off`}
-                ${r?` · Schedule ${i===`eco`?`Eco`:`Comfort`}`:``}
+                ${i?` · Schedule ${a===`eco`?`Eco`:`Comfort`}`:r?` · Schedule unavailable · Manual ${a===`eco`?`Eco`:`Comfort`}`:``}
               </div>
             </div>
           </div>
@@ -660,15 +660,15 @@
         <div class="body">
           <div class="mode">
             <button
-              ?active=${n&&i!==`eco`}
-              ?disabled=${r}
+              ?active=${n&&a!==`eco`}
+              ?disabled=${i}
               @click=${()=>this._mode(`comfort`)}
             >
               Comfort
             </button>
             <button
-              ?active=${n&&i===`eco`}
-              ?disabled=${r}
+              ?active=${n&&a===`eco`}
+              ?disabled=${i}
               @click=${()=>this._mode(`eco`)}
             >
               Eco

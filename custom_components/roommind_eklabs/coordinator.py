@@ -524,6 +524,24 @@ class RoomMindCoordinator(DataUpdateCoordinator):
         domain = entity_id.split(".", 1)[0]
         try:
             if domain == "climate":
+                if active:
+                    climate_state = self.hass.states.get(entity_id)
+                    max_temp_raw = (
+                        climate_state.attributes.get("max_temp", 35.0)
+                        if climate_state is not None
+                        else 35.0
+                    )
+                    try:
+                        max_temp = float(max_temp_raw)
+                    except (TypeError, ValueError):
+                        max_temp = 35.0
+                    await self.hass.services.async_call(
+                        "climate",
+                        "set_temperature",
+                        {"entity_id": entity_id, "temperature": max_temp},
+                        blocking=True,
+                        context=make_roommind_context(),
+                    )
                 await self.hass.services.async_call(
                     "climate",
                     "set_hvac_mode",

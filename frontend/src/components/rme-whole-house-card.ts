@@ -108,7 +108,8 @@ export class RmeWholeHouseCard extends LitElement {
     const live = this.source.live;
     const current = live?.current_temperature;
     const enabled = this.source.thermostat_enabled ?? true;
-    const scheduled = Boolean(this.source.schedule_entity);
+    const scheduleConfigured = Boolean(this.source.schedule_entity);
+    const scheduled = scheduleConfigured && live?.schedule_active != null;
     const effectivePreset = live?.preset_mode ?? this.source.preset_mode ?? "comfort";
     return html`
       <ha-card class=${enabled ? "" : "off"}>
@@ -119,7 +120,13 @@ export class RmeWholeHouseCard extends LitElement {
               <h3>${this.source.name || "Whole House"}</h3>
               <div class="status">
                 ${enabled ? live?.reason || "Ready" : "Heating off"}
-                ${scheduled ? ` · Schedule ${effectivePreset === "eco" ? "Eco" : "Comfort"}` : ""}
+                ${
+                  scheduled
+                    ? ` · Schedule ${effectivePreset === "eco" ? "Eco" : "Comfort"}`
+                    : scheduleConfigured
+                      ? ` · Schedule unavailable · Manual ${effectivePreset === "eco" ? "Eco" : "Comfort"}`
+                      : ""
+                }
               </div>
             </div>
           </div>
